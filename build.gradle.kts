@@ -13,6 +13,17 @@ buildscript {
 
 allprojects {
   repositories {
+
+    maven(url = "https://api.mapbox.com/downloads/v2/releases/maven").apply {
+      authentication {
+        create<BasicAuthentication>("basic")
+      }
+      credentials {
+        username = "mapbox"
+        password = project.property("MAPBOX_DOWNLOADS_TOKEN") as String? ?: ""
+      }
+    }
+
     jcenter()
     google()
   }

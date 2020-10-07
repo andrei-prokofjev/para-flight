@@ -27,6 +27,10 @@ object Libs {
   const val testJunit = "androidx.test.ext:junit:1.1.2"
   const val testEspresso = "androidx.test.espresso:espresso-core:3.3.0"
 
+
+  const val mapbox = "com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0"
+
+
   //  const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8"
 //
 //  const val androidxAnnotation = "androidx.annotation:annotation:1.1.0"

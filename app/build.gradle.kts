@@ -21,7 +21,7 @@ android {
 
   buildTypes {
     getByName("release") {
-      isMinifyEnabled = true
+      isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
@@ -49,6 +49,11 @@ dependencies {
   implementation(Libs.ktx)
   implementation(Libs.appCompat)
   implementation(Libs.constraintLayout)
+
+  implementation(Libs.mapbox)
+
+
+
 
   testImplementation(Libs.junit)
   androidTestImplementation(Libs.testJunit)

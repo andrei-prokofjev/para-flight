@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Para Flight</string>
+    <string name="mapbox_access_token" translatable="false">pk.eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJja2Z5Y3hxcjMxdDJxMnd0OHFtbGFsbG1kIn0.QlXEa2eS89Z3FpwDG7EPWA</string>
 </resources>
