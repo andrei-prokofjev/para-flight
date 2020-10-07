@@ -29,6 +29,7 @@ object Libs {
 
 
   const val mapbox = "com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0"
+  const val navigationUi = "com.mapbox.navigation:ui:1.0.0"
 
 
   //  const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8"

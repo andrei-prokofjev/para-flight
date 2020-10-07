@@ -51,6 +51,7 @@ dependencies {
   implementation(Libs.constraintLayout)
 
   implementation(Libs.mapbox)
+  implementation(Libs.navigationUi)
 
 
 
