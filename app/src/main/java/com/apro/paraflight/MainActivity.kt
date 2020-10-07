@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
       getMapAsync {
         it.setStyle(Style.MAPBOX_STREETS) {
           // Map is set up and the style has loaded. Now you can add data or make other map adjustments
+          // MAPBOX_DOWNLOADS_TOKEN=sk.eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJja2Z6YzRod2MwMXFrMnpxcXdwcjNsOTk5In0.MlS2v7VgK7RTpi7VuPDNTw
+
         }
       }
     }
