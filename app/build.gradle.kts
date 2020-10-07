@@ -10,11 +10,12 @@ android {
 
   defaultConfig {
     applicationId = "com.apro.paraflight"
-    minSdkVersion(22)
+    minSdkVersion(24)
     targetSdkVersion(29)
     versionCode = 1
     versionName = "1.0"
 
+    vectorDrawables.useSupportLibrary = true
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
@@ -23,6 +24,14 @@ android {
       isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
+  }
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+  }
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
   }
 }
 
