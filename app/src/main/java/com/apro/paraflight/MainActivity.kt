@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.apro.core_ui.onClick
+import com.apro.core_ui.toast
 import com.apro.paraflight.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +15,6 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
 
-    binding.textView.onClick { println(">>> hello$") }
+    binding.textView.onClick { toast("hello") }
   }
 }

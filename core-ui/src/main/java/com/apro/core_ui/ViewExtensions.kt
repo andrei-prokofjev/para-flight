@@ -203,6 +203,16 @@ fun Fragment.toast(text: String, long: Boolean = false, gravity: Int? = null) {
   }
 }
 
+fun Activity.toast(text: String, long: Boolean = false, gravity: Int? = null) {
+  runOnUiThread {
+    Toast.makeText(baseContext, text, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT)
+      .apply {
+        gravity?.let { setGravity(it, 0, 0) }
+        show()
+      }
+  }
+}
+
 fun Context.hasSoftBottomBar(isLandscapeMode: Boolean = false): Boolean {
   val bottomBarHeight = dpToPx(48f) // 48 is bottom bar height on Nexus 6 at least
   val screenSize = screenSize(this)
