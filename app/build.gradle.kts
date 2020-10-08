@@ -2,16 +2,17 @@ plugins {
   id("com.android.application")
   id("kotlin-android")
   id("kotlin-android-extensions")
+  id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
-  compileSdkVersion(Versions.compileSdk)
-  buildToolsVersion(Versions.buildTools)
+  compileSdkVersion(Android.compileSdk)
+  buildToolsVersion(Android.buildTools)
 
   defaultConfig {
     applicationId = "com.apro.paraflight"
-    minSdkVersion(Versions.minSdk)
-    targetSdkVersion(Versions.targetSdk)
+    minSdkVersion(Android.minSdk)
+    targetSdkVersion(Android.targetSdk)
     versionCode = VERSION_CODE
     versionName = VERSION_NAME
 
@@ -51,12 +52,15 @@ dependencies {
   implementation(Libs.constraintLayout)
 
   implementation(Libs.mapbox)
+  implementation(Libs.mapboxNavigation)
+
+  implementation(Libs.navigationFragment)
   implementation(Libs.navigationUi)
+  implementation(Libs.navigationFeatures)
 
+  testImplementation(TestLibs.navigationTest)
 
-
-
-  testImplementation(Libs.junit)
-  androidTestImplementation(Libs.testJunit)
-  androidTestImplementation(Libs.testEspresso)
+  testImplementation(TestLibs.junit)
+  androidTestImplementation(TestLibs.testJunit)
+  androidTestImplementation(TestLibs.espresso)
 }

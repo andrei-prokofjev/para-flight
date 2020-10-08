@@ -6,12 +6,12 @@ plugins {
 
 
 android {
-  compileSdkVersion(Versions.compileSdk)
-  buildToolsVersion(Versions.buildTools)
+  compileSdkVersion(Android.compileSdk)
+  buildToolsVersion(Android.buildTools)
 
   defaultConfig {
-    minSdkVersion(Versions.minSdk)
-    targetSdkVersion(Versions.targetSdk)
+    minSdkVersion(Android.minSdk)
+    targetSdkVersion(Android.targetSdk)
     versionCode = VERSION_CODE
     versionName = VERSION_NAME
     vectorDrawables.useSupportLibrary = true
@@ -34,8 +34,8 @@ dependencies {
   implementation(Libs.appCompat)
 
 
-  testImplementation(Libs.junit)
-  androidTestImplementation(Libs.testJunit)
-  androidTestImplementation(Libs.testEspresso)
+  testImplementation(TestLibs.junit)
+  androidTestImplementation(TestLibs.testJunit)
+  androidTestImplementation(TestLibs.espresso)
 
 }
