@@ -18,22 +18,27 @@ class MainActivity : AppCompatActivity() {
     setContentView(R.layout.activity_main)
 
     Mapbox.getInstance(this, getString(R.string.mapbox_access_token))
-    val options = MapboxMapOptions.createFromAttributes(this, null)
-      .camera(
-        CameraPosition.Builder()
-          .target(LatLng(59.436962, 24.753574))
-          .zoom(10.0)
-          .build()
-      )
 
-    val mapFragment = SupportMapFragment.newInstance(options).apply {
-      getMapAsync {
-        it.setStyle(Style.TRAFFIC_DAY)
+    if (savedInstanceState == null) {
+      val options = MapboxMapOptions.createFromAttributes(this, null)
+        .camera(
+          CameraPosition.Builder()
+            .target(LatLng(59.436962, 24.753574))
+            .zoom(10.0)
+            .build()
+        )
+
+      val mapFragment = SupportMapFragment.newInstance(options).apply {
+        getMapAsync {
+          it.setStyle(Style.TRAFFIC_DAY)
+        }
       }
-    }
 
-    val ft = supportFragmentManager.beginTransaction()
-    ft.add(R.id.fragmentContainerLayout, mapFragment, "com.mapbox.map")
-    ft.commit()
+      val ft = supportFragmentManager.beginTransaction()
+      ft.add(R.id.fragmentContainerLayout, mapFragment, "com.mapbox.map")
+      ft.commit()
+    } else {
+      supportFragmentManager.findFragmentByTag("com.mapbox.map")
+    }
   }
 }
