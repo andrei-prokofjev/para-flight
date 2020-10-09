@@ -6,7 +6,11 @@ object Android {
 
   const val kotlin = "1.4.10"
 
+  const val permissionsDispatcher = "4.7.0"
+
   const val navigation = "2.3.0"
+
+  const val lifecycle = "2.2.0"
 }
 
 object Libs {
@@ -14,7 +18,20 @@ object Libs {
   const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Android.kotlin}"
   const val ktx = "androidx.core:core-ktx:1.3.2"
   const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.2"
-  const val lifecycle = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
+  //Lifecycle
+  const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Android.lifecycle}"
+  const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Android.lifecycle}"
+  const val lifecycleViewModelKtx =
+    "androidx.lifecycle:lifecycle-viewmodel-ktx:${Android.lifecycle}"
+  const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Android.lifecycle}"
+
+  //Permissions
+  const val permissionsDispatcher =
+    "org.permissionsdispatcher:permissionsdispatcher:${Android.permissionsDispatcher}"
+  const val permissionsDispatcherCompiler =
+    "org.permissionsdispatcher:permissionsdispatcher-processor:${Android.permissionsDispatcher}"
+
 
   const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${Android.navigation}"
   const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Android.navigation}"

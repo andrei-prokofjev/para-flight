@@ -2,12 +2,15 @@ plugins {
   id("com.android.application")
   id("kotlin-android")
   id("kotlin-android-extensions")
-  id("androidx.navigation.safeargs.kotlin")
+  id("kotlin-kapt")
+
 }
 
 android {
   compileSdkVersion(Android.compileSdk)
   buildToolsVersion(Android.buildTools)
+  ndkVersion = "21.0.6113669"
+
 
   defaultConfig {
     applicationId = "com.apro.paraflight"
@@ -57,7 +60,14 @@ dependencies {
   implementation(Libs.navigationFragment)
   implementation(Libs.navigationUi)
   implementation(Libs.navigationFeatures)
-  implementation(Libs.lifecycle)
+
+  implementation(Libs.lifecycleExtensions)
+  kapt(Libs.lifecycleCompiler)
+  implementation(Libs.lifecycleViewModelKtx)
+  implementation(Libs.lifecycleRuntimeKtx)
+
+  implementation(Libs.permissionsDispatcher)
+  kapt(Libs.permissionsDispatcherCompiler)
 
   testImplementation(TestLibs.navigationTest)
 
