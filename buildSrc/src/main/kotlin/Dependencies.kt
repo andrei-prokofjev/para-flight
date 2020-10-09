@@ -14,6 +14,7 @@ object Libs {
   const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Android.kotlin}"
   const val ktx = "androidx.core:core-ktx:1.3.2"
   const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.2"
+  const val lifecycle = "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
   const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${Android.navigation}"
   const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Android.navigation}"
@@ -22,6 +23,7 @@ object Libs {
 
   const val mapbox = "com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0"
   const val mapboxNavigation = "com.mapbox.navigation:ui:1.0.0"
+
 }
 
 object BuildPlugins {

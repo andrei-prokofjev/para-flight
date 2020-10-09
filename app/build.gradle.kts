@@ -57,6 +57,7 @@ dependencies {
   implementation(Libs.navigationFragment)
   implementation(Libs.navigationUi)
   implementation(Libs.navigationFeatures)
+  implementation(Libs.lifecycle)
 
   testImplementation(TestLibs.navigationTest)
 
