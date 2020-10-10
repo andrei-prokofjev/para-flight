@@ -19,6 +19,10 @@ android {
     versionCode = VERSION_CODE
     versionName = VERSION_NAME
 
+
+    project.ext.set("archivesBaseName", "para-flight-" + defaultConfig.versionName)
+
+
     vectorDrawables.useSupportLibrary = true
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
