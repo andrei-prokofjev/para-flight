@@ -9,7 +9,7 @@ plugins {
 android {
   compileSdkVersion(Android.compileSdk)
   buildToolsVersion(Android.buildTools)
-  ndkVersion = "21.0.6113669"
+ // ndkVersion = "21.0.6113669"
 
 
   defaultConfig {
