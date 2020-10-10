@@ -33,6 +33,6 @@ jobs:
           echo test, and deploy your project.
 
       - name: clean
-        run: ./gradlew clean
+        run: ./gradlew clean assebleDebug
         env:
           MAPBOX_DOWNLOADS_TOKEN: dadf
