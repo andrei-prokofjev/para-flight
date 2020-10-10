@@ -35,4 +35,4 @@ jobs:
       - name: clean
         run: ./gradlew clean
         env:
-          MAPBOX_DOWNLOADS_TOKEN: sk:eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJja2Z6YzRod2MwMXFrMnpxcXdwcjNsOTk5In0:MlS2v7VgK7RTpi7VuPDNTw:
+          MAPBOX_DOWNLOADS_TOKEN: dadf
