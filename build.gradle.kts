@@ -21,7 +21,11 @@ allprojects {
       }
       credentials {
         username = "mapbox"
-        password = project.property("MAPBOX_DOWNLOADS_TOKEN") as String? ?: ""
+        try {
+
+          password = project.property("MAPBOX_DOWNLOADS_TOKEN") as String? ?: ""
+        } catch (e: kotlin.Exception) {
+        }
       }
     }
 
