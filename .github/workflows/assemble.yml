@@ -25,4 +25,4 @@ jobs:
           MAPBOX_DOWNLOADS_TOKEN: ${{ secrets.MAPBOX_DOWNLOADS_TOKEN }}
 
       - name: clean
-        run: echo$ Hello
+        run: echo 'Hello'
