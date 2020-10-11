@@ -1,19 +1,22 @@
 package com.apro.paraflight.ui.mapbox
 
+import Distance
+import Speed
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.ImageView
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import com.apro.core_ui.BaseFragment
 import com.apro.core_ui.toast
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentMapboxBinding
 import com.mapbox.android.core.location.*
 import com.mapbox.mapboxsdk.Mapbox
-import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
@@ -22,12 +25,17 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.utils.MapFragmentUtils
+import kotlinx.android.synthetic.main.fragment_mapbox.*
+import kotlinx.android.synthetic.main.view_meter.view.*
+import metersPerSecond
 import permissions.dispatcher.*
 
 @RuntimePermissions
-class MapboxFragment : Fragment() {
+class MapboxFragment : BaseFragment() {
 
-  lateinit var binding: FragmentMapboxBinding
+  private lateinit var binding: FragmentMapboxBinding
+
+  val viewModel by viewModels<MapboxViewModel>()
 
   private var mapView: MapView? = null
 
@@ -38,7 +46,27 @@ class MapboxFragment : Fragment() {
   private val callback = object : LocationEngineCallback<LocationEngineResult> {
     override fun onSuccess(result: LocationEngineResult) {
       mapboxMap?.locationComponent?.forceLocationUpdate(result.lastLocation)
+
+      binding.speedMeterView.valueTextView.text = result.lastLocation?.speed.toString()
+
+      result.lastLocation?.let {
+        with(speedMeterView) {
+          val speed = it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour)
+          titleTextView.text = getString(R.string.gs)
+          valueTextView.text = speed.amount.toInt().toString()
+          unitTextView.text = speed.unit.name
+        }
+
+        with(altitudeMeterView) {
+          titleTextView.text = getString(R.string.asl)
+          valueTextView.text = it.altitude.toInt().toString()
+          unitTextView.text = Distance.Meter.name
+        }
+      }
+
+
     }
+
 
     override fun onFailure(exception: Exception) {
       println(">>> failure $exception")
@@ -58,9 +86,13 @@ class MapboxFragment : Fragment() {
     with(binding) {
 
       mapView = MapView(root.context, MapFragmentUtils.resolveArgs(root.context, arguments)).apply {
+
         onCreate(savedInstanceState)
         mapboxLayout.addView(this)
+
         getMapAsync {
+          mapboxLayout.findViewWithTag<ImageView>("logoView").isVisible = false
+          mapboxLayout.findViewWithTag<ImageView>("attrView").isVisible = false
           mapboxMap = it
           it.setStyle(Style.OUTDOORS) {
             enableLocationComponentWithPermissionCheck(it)
@@ -94,15 +126,6 @@ class MapboxFragment : Fragment() {
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
     mapView?.onSaveInstanceState(outState)
-
-    val options = MapboxMapOptions.createFromAttributes(requireContext(), null)
-      .camera(
-        CameraPosition.Builder()
-          .target(LatLng(29.436962, 24.753574))
-          .zoom(5.0)
-          .build()
-      )
-    outState.putParcelable("key", options)
   }
 
   override fun onDestroy() {
@@ -132,9 +155,13 @@ class MapboxFragment : Fragment() {
       it.isLocationComponentEnabled = true
       it.cameraMode = CameraMode.TRACKING
       it.renderMode = RenderMode.COMPASS
+
       initLocationEngine()
     }
   }
+
+  override fun getViewToApplyStatusBarMargin(root: View): Array<View> =
+    arrayOf(binding.altitudeMeterView, binding.fuelMeterView, binding.speedMeterView)
 
   @SuppressLint("MissingPermission")
   private fun initLocationEngine() {
@@ -162,7 +189,7 @@ class MapboxFragment : Fragment() {
     Manifest.permission.ACCESS_COARSE_LOCATION
   )
   fun onPermissionDenied() {
-    toast("PERMISSIONS DENIED") // todo
+    toast("PERMISSIONS DENIED")
   }
 
   @OnNeverAskAgain(
@@ -170,7 +197,7 @@ class MapboxFragment : Fragment() {
     Manifest.permission.ACCESS_COARSE_LOCATION
   )
   fun onNeverAskAgain() {
-    toast("PERMISSIONS REQUERED")    // todo
+    toast("PERMISSIONS REQUERED")
   }
 
   @OnShowRationale(
@@ -178,7 +205,7 @@ class MapboxFragment : Fragment() {
     Manifest.permission.ACCESS_COARSE_LOCATION
   )
   fun onShowRationale() {
-    toast("PERMISSIONS DENIED")   // todo
+    toast("PERMISSIONS DENIED")
   }
 
   companion object {

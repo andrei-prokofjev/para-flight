@@ -59,7 +59,7 @@ fun throttleClicks(
   }
 }
 
-fun View.inflater() = LayoutInflater.from(context)!!
+fun View.inflater() = LayoutInflater.from(context)
 fun ViewGroup.inflate(@LayoutRes layoutId: Int) =
   LayoutInflater.from(context).inflate(layoutId, this, false)
 

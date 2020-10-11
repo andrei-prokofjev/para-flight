@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+  <corners
+      android:bottomLeftRadius="@dimen/bg_meter_view_radius"
+      android:bottomRightRadius="@dimen/bg_meter_view_radius"
+      android:topLeftRadius="@dimen/bg_meter_view_radius"
+      android:topRightRadius="@dimen/bg_meter_view_radius" />
+
+  <solid android:color="@color/meter_view_background" />
+</shape>
