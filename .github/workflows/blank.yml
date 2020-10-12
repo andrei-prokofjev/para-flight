@@ -18,12 +18,12 @@ jobs:
             export GRADLE_USER_HOME=`pwd`./src/.gradle
             chmod 755 ./src/gradlew
             ./gradlew -p ./src check
-            ./gradlew assembleDebug
+      #            ./gradlew assembleDebug
 
       - name: ls
         run: ls
 
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@master
-        with:
-          path: app/build/outputs/apk/debug/*.apk
+#      - name: Archive production artifacts
+#        uses: actions/upload-artifact@master
+#        with:
+#          path: app/build/outputs/apk/debug/*.apk
