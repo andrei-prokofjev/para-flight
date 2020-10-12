@@ -27,3 +27,11 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           path: app/build/outputs/apk/debug/*.apk
+
+      - name: upload artefact to App Center
+        uses: wzieba/AppCenter-Github-Action@v1
+        with:
+          appName: wzieba/Sample-App
+          token: ${{secrets.APP_CENTER_TOKEN}}
+            group: Testers
+              file: app/build/outputs/apk/debug/para-flight-1.0.1-debug.apk

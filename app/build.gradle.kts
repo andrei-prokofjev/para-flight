@@ -74,9 +74,13 @@ dependencies {
   implementation(Libs.permissionsDispatcher)
   kapt(Libs.permissionsDispatcherCompiler)
 
+  implementation(Libs.appcenterAnalytics)
+  implementation(Libs.appcenterCrashes)
+
   testImplementation(TestLibs.navigationTest)
 
   testImplementation(TestLibs.junit)
   androidTestImplementation(TestLibs.testJunit)
   androidTestImplementation(TestLibs.espresso)
+
 }

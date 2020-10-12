@@ -11,6 +11,8 @@ object Android {
   const val navigation = "2.3.0"
 
   const val lifecycle = "2.2.0"
+
+  const val appCenterSdk = "3.3.1"
 }
 
 object Libs {
@@ -40,6 +42,10 @@ object Libs {
 
   const val mapbox = "com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0"
   const val mapboxNavigation = "com.mapbox.navigation:ui:1.0.0"
+
+  const val appcenterAnalytics =
+    "com.microsoft.appcenter:appcenter-analytics:${Android.appCenterSdk}"
+  const val appcenterCrashes = "com.microsoft.appcenter:appcenter-crashes:${Android.appCenterSdk}"
 
 }
 

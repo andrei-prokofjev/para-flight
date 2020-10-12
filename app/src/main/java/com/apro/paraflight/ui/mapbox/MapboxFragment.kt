@@ -155,7 +155,6 @@ class MapboxFragment : BaseFragment() {
 
   @SuppressLint("MissingPermission")
   private fun initLocationEngine() {
-    println(">>> $")
     locationEngine = LocationEngineProvider.getBestLocationEngine(requireContext())
     val request = LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
       .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)

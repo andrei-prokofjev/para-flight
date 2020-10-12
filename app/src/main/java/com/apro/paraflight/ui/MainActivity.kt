@@ -1,8 +1,7 @@
 package com.apro.paraflight.ui
 
 
-//import com.apro.paraflight.enableLocationComponentWithPermissionCheck
-//import com.apro.paraflight.onRequestPermissionsResult
+
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.apro.paraflight.R
@@ -10,6 +9,9 @@ import com.apro.paraflight.ui.mapbox.MapboxFragment
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.crashes.Crashes
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +19,12 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    AppCenter.start(application,
+      getString(R.string.app_center_access_token),
+      Analytics::class.java,
+      Crashes::class.java)
+
     setContentView(R.layout.activity_main)
 
     if (savedInstanceState == null) {
