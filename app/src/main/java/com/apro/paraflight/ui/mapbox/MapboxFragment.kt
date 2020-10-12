@@ -1,7 +1,6 @@
 package com.apro.paraflight.ui.mapbox
 
-import Distance
-import Speed
+
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -12,6 +11,7 @@ import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.apro.core_ui.BaseFragment
+import com.apro.core_ui.onClick
 import com.apro.core_ui.toast
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentMapboxBinding
@@ -25,9 +25,6 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.utils.MapFragmentUtils
-import kotlinx.android.synthetic.main.fragment_mapbox.*
-import kotlinx.android.synthetic.main.view_meter.view.*
-import metersPerSecond
 import permissions.dispatcher.*
 
 @RuntimePermissions
@@ -46,30 +43,12 @@ class MapboxFragment : BaseFragment() {
   private val callback = object : LocationEngineCallback<LocationEngineResult> {
     override fun onSuccess(result: LocationEngineResult) {
       mapboxMap?.locationComponent?.forceLocationUpdate(result.lastLocation)
-
-      binding.speedMeterView.valueTextView.text = result.lastLocation?.speed.toString()
-
-      result.lastLocation?.let {
-        with(speedMeterView) {
-          val speed = it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour)
-          titleTextView.text = getString(R.string.gs)
-          valueTextView.text = speed.amount.toInt().toString()
-          unitTextView.text = speed.unit.name
-        }
-
-        with(altitudeMeterView) {
-          titleTextView.text = getString(R.string.asl)
-          valueTextView.text = it.altitude.toInt().toString()
-          unitTextView.text = Distance.Meter.name
-        }
-      }
-
-
+      viewModel.setResult(result)
     }
 
 
     override fun onFailure(exception: Exception) {
-      println(">>> failure $exception")
+      toast("failure: $exception")
     }
   }
 
@@ -86,10 +65,8 @@ class MapboxFragment : BaseFragment() {
     with(binding) {
 
       mapView = MapView(root.context, MapFragmentUtils.resolveArgs(root.context, arguments)).apply {
-
         onCreate(savedInstanceState)
         mapboxLayout.addView(this)
-
         getMapAsync {
           mapboxLayout.findViewWithTag<ImageView>("logoView").isVisible = false
           mapboxLayout.findViewWithTag<ImageView>("attrView").isVisible = false
@@ -99,6 +76,19 @@ class MapboxFragment : BaseFragment() {
           }
         }
       }
+
+      viewModel.speed.observe {
+        speedMeterView.amount = it.toString()
+      }
+
+      viewModel.altitude.observe {
+        altitudeMeterView.amount = it.toString()
+      }
+
+      speedMeterView.onClick { viewModel.onSpeedMeterClick() }
+      altitudeMeterView.onClick { viewModel.onAltitudeClick() }
+
+
     }
   }
 

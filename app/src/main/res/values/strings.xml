@@ -4,5 +4,6 @@
   <string name="gs">GS</string>
   <string name="km_h">km/h</string>
   <string name="asl">ASL</string>
+  <string name="m">m</string>
 
 </resources>

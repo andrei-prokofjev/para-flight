@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="137dp"
     android:layout_height="64dp"
+    android:foreground="@drawable/selector_dark"
     android:background="@color/meter_view_background">
-  <!--    android:background="@drawable/bg_meter_view"-->
+
 
   <TextView
       android:id="@+id/titleTextView"
@@ -13,15 +14,15 @@
       android:layout_height="wrap_content"
       android:fontFamily="@font/roboto_medium"
       android:paddingStart="8dp"
-      android:text="@string/gs"
       android:textAllCaps="true"
       android:textColor="@android:color/white"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      tools:ignore="RtlSymmetry" />
+      tools:ignore="RtlSymmetry"
+      tools:text="@string/gs" />
 
   <TextView
-      android:id="@+id/valueTextView"
+      android:id="@+id/amountTextView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:fontFamily="@font/roboto_black"
@@ -41,7 +42,6 @@
       android:fontFamily="@font/roboto_medium"
       android:paddingStart="4dp"
       android:paddingEnd="8dp"
-      android:text="@string/km_h"
       android:textColor="@android:color/white"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"

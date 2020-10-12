@@ -3,6 +3,7 @@ package com.apro.core_ui
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 
 abstract class BaseFragment : Fragment() {
 
@@ -15,9 +16,13 @@ abstract class BaseFragment : Fragment() {
     getViewToApplyStatusBarMargin(view).forEach { it.setMargins(top = statusBarHeight) }
   }
 
-  protected open fun getViewToApplyStatusBarPadding(root: View): Array<View> = emptyArray()
+  protected inline fun <T> LiveData<T>.observe(crossinline observer: (T) -> Unit) {
+    observe(viewLifecycleOwner, { observer.invoke(it) })
+  }
 
   protected open fun onStatusBarHeight(statusBarHeight: Int) {}
+
+  protected open fun getViewToApplyStatusBarPadding(root: View): Array<View> = emptyArray()
 
   protected open fun getViewToApplyStatusBarMargin(root: View): Array<View> = emptyArray()
 
