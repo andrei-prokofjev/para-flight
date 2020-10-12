@@ -23,7 +23,9 @@ allprojects {
       }
       credentials {
         username = "mapbox"
-        password = project.property("MAPBOX_DOWNLOADS_TOKEN") as String? ?: ""
+        //password = project.property("MAPBOX_DOWNLOADS_TOKEN") as String? ?: ""
+        password =
+          "sk.eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJja2Z6YzRod2MwMXFrMnpxcXdwcjNsOTk5In0.MlS2v7VgK7RTpi7VuPDNTw"
       }
     }
 
