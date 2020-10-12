@@ -39,7 +39,7 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
       isDebuggable = false
       isJniDebuggable = false
-//      signingConfig = signingConfigs.getByName("prod")
+      signingConfig = signingConfigs.getByName("prod")
       isRenderscriptDebuggable = false
       isZipAlignEnabled = true
     }
