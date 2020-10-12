@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: compiled
-            path: app/build/outputs/apk/debug
+            path: /app/build/outputs/apk/debug
