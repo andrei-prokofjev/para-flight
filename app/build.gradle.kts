@@ -7,6 +7,16 @@ plugins {
 }
 
 android {
+
+//  signingConfigs {
+//    create("prod") {
+//      keyAlias = "releaseKey"
+//      keyPassword = project.property("ANDROID_KEY_PASSWORD") as String
+//      storeFile = file("../hello.jks")
+//      storePassword = project.property("ANDROID_STORE_PASSWORD") as String
+//    }
+//  }
+
   compileSdkVersion(Android.compileSdk)
   buildToolsVersion(Android.buildTools)
   ndkVersion = "21.0.6113669"
@@ -18,19 +28,20 @@ android {
     targetSdkVersion(Android.targetSdk)
     versionCode = VERSION_CODE
     versionName = VERSION_NAME
-
-
     project.ext.set("archivesBaseName", "para-flight-" + defaultConfig.versionName)
-
-
     vectorDrawables.useSupportLibrary = true
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
   buildTypes {
     getByName("release") {
-      isMinifyEnabled = false
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+      isMinifyEnabled = true
+      proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+      isDebuggable = false
+      isJniDebuggable = false
+      signingConfig = signingConfigs.getByName("prod")
+      isRenderscriptDebuggable = false
+      isZipAlignEnabled = true
     }
   }
 
