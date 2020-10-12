@@ -19,6 +19,7 @@ android {
       storePassword = if (project.hasProperty("APRO_STORE_PASSWORD"))
         project.property("APRO_STORE_PASSWORD") as String
       else System.getenv()["APRO_STORE_PASSWORD"]
+
     }
   }
 
