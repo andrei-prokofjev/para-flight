@@ -11,9 +11,14 @@ android {
   signingConfigs {
     create("prod") {
       keyAlias = "key"
-      keyPassword = project.property("APRO_KEY_PASSWORD") as String
+      keyPassword = if (project.hasProperty("APRO_KEY_PASSWORD"))
+        project.property("APRO_KEY_PASSWORD") as String
+      else System.getenv()["APRO_KEY_PASSWORD"]
+
       storeFile = file("../apro.jks")
-      storePassword = project.property("APRO_STORE_PASSWORD") as String
+      storePassword = if (project.hasProperty("APRO_STORE_PASSWORD"))
+        project.property("APRO_STORE_PASSWORD") as String
+      else System.getenv()["APRO_STORE_PASSWORD"]
     }
   }
 
