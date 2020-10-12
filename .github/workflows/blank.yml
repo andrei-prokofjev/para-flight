@@ -22,10 +22,10 @@ jobs:
       - name: ls
         run: ls
 
-        #      - name: Archive production artifacts
-        #        uses: actions/upload-artifact@master
-        #        with:
-        #          path: app/build/outputs/apk/debug/*.apk
+      - name: Archive production artifacts
+          uses: actions/upload-artifact@master
+          with:
+            path: app/build/outputs/apk/debug/*.apk
 
         #            ./gradlew -p ./src check
 
