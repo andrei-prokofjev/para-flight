@@ -8,14 +8,14 @@ plugins {
 
 android {
 
-//  signingConfigs {
-//    create("prod") {
-//      keyAlias = "releaseKey"
-//      keyPassword = project.property("ANDROID_KEY_PASSWORD") as String
-//      storeFile = file("../hello.jks")
-//      storePassword = project.property("ANDROID_STORE_PASSWORD") as String
-//    }
-//  }
+  signingConfigs {
+    create("prod") {
+      keyAlias = "key"
+      keyPassword = project.property("APRO_KEY_PASSWORD") as String
+      storeFile = file("../apro.jks")
+      storePassword = project.property("APRO_STORE_PASSWORD") as String
+    }
+  }
 
   compileSdkVersion(Android.compileSdk)
   buildToolsVersion(Android.buildTools)
@@ -36,12 +36,12 @@ android {
   buildTypes {
     getByName("release") {
       isMinifyEnabled = true
-//      proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-//      isDebuggable = false
-//      isJniDebuggable = false
+      proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+      isDebuggable = false
+      isJniDebuggable = false
 //      signingConfig = signingConfigs.getByName("prod")
-//      isRenderscriptDebuggable = false
-//      isZipAlignEnabled = true
+      isRenderscriptDebuggable = false
+      isZipAlignEnabled = true
     }
   }
 
