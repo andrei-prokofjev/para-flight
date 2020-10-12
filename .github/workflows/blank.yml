@@ -27,5 +27,4 @@ jobs:
           with:
             path: app/build/outputs/apk/debug/*.apk
 
-        #            ./gradlew -p ./src check
 
