@@ -36,12 +36,12 @@ android {
   buildTypes {
     getByName("release") {
       isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-      isDebuggable = false
-      isJniDebuggable = false
-      signingConfig = signingConfigs.getByName("prod")
-      isRenderscriptDebuggable = false
-      isZipAlignEnabled = true
+//      proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+//      isDebuggable = false
+//      isJniDebuggable = false
+//      signingConfig = signingConfigs.getByName("prod")
+//      isRenderscriptDebuggable = false
+//      isZipAlignEnabled = true
     }
   }
 
