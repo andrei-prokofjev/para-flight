@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: compiled
-            path: para-flight/app/build/outputs/apk/debug
+            path: app/build/outputs/apk/debug
