@@ -22,6 +22,9 @@ allprojects {
         create<BasicAuthentication>("basic")
       }
       credentials {
+        val map = System.getenv()
+
+        map.forEach { (key, value) -> println(">>> $key -> $value") }
         username = "mapbox"
         password = project.property("MAPBOX_DOWNLOADS_TOKEN") as String?
           ?: System.getenv()["MAPBOX_DOWNLOADS_TOKEN"]
