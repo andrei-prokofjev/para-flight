@@ -13,6 +13,8 @@ object Android {
   const val lifecycle = "2.2.0"
 
   const val appCenterSdk = "3.3.1"
+
+  const val retrofit = "2.9.0"
 }
 
 object Libs {
@@ -46,6 +48,9 @@ object Libs {
   const val appcenterAnalytics =
     "com.microsoft.appcenter:appcenter-analytics:${Android.appCenterSdk}"
   const val appcenterCrashes = "com.microsoft.appcenter:appcenter-crashes:${Android.appCenterSdk}"
+
+  const val retrofit = "com.squareup.retrofit2:retrofit:${Android.retrofit}"
+  const val retrofitGsonConverter = "com.squareup.retrofit2:converter-gson:${Android.retrofit}"
 
 }
 
