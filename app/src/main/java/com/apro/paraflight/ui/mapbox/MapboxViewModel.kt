@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mapbox.android.core.location.LocationEngineResult
+import com.microsoft.appcenter.analytics.Analytics
 import metersPerSecond
 
 class MapboxViewModel : ViewModel() {
@@ -26,10 +27,10 @@ class MapboxViewModel : ViewModel() {
   }
 
   fun onSpeedMeterClick() {
-
+    Analytics.trackEvent("On Speed Meter Click")
   }
 
   fun onAltitudeClick() {
-
+    Analytics.trackEvent("On Altitude Meter Click")
   }
 }
