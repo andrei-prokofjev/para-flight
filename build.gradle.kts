@@ -26,8 +26,9 @@ allprojects {
 
         map.forEach { (key, value) -> println(">>> $key -> $value") }
         username = "mapbox"
-        password = project.property("MAPBOX_DOWNLOADS_TOKEN") as String?
-          ?: System.getenv()["MAPBOX_DOWNLOADS_TOKEN"]
+        password = if (project.hasProperty("MAPBOX_DOWNLOADS_TOKEN"))
+          project.property("MAPBOX_DOWNLOADS_TOKEN") as String else
+          System.getenv()["MAPBOX_DOWNLOADS_TOKEN"]
       }
     }
 
