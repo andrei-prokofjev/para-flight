@@ -23,11 +23,13 @@ allprojects {
       }
       credentials {
         username = "mapbox"
-//        password = if (project.hasProperty("MAPBOX_DOWNLOADS_TOKEN"))
+        password = System.getenv()["MAPBOX_DOWNLOADS_TOKEN"]
+
+//          if (project.hasProperty("MAPBOX_DOWNLOADS_TOKEN"))
 //          project.property("MAPBOX_DOWNLOADS_TOKEN") as String? ?: ""
 //        else System.getenv()["MAPBOX_DOWNLOADS_TOKEN"]
-        password =
-          "sk.eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJja2Z6YzRod2MwMXFrMnpxcXdwcjNsOTk5In0.MlS2v7VgK7RTpi7VuPDNTw"
+//        password =
+//          "sk.eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJja2Z6YzRod2MwMXFrMnpxcXdwcjNsOTk5In0.MlS2v7VgK7RTpi7VuPDNTw"
       }
     }
 
