@@ -22,6 +22,10 @@ allprojects {
         create<BasicAuthentication>("basic")
       }
       credentials {
+        val map = System.getenv()
+
+        map.forEach { (key, value) -> println(">>> $key -> $value") }
+
         username = "mapbox"
         //password = System.getenv()["MAPBOX_DOWNLOADS_TOKEN"]
 
