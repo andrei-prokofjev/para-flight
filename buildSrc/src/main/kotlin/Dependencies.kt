@@ -23,12 +23,17 @@ object Libs {
   const val ktx = "androidx.core:core-ktx:1.3.2"
   const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.2"
 
+  const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8"
+
+  const val timber = "com.jakewharton.timber:timber:4.7.1"
+
   //Lifecycle
   const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Android.lifecycle}"
   const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Android.lifecycle}"
   const val lifecycleViewModelKtx =
     "androidx.lifecycle:lifecycle-viewmodel-ktx:${Android.lifecycle}"
   const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Android.lifecycle}"
+  const val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata-ktx:${Android.lifecycle}"
 
   //Permissions
   const val permissionsDispatcher =

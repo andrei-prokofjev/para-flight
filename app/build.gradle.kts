@@ -87,6 +87,7 @@ dependencies {
   kapt(Libs.lifecycleCompiler)
   implementation(Libs.lifecycleViewModelKtx)
   implementation(Libs.lifecycleRuntimeKtx)
+  implementation(Libs.lifecycleLiveData)
 
   implementation(Libs.permissionsDispatcher)
   kapt(Libs.permissionsDispatcherCompiler)

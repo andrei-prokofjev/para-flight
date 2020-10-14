@@ -3,13 +3,15 @@ package com.apro.paraflight.ui.mapbox
 import Speed
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
+import com.apro.core_ui.BaseViewModel
 import com.mapbox.android.core.location.LocationEngineResult
 import com.microsoft.appcenter.analytics.Analytics
+import kotlinx.coroutines.launch
 import metersPerSecond
 
-class MapboxViewModel : ViewModel() {
-
+class MapboxViewModel : BaseViewModel() {
 
   private val _speed = MutableLiveData<Int>()
   val speed: LiveData<Int> = _speed
@@ -32,5 +34,8 @@ class MapboxViewModel : ViewModel() {
 
   fun onAltitudeClick() {
     Analytics.trackEvent("On Altitude Meter Click")
+    viewModelScope.launch { }
+
+    liveData<String> { }
   }
 }

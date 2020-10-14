@@ -33,6 +33,9 @@ dependencies {
   implementation(Libs.ktx)
   implementation(Libs.appCompat)
 
+  implementation(Libs.coroutines)
+  implementation(Libs.timber)
+
 
   testImplementation(TestLibs.junit)
   androidTestImplementation(TestLibs.testJunit)
