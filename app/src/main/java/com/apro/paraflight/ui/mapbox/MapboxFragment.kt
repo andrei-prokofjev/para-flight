@@ -46,7 +46,6 @@ class MapboxFragment : BaseFragment() {
       viewModel.setResult(result)
     }
 
-
     override fun onFailure(exception: Exception) {
       toast("failure: $exception")
     }
@@ -71,9 +70,7 @@ class MapboxFragment : BaseFragment() {
           mapboxLayout.findViewWithTag<ImageView>("logoView").isVisible = false
           mapboxLayout.findViewWithTag<ImageView>("attrView").isVisible = false
           mapboxMap = it
-          it.setStyle(Style.OUTDOORS) {
-            enableLocationComponentWithPermissionCheck(it)
-          }
+          it.setStyle(Style.OUTDOORS) { style -> enableLocationComponentWithPermissionCheck(style) }
         }
       }
 
@@ -199,7 +196,6 @@ class MapboxFragment : BaseFragment() {
   }
 
   companion object {
-
     private const val DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L
     private const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
 

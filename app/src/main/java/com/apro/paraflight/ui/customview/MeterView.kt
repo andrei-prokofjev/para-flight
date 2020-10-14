@@ -4,14 +4,15 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.apro.core_ui.textColor
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.ViewMeterBinding
+import com.apro.paraflight.ui.mapbox.MeterStyle
 
 class MeterView constructor(context: Context, attr: AttributeSet?) :
   ConstraintLayout(context, attr) {
 
-  private val binding: ViewMeterBinding =
-    ViewMeterBinding.inflate(LayoutInflater.from(context), this, true)
+  private val binding: ViewMeterBinding = ViewMeterBinding.inflate(LayoutInflater.from(context), this, true)
 
   var title: String? = null
     set(value) {
@@ -29,6 +30,16 @@ class MeterView constructor(context: Context, attr: AttributeSet?) :
     set(value) {
       binding.unitTextView.text = value
       field = value
+    }
+
+  var style: MeterStyle = MeterStyle.Default
+    set(value) {
+      with(binding) {
+        titleTextView.textColor(value.color)
+        amountTextView.textColor(value.color)
+        unitTextView.textColor(value.color)
+        field = value
+      }
     }
 
   init {

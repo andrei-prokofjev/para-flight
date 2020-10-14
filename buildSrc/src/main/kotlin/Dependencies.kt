@@ -30,40 +30,34 @@ object Libs {
   //Lifecycle
   const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Android.lifecycle}"
   const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Android.lifecycle}"
-  const val lifecycleViewModelKtx =
-    "androidx.lifecycle:lifecycle-viewmodel-ktx:${Android.lifecycle}"
+  const val lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Android.lifecycle}"
   const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Android.lifecycle}"
   const val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata-ktx:${Android.lifecycle}"
 
   //Permissions
   const val permissionsDispatcher =
     "org.permissionsdispatcher:permissionsdispatcher:${Android.permissionsDispatcher}"
-  const val permissionsDispatcherCompiler =
-    "org.permissionsdispatcher:permissionsdispatcher-processor:${Android.permissionsDispatcher}"
+  const val permissionsDispatcherCompiler = "org.permissionsdispatcher:permissionsdispatcher-processor:${Android.permissionsDispatcher}"
 
 
   const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${Android.navigation}"
   const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Android.navigation}"
-  const val navigationFeatures =
-    "androidx.navigation:navigation-dynamic-features-fragment:${Android.navigation}"
+  const val navigationFeatures = "androidx.navigation:navigation-dynamic-features-fragment:${Android.navigation}"
 
   const val mapbox = "com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0"
   const val mapboxNavigation = "com.mapbox.navigation:ui:1.0.0"
 
-  const val appcenterAnalytics =
-    "com.microsoft.appcenter:appcenter-analytics:${Android.appCenterSdk}"
+  const val appcenterAnalytics = "com.microsoft.appcenter:appcenter-analytics:${Android.appCenterSdk}"
   const val appcenterCrashes = "com.microsoft.appcenter:appcenter-crashes:${Android.appCenterSdk}"
 
   const val retrofit = "com.squareup.retrofit2:retrofit:${Android.retrofit}"
   const val retrofitGsonConverter = "com.squareup.retrofit2:converter-gson:${Android.retrofit}"
-
 }
 
 object BuildPlugins {
   const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Android.kotlin}"
   const val androidGradle = "com.android.tools.build:gradle:4.0.2"
-  const val navigationSafeArgsGradlePlugin =
-    "androidx.navigation:navigation-safe-args-gradle-plugin:${Android.navigation}"
+  const val navigationSafeArgsGradlePlugin = "androidx.navigation:navigation-safe-args-gradle-plugin:${Android.navigation}"
 }
 
 object TestLibs {
