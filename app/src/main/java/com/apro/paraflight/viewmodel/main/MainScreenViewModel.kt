@@ -16,21 +16,20 @@ class MainScreenViewModel @Inject constructor(
   val style: LiveData<String> = _style
 
 
-//  fun setResult(result: LocationEngineResult) {
-//
-//
-//  }
+  private val _toast = MutableLiveData<String>()
+  val toast: LiveData<String> = _toast
 
-  fun onMenuClick() {
 
+  fun onSettingsClick() {
+    _toast.postValue("settings developing in progress")
   }
 
-  fun nearMeClick() {
-
+  fun onNearMeClick() {
+    _toast.postValue("near me developing in progress")
   }
 
-  fun myLocationClick() {
-
+  fun onMyLocationClick() {
+    _toast.postValue("my location developing in progress")
   }
 
   fun onLayerClick() {
@@ -38,6 +37,10 @@ class MainScreenViewModel @Inject constructor(
     val mapStyle = MapboxPreferences.MapStyle.values()[nextStyle]
     mapboxPreferences.mapStyle = mapStyle
     _style.postValue(mapStyle.style)
+  }
+
+  fun onCompassClick() {
+    _toast.postValue("compass developing in progress")
   }
 
 

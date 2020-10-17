@@ -13,7 +13,7 @@
 
 
   <ImageView
-      android:id="@+id/menuImageView"
+      android:id="@+id/settingsImageView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="16dp"
@@ -22,7 +22,7 @@
       android:elevation="4dp"
       android:foreground="@drawable/selector_button_dark"
       android:padding="8dp"
-      android:src="@drawable/ic_menu"
+      android:src="@drawable/ic_settings"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       tools:ignore="ContentDescription" />

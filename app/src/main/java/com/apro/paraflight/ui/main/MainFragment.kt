@@ -72,12 +72,15 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         }
       }
 
-      menuImageView.onClick { viewModel.onMenuClick() }
+      settingsImageView.onClick { viewModel.onSettingsClick() }
       layerImageView.onClick { viewModel.onLayerClick() }
-      nearMeImageView.onClick { viewModel.nearMeClick() }
-      myLocationImageView.onClick { viewModel.myLocationClick() }
+      nearMeImageView.onClick { viewModel.onNearMeClick() }
+      myLocationImageView.onClick { viewModel.onMyLocationClick() }
+      compassImageView.onClick { viewModel.onCompassClick() }
 
       viewModel.style.observe { mapboxMap?.setStyle(it) }
+      viewModel.toast.observe { toast(it) }
+
     }
   }
 
