@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import com.apro.core_ui.BaseFragment
 import com.apro.core_ui.onClick
 import com.apro.core_ui.toast
+import com.apro.paraflight.BuildConfig
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentMainBinding
@@ -81,6 +82,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
       viewModel.style.observe { mapboxMap?.setStyle(it) }
       viewModel.toast.observe { toast(it) }
 
+      versionTextView.text = BuildConfig.VERSION_NAME
     }
   }
 
