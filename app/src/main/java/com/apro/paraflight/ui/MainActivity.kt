@@ -1,7 +1,6 @@
 package com.apro.paraflight.ui
 
 
-
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.apro.paraflight.R
@@ -20,10 +19,7 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    AppCenter.start(application,
-      getString(R.string.app_center_access_token),
-      Analytics::class.java,
-      Crashes::class.java)
+    AppCenter.start(application, getString(R.string.app_center_access_token), Analytics::class.java, Crashes::class.java)
 
     setContentView(R.layout.activity_main)
 
