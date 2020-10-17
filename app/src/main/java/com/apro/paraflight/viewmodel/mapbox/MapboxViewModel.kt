@@ -1,4 +1,4 @@
-package com.apro.paraflight.ui.mapbox
+package com.apro.paraflight.viewmodel.mapbox
 
 import Speed
 import androidx.lifecycle.LiveData

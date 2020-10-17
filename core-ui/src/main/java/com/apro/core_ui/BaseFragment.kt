@@ -2,10 +2,11 @@ package com.apro.core_ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId) {
 
   private val statusBarHeight by lazy { statusBarHeight() }
 

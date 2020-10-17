@@ -15,6 +15,7 @@ import com.apro.core_ui.onClick
 import com.apro.core_ui.toast
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentMapboxBinding
+import com.apro.paraflight.viewmodel.mapbox.MapboxViewModel
 import com.mapbox.android.core.location.*
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
@@ -28,7 +29,7 @@ import com.mapbox.mapboxsdk.utils.MapFragmentUtils
 import permissions.dispatcher.*
 
 @RuntimePermissions
-class MapboxFragment : BaseFragment() {
+class MapboxFragment : BaseFragment(R.layout.fragment_mapbox) {
 
   private lateinit var binding: FragmentMapboxBinding
 
@@ -47,9 +48,9 @@ class MapboxFragment : BaseFragment() {
 
       with(binding) {
         result.lastLocation?.let {
-          latTextView.text = it.latitude.toString()
-          lonTextView.text = it.longitude.toString()
-          accTextView.text = it.bearing.toString()
+//          latTextView.text = it.latitude.toString()
+//          lonTextView.text = it.longitude.toString()
+//          accTextView.text = it.bearing.toString()
 
         }
 

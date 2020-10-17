@@ -6,12 +6,12 @@ plugins {
 
 
 android {
-  compileSdkVersion(Android.compileSdk)
-  buildToolsVersion(Android.buildTools)
+  compileSdkVersion(Versions.compileSdk)
+  buildToolsVersion(Versions.buildTools)
 
   defaultConfig {
-    minSdkVersion(Android.minSdk)
-    targetSdkVersion(Android.targetSdk)
+    minSdkVersion(Versions.minSdk)
+    targetSdkVersion(Versions.targetSdk)
     versionCode = VERSION_CODE
     versionName = VERSION_NAME
     vectorDrawables.useSupportLibrary = true

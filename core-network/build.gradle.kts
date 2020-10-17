@@ -1,17 +1,19 @@
+
 plugins {
   id("com.android.library")
   id("kotlin-android")
   id("kotlin-android-extensions")
+  id("kotlin-kapt")
 }
 
 
 android {
-  compileSdkVersion(Android.compileSdk)
-  buildToolsVersion(Android.buildTools)
+  compileSdkVersion(Versions.compileSdk)
+  buildToolsVersion(Versions.buildTools)
 
   defaultConfig {
-    minSdkVersion(Android.minSdk)
-    targetSdkVersion(Android.targetSdk)
+    minSdkVersion(Versions.minSdk)
+    targetSdkVersion(Versions.targetSdk)
     versionCode = VERSION_CODE
     versionName = VERSION_NAME
     vectorDrawables.useSupportLibrary = true
@@ -35,9 +37,18 @@ dependencies {
 
   implementation(Libs.retrofit)
   implementation(Libs.retrofitGsonConverter)
+  implementation(Libs.okHttpLoggingInterceptor)
+
+  implementation(Libs.timber)
+
+  implementation(Libs.dagger)
+  kapt(Libs.daggerCompiler)
 
   testImplementation(TestLibs.junit)
   androidTestImplementation(TestLibs.testJunit)
   androidTestImplementation(TestLibs.espresso)
+
+
+
 
 }

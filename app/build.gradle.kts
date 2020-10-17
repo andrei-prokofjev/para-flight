@@ -23,15 +23,15 @@ android {
     }
   }
 
-  compileSdkVersion(Android.compileSdk)
-  buildToolsVersion(Android.buildTools)
+  compileSdkVersion(Versions.compileSdk)
+  buildToolsVersion(Versions.buildTools)
 //  ndkVersion = "21.0.6113669"
 
 
   defaultConfig {
     applicationId = "com.apro.paraflight"
-    minSdkVersion(Android.minSdk)
-    targetSdkVersion(Android.targetSdk)
+    minSdkVersion(Versions.minSdk)
+    targetSdkVersion(Versions.targetSdk)
     versionCode = VERSION_CODE
     versionName = VERSION_NAME
     project.ext.set("archivesBaseName", "para-flight-" + defaultConfig.versionName)
@@ -70,6 +70,7 @@ android {
 dependencies {
   implementation(project(":core-ui"))
   implementation(project(":core-util"))
+  implementation(project(":core-network"))
 
   implementation(Libs.kotlin)
   implementation(Libs.ktx)
@@ -77,7 +78,7 @@ dependencies {
   implementation(Libs.constraintLayout)
 
   implementation(Libs.mapbox)
-  implementation(Libs.mapboxNavigation)
+//  implementation(Libs.mapboxNavigation)
 
   implementation(Libs.navigationFragment)
   implementation(Libs.navigationUi)
@@ -94,6 +95,11 @@ dependencies {
 
   implementation(Libs.appcenterAnalytics)
   implementation(Libs.appcenterCrashes)
+
+  implementation(Libs.timber)
+
+  implementation(Libs.dagger)
+  kapt(Libs.daggerCompiler)
 
   testImplementation(TestLibs.navigationTest)
 

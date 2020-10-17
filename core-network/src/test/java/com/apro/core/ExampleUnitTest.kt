@@ -1,4 +1,4 @@
-package com.apro.core_network
+package com.apro.core
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

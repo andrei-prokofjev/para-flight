@@ -1,4 +1,4 @@
-package com.apro.core_network
+package com.apro.core
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry

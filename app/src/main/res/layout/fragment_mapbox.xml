@@ -38,44 +38,7 @@
       app:mv_title="@string/asl"
       app:mv_unit="@string/m" />
 
-  <com.google.android.material.textview.MaterialTextView
-      android:id="@+id/lon_text_view"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:layout_marginTop="140dp"
-      android:background="@android:color/white"
-      android:elevation="2dp"
-      android:padding="4dp"
-      android:textColor="@color/black"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
 
-  <com.google.android.material.textview.MaterialTextView
-      android:id="@+id/latTextView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:layout_marginTop="4dp"
-      android:background="@android:color/white"
-      android:elevation="2dp"
-      android:padding="4dp"
-      android:textColor="@color/black"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/lon_text_view" />
-
-  <com.google.android.material.textview.MaterialTextView
-      android:id="@+id/accTextView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:layout_marginTop="4dp"
-      android:background="@android:color/white"
-      android:elevation="2dp"
-      android:padding="4dp"
-      android:textColor="@color/black"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/latTextView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
