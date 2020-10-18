@@ -17,6 +17,8 @@ object Versions {
   const val retrofit = "2.9.0"
 
   const val dagger = "2.27"
+
+  const val room = "2.2.5"
 }
 
 object Libs {
@@ -61,6 +63,12 @@ object Libs {
   // Dagger
   const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
   const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+
+  // Room
+  const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
+  const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
+  const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
+
 }
 
 object BuildPlugins {
@@ -74,5 +82,7 @@ object TestLibs {
   const val espresso = "androidx.test.espresso:espresso-core:3.3.0"
   const val testJunit = "androidx.test.ext:junit:1.1.2"
 
-  const val navigationTest = "androidx.navigation:navigation-testing:${Versions.navigation}"
+  const val navigationTesting = "androidx.navigation:navigation-testing:${Versions.navigation}"
+
+  const val roomTesting = "androidx.room:room-testing:${Versions.room}"
 }

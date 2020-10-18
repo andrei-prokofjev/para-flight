@@ -73,6 +73,7 @@ dependencies {
   implementation(project(":core-network"))
   implementation(project(":core-preferences"))
   implementation(project(":core-db"))
+  implementation(project(":core-model"))
 
   implementation(Libs.kotlin)
   implementation(Libs.ktx)
@@ -80,7 +81,6 @@ dependencies {
   implementation(Libs.constraintLayout)
 
   implementation(Libs.mapbox)
-//  implementation(Libs.mapboxNavigation)
 
   implementation(Libs.navigationFragment)
   implementation(Libs.navigationUi)
@@ -103,10 +103,16 @@ dependencies {
   implementation(Libs.dagger)
   kapt(Libs.daggerCompiler)
 
-  testImplementation(TestLibs.navigationTest)
+  implementation(Libs.roomRuntime)
+  implementation(Libs.roomKtx)
+
+  testImplementation(TestLibs.navigationTesting)
 
   testImplementation(TestLibs.junit)
   androidTestImplementation(TestLibs.testJunit)
   androidTestImplementation(TestLibs.espresso)
+
+  implementation("com.mapbox.mapboxsdk:mapbox-sdk-services:5.8.0-SNAPSHOT")
+
 
 }

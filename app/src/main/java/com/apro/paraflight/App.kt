@@ -1,6 +1,7 @@
 package com.apro.paraflight
 
 import android.app.Application
+import com.apro.core.db.impl.di.DatabaseComponent
 import com.apro.core.network.di.DaggerNetworkComponent
 import com.apro.core.preferenes.di.PreferencesComponent
 import com.apro.paraflight.core.di.DaggerAppComponent
@@ -25,6 +26,8 @@ class App : Application() {
     DI.networkComponent = DaggerNetworkComponent.create()
 
     DI.preferencesApi = PreferencesComponent.initAndGet(this)
+
+    DI.databaseApi = DatabaseComponent.initAndGet(this)
   }
 
 }

@@ -1,6 +1,8 @@
 package com.apro.paraflight.viewmodel.main
 
 import androidx.lifecycle.ViewModel
+import com.apro.core.db.api.data.store.FlightsStore
+import com.apro.core.db.api.di.DatabaseApi
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.paraflight.DI
 import com.apro.paraflight.core.di.ScreenScope
@@ -27,6 +29,11 @@ interface MainScreenComponent {
     @BindsInstance
     fun mapboxPreferences(mapboxPreferences: MapboxPreferences): Builder
 
+    @BindsInstance
+    fun flightsStore(flightsStore: FlightsStore): Builder
+
+    @BindsInstance
+    fun databaseApi(databaseApi: DatabaseApi): Builder
 
     fun build(): MainScreenComponent
   }
@@ -36,6 +43,8 @@ interface MainScreenComponent {
       DaggerMainScreenComponent.builder()
         .resources(resources())
         .mapboxPreferences(DI.preferencesApi.mapbox())
+        .flightsStore(DI.databaseApi.flightsStore())
+        .databaseApi(DI.databaseApi)
         .build()
     }
   }

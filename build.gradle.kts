@@ -15,6 +15,8 @@ buildscript {
 allprojects {
   repositories {
 
+    maven(url = "https://oss.jfrog.org/artifactory/oss-snapshot-local/")
+
     maven(url = "https://api.mapbox.com/downloads/v2/releases/maven").apply {
       authentication {
         create<BasicAuthentication>("basic")
