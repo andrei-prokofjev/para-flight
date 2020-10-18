@@ -114,10 +114,18 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
           routeCoordinates.add(Point.fromLngLat(it.longitude, it.latitude))
         }
 
-        mapboxMap?.style?.addSource(GeoJsonSource("line-source",
+
+        mapboxMap?.style?.removeSource("line-source")
+
+
+        val geoJsonSource = GeoJsonSource("line-source",
           FeatureCollection.fromFeatures(arrayOf<Feature>(Feature.fromGeometry(
             LineString.fromLngLats(routeCoordinates)
-          )))))
+          ))))
+
+
+
+        mapboxMap?.style?.addSource(geoJsonSource)
 
       }
 
