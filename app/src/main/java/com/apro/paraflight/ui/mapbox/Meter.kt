@@ -6,7 +6,7 @@ sealed class Meter {
 //  var value = "-"
 //  var style = MeterStyle.Default
 
-//  class Speed(val unit: SpeedUnit) {
+//  class com.apro.core_util.Speed(val unit: com.apro.core_util.SpeedUnit) {
 //    fun setSpeed(speed: Float) {
 //
 //    }

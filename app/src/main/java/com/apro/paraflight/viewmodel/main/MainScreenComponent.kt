@@ -1,11 +1,11 @@
 package com.apro.paraflight.viewmodel.main
 
 import androidx.lifecycle.ViewModel
+import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.paraflight.DI
-import com.apro.paraflight.di.ScreenScope
-import com.apro.paraflight.di.ViewModelFactory
-import com.apro.paraflight.di.ViewModelKey
-import com.apro.paraflight.preferences.api.MapboxPreferences
+import com.apro.paraflight.core.di.ScreenScope
+import com.apro.paraflight.core.di.ViewModelFactory
+import com.apro.paraflight.core.di.ViewModelKey
 import com.apro.paraflight.util.ResourceProvider
 import dagger.Binds
 import dagger.BindsInstance

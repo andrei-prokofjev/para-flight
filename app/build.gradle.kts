@@ -71,6 +71,8 @@ dependencies {
   implementation(project(":core-ui"))
   implementation(project(":core-util"))
   implementation(project(":core-network"))
+  implementation(project(":core-preferences"))
+  implementation(project(":core-db"))
 
   implementation(Libs.kotlin)
   implementation(Libs.ktx)

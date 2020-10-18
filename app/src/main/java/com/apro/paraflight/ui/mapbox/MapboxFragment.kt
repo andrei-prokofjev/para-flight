@@ -46,16 +46,16 @@ class MapboxFragment : BaseFragment(R.layout.fragment_mapbox) {
       mapboxMap?.locationComponent?.forceLocationUpdate(result.lastLocation)
       viewModel.locationEngineResult = result
 
-      with(binding) {
-        result.lastLocation?.let {
-//          latTextView.text = it.latitude.toString()
-//          lonTextView.text = it.longitude.toString()
-//          accTextView.text = it.bearing.toString()
-
-        }
-
-
-      }
+//      with(binding) {
+//        result.lastLocation?.let {
+////          latTextView.text = it.latitude.toString()
+////          lonTextView.text = it.longitude.toString()
+////          accTextView.text = it.bearing.toString()
+//
+//        }
+//
+//
+//      }
     }
 
     override fun onFailure(exception: Exception) {
@@ -202,7 +202,7 @@ class MapboxFragment : BaseFragment(R.layout.fragment_mapbox) {
     Manifest.permission.ACCESS_COARSE_LOCATION
   )
   fun onNeverAskAgain() {
-    toast("PERMISSIONS REQUERED")
+    toast("PERMISSIONS REQUIRED")
   }
 
   @OnShowRationale(

@@ -4,24 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
-
+    tools:context=".MainActivity">
 
   <FrameLayout
       android:id="@+id/mapboxLayout"
       android:layout_width="match_parent"
       android:layout_height="match_parent" />
-
-
-  <TextView
-      android:id="@+id/versionTextView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="16dp"
-      android:textColor="@color/black"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      tools:text="v1.0.1" />
 
   <ImageView
       android:id="@+id/settingsImageView"
@@ -39,48 +27,18 @@
       tools:ignore="ContentDescription" />
 
   <ImageView
-      android:id="@+id/compassImageView"
+      android:id="@+id/shareImageView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginEnd="16dp"
-      android:layout_marginBottom="16dp"
       android:background="@drawable/bg_button"
-      android:elevation="2dp"
-      android:foreground="@drawable/selector_button_dark"
-      android:padding="8dp"
-      android:src="@drawable/ic_compass"
-      app:layout_constraintBottom_toTopOf="@id/nearMeImageView"
-      app:layout_constraintEnd_toEndOf="parent"
-      tools:ignore="ContentDescription" />
+      android:elevation="4dp"
 
-  <ImageView
-      android:id="@+id/nearMeImageView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginEnd="16dp"
-      android:layout_marginBottom="16dp"
-      android:background="@drawable/bg_button"
-      android:elevation="2dp"
       android:foreground="@drawable/selector_button_dark"
       android:padding="8dp"
-      android:src="@drawable/ic_near_me"
-      app:layout_constraintBottom_toTopOf="@id/myLocationImageView"
+      android:src="@drawable/ic_share"
       app:layout_constraintEnd_toEndOf="parent"
-      tools:ignore="ContentDescription" />
-
-  <ImageView
-      android:id="@+id/myLocationImageView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginEnd="16dp"
-      android:layout_marginBottom="16dp"
-      android:background="@drawable/bg_button"
-      android:elevation="2dp"
-      android:foreground="@drawable/selector_button_dark"
-      android:padding="8dp"
-      android:src="@drawable/ic_my_location"
-      app:layout_constraintBottom_toTopOf="@id/layerImageView"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsImageView"
       tools:ignore="ContentDescription" />
 
   <ImageView
@@ -88,7 +46,6 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginEnd="16dp"
-      android:layout_marginBottom="80dp"
       android:background="@drawable/bg_button"
       android:elevation="2dp"
       android:foreground="@drawable/selector_button_dark"
@@ -96,7 +53,77 @@
       android:src="@drawable/ic_layers"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
       tools:ignore="ContentDescription" />
 
+  <ImageView
+      android:id="@+id/compassImageView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_marginEnd="16dp"
+      android:background="@drawable/bg_button"
+      android:elevation="2dp"
+      android:foreground="@drawable/selector_button_dark"
+      android:padding="8dp"
+      android:src="@drawable/ic_compass"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/layerImageView"
+      tools:ignore="ContentDescription" />
+
+  <ImageView
+      android:id="@+id/nearMeImageView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_marginEnd="16dp"
+      android:background="@drawable/bg_button"
+      android:elevation="2dp"
+      android:foreground="@drawable/selector_button_dark"
+      android:padding="8dp"
+      android:src="@drawable/ic_near_me"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/compassImageView"
+      tools:ignore="ContentDescription" />
+
+  <ImageView
+      android:id="@+id/myLocationImageView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_marginEnd="16dp"
+      android:background="@drawable/bg_button"
+      android:elevation="2dp"
+      android:foreground="@drawable/selector_button_dark"
+      android:padding="8dp"
+      android:src="@drawable/ic_my_location"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/nearMeImageView"
+      tools:ignore="ContentDescription" />
+
+  <ImageView
+      android:id="@+id/flightImageView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="16dp"
+      android:layout_marginBottom="80dp"
+      android:background="@drawable/bg_circle"
+      android:elevation="2dp"
+      android:foreground="@drawable/selector_button_dark"
+      android:padding="8dp"
+      android:src="@drawable/ic_flight_takeoff"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      tools:ignore="ContentDescription" />
+
+  <TextView
+      android:id="@+id/versionTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:textColor="@color/black"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      tools:text="v1.0.1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

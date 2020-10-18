@@ -1,8 +1,8 @@
 package com.apro.paraflight
 
 import com.apro.core.network.di.NetworkComponent
-import com.apro.paraflight.di.AppComponent
-import com.apro.paraflight.preferences.di.PreferencesApi
+import com.apro.core.preferenes.di.PreferencesApi
+import com.apro.paraflight.core.di.AppComponent
 
 
 object DI {

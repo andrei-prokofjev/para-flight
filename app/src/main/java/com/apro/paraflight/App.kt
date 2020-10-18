@@ -2,10 +2,11 @@ package com.apro.paraflight
 
 import android.app.Application
 import com.apro.core.network.di.DaggerNetworkComponent
-import com.apro.paraflight.di.DaggerAppComponent
-import com.apro.paraflight.preferences.di.PreferencesComponent
+import com.apro.core.preferenes.di.PreferencesComponent
+import com.apro.paraflight.core.di.DaggerAppComponent
 import timber.log.Timber
 
+@Suppress("unused")
 class App : Application() {
 
 

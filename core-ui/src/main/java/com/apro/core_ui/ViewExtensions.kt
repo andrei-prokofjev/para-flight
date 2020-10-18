@@ -19,6 +19,7 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import kotlin.math.abs
 
 const val DEFAULT_THROTTLE_DURATION = 300L
 
@@ -59,12 +60,9 @@ fun throttleClicks(
   }
 }
 
-fun View.inflater() = LayoutInflater.from(context)
-fun ViewGroup.inflate(@LayoutRes layoutId: Int) =
-  LayoutInflater.from(context).inflate(layoutId, this, false)
-
-fun Fragment.inflate(@LayoutRes layoutId: Int) =
-  LayoutInflater.from(requireContext()).inflate(layoutId, null, false)
+fun View.inflater(): LayoutInflater = LayoutInflater.from(context)
+fun ViewGroup.inflate(@LayoutRes layoutId: Int): View = LayoutInflater.from(context).inflate(layoutId, this, false)
+fun Fragment.inflate(@LayoutRes layoutId: Int): View = LayoutInflater.from(requireContext()).inflate(layoutId, null, false)
 
 val View.topMargin get() = (layoutParams as ViewGroup.MarginLayoutParams).topMargin
 val View.bottomMargin get() = (layoutParams as ViewGroup.MarginLayoutParams).bottomMargin
@@ -260,6 +258,7 @@ fun concatBitmaps(width: Int, height: Int, vararg bitmaps: Bitmap): Bitmap {
 }
 
 fun createMaskPath(size: Int): Path = createMaskPath(size, 0)
+
 fun createMaskPath(size: Int, padding: Int): Path {
   //Formula: (|x|)^3 + (|y|)^3 = radius^3
   val radius = size / 2 - padding
@@ -267,10 +266,10 @@ fun createMaskPath(size: Int, padding: Int): Path {
   val path = Path()
   path.moveTo(-radius.toFloat(), 0f)
   for (x in -radius + 1..radius) {
-    path.lineTo(x.toFloat(), Math.cbrt(radiusToPow - Math.abs(x * x * x)).toFloat())
+    path.lineTo(x.toFloat(), Math.cbrt(radiusToPow - abs(x * x * x)).toFloat())
   }
   for (x in radius downTo -radius) {
-    path.lineTo(x.toFloat(), (-Math.cbrt(radiusToPow - Math.abs(x * x * x))).toFloat())
+    path.lineTo(x.toFloat(), (-Math.cbrt(radiusToPow - abs(x * x * x))).toFloat())
   }
   path.close()
   val matrix = Matrix()

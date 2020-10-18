@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="137dp"
     android:layout_height="64dp"
-    android:foreground="@drawable/selector_dark"
-    android:background="@color/meter_view_background">
+    android:foreground="@drawable/selector_dark">
 
 
   <TextView

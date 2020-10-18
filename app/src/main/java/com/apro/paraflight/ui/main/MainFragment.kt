@@ -18,8 +18,11 @@ import com.apro.paraflight.databinding.FragmentMainBinding
 import com.apro.paraflight.ui.base.viewBinding
 import com.apro.paraflight.viewmodel.main.MainScreenComponent
 import com.apro.paraflight.viewmodel.main.MainScreenViewModel
-import com.mapbox.android.core.location.LocationEngine
+import com.mapbox.android.core.location.*
 import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
@@ -44,17 +47,17 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
 
   private var locationEngine: LocationEngine? = null
 
-//  private val callback = object : LocationEngineCallback<LocationEngineResult> {
-//    override fun onSuccess(result: LocationEngineResult) {
-//      mapboxMap?.locationComponent?.forceLocationUpdate(result.lastLocation)
-//      viewModel.setResult(result)
-//
-//    }
-//
-//    override fun onFailure(exception: Exception) {
-//      toast("failure: $exception")
-//    }
-//  }
+  private val callback = object : LocationEngineCallback<LocationEngineResult> {
+    override fun onSuccess(result: LocationEngineResult) {
+      result.lastLocation?.let {
+        viewModel.updateLocation(it)
+      }
+    }
+
+    override fun onFailure(exception: Exception) {
+      toast("failure: $exception")
+    }
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -67,20 +70,32 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
           mapboxLayout.findViewWithTag<ImageView>("logoView")?.isVisible = false
           mapboxLayout.findViewWithTag<ImageView>("attrView")?.isVisible = false
           mapboxMap = it
-          it.setStyle(DI.preferencesApi.mapbox().mapStyle.style) { style ->
+          it.setStyle(viewModel.getStyle(DI.preferencesApi.mapbox().mapStyle)) { style ->
             enableLocationComponentWithPermissionCheck(style)
           }
         }
       }
 
       settingsImageView.onClick { viewModel.onSettingsClick() }
+      shareImageView.onClick { viewModel.onShareClick() }
       layerImageView.onClick { viewModel.onLayerClick() }
       nearMeImageView.onClick { viewModel.onNearMeClick() }
-      myLocationImageView.onClick { viewModel.onMyLocationClick() }
+      myLocationImageView.onClick {
+        viewModel.locationData.value?.let {
+          val position = CameraPosition.Builder()
+            .target(LatLng(it.latitude, it.longitude))
+            .build()
+          mapboxMap?.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000)
+        }
+      }
       compassImageView.onClick { viewModel.onCompassClick() }
+      flightImageView.onClick { viewModel.onFlightClick() }
 
       viewModel.style.observe { mapboxMap?.setStyle(it) }
       viewModel.toast.observe { toast(it) }
+      viewModel.locationData.observe {
+        mapboxMap?.locationComponent?.forceLocationUpdate(it)
+      }
 
       versionTextView.text = BuildConfig.VERSION_NAME
     }
@@ -129,31 +144,32 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
   )
   fun enableLocationComponent(loadedMapStyle: Style) {
     val locationComponent = mapboxMap?.locationComponent
-    val locationComponentActivationOptions = LocationComponentActivationOptions.builder(requireContext(), loadedMapStyle)
+    val locationComponentActivationOptions = LocationComponentActivationOptions
+      .builder(requireContext(), loadedMapStyle)
       .useDefaultLocationEngine(false)
       .build()
 
     locationComponent?.let {
       it.activateLocationComponent(locationComponentActivationOptions)
       it.isLocationComponentEnabled = true
-      it.cameraMode = CameraMode.NONE
-      it.renderMode = RenderMode.GPS
+      it.cameraMode = CameraMode.TRACKING
+      it.renderMode = RenderMode.COMPASS
 
-      // initLocationEngine()
+      initLocationEngine()
     }
   }
 
-//
-//  @SuppressLint("MissingPermission")
-//  private fun initLocationEngine() {
-//    locationEngine = LocationEngineProvider.getBestLocationEngine(requireContext())
-//    val request = LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
-//      .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
-//      .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME).build()
-//
-//    locationEngine?.requestLocationUpdates(request, callback, activity?.mainLooper)
-//    locationEngine?.getLastLocation(callback)
-//  }
+  @SuppressLint("MissingPermission")
+  private fun initLocationEngine() {
+    locationEngine = LocationEngineProvider.getBestLocationEngine(requireContext())
+    val request = LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
+      .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+      .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
+      .build()
+
+    locationEngine?.requestLocationUpdates(request, callback, activity?.mainLooper)
+    locationEngine?.getLastLocation(callback)
+  }
 
   @SuppressLint("NeedOnRequestPermissionsResult")
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -174,7 +190,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     Manifest.permission.ACCESS_COARSE_LOCATION
   )
   fun onNeverAskAgain() {
-    toast("PERMISSIONS REQUERED")
+    toast("PERMISSIONS REQUIRED")
   }
 
   @OnShowRationale(

@@ -1,15 +1,15 @@
 package com.apro.paraflight.viewmodel.mapbox
 
-import Speed
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.apro.core.util.Speed
+import com.apro.core.util.metersPerSecond
 import com.apro.core_ui.BaseViewModel
 import com.mapbox.android.core.location.LocationEngineResult
-import metersPerSecond
 
 class MapboxViewModel : BaseViewModel() {
 
-  //private val speedMeter = Meter.Speed(SpeedUnit.KM_PER_HOUR)
+  //private val speedMeter = Meter.com.apro.core_util.Speed(com.apro.core_util.SpeedUnit.KM_PER_HOUR)
 
   private val _speed = MutableLiveData<Int>()
 
@@ -37,7 +37,7 @@ class MapboxViewModel : BaseViewModel() {
 
 
   fun onSpeedMeterClick() {
-    //Analytics.trackEvent("On Speed Meter Click")
+    //Analytics.trackEvent("On com.apro.core_util.Speed Meter Click")
     // speedMeter.setStyle(MeterStyle.Default)
   }
 

@@ -14,7 +14,7 @@ class MeterView constructor(context: Context, attr: AttributeSet?) :
 
   private val binding: ViewMeterBinding = ViewMeterBinding.inflate(LayoutInflater.from(context), this, true)
 
-  var title: String? = null
+  private var title: String? = null
     set(value) {
       binding.titleTextView.text = value
       field = value
@@ -26,7 +26,7 @@ class MeterView constructor(context: Context, attr: AttributeSet?) :
       field = value
     }
 
-  var unit: String? = null
+  private var unit: String? = null
     set(value) {
       binding.unitTextView.text = value
       field = value
