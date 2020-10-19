@@ -1,4 +1,4 @@
-package com.apro.paraflight.ui.main
+package com.apro.paraflight.ui.screen.main
 
 
 import android.Manifest
@@ -36,9 +36,8 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.style.layers.LineLayer
-import com.mapbox.mapboxsdk.style.layers.Property.LINE_CAP_ROUND
-import com.mapbox.mapboxsdk.style.layers.Property.LINE_JOIN_ROUND
-import com.mapbox.mapboxsdk.style.layers.PropertyFactory.*
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import com.mapbox.mapboxsdk.utils.MapFragmentUtils
 import permissions.dispatcher.*
@@ -56,6 +55,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
   private var mapboxMap: MapboxMap? = null
 
   private var locationEngine: LocationEngine? = null
+
+  private val routeCoordinates = mutableListOf<Point>()
 
   private val callback = object : LocationEngineCallback<LocationEngineResult> {
     override fun onSuccess(result: LocationEngineResult) {
@@ -82,51 +83,13 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
           mapboxMap = it
           it.setStyle(viewModel.getStyle(DI.preferencesApi.mapbox().mapStyle)) { style ->
             enableLocationComponentWithPermissionCheck(style)
-
-
-//            val routeCoordinates = mutableListOf<Point>()
-//            val p = DI.databaseApi.flightsStore().getFlightPoints()
-//
-//            p.forEach { routeCoordinates.add(Point.fromLngLat(it.longitude, it.latitude)) }
-//
-//            style.addSource(GeoJsonSource("line-source",
-//              FeatureCollection.fromFeatures(arrayOf<Feature>(Feature.fromGeometry(
-//                LineString.fromLngLats(routeCoordinates)
-//              )))))
+            style.addSource(GeoJsonSource("line-source"))
             style.addLayer(LineLayer("linelayer", "line-source").withProperties(
-              lineDasharray(arrayOf(0.01f, 2f)),
-              lineCap(LINE_CAP_ROUND),
-              lineJoin(LINE_JOIN_ROUND),
               lineWidth(5f),
-              lineColor(Color.parseColor("#e55e5e"))
+              lineColor(Color.BLUE)
             ))
           }
-
-
         }
-      }
-
-      viewModel.line.observe {
-
-        val routeCoordinates = mutableListOf<Point>()
-
-        it.forEach {
-          routeCoordinates.add(Point.fromLngLat(it.longitude, it.latitude))
-        }
-
-
-        mapboxMap?.style?.removeSource("line-source")
-
-
-        val geoJsonSource = GeoJsonSource("line-source",
-          FeatureCollection.fromFeatures(arrayOf<Feature>(Feature.fromGeometry(
-            LineString.fromLngLats(routeCoordinates)
-          ))))
-
-
-
-        mapboxMap?.style?.addSource(geoJsonSource)
-
       }
 
       settingsImageView.onClick { viewModel.onSettingsClick() }
@@ -142,14 +105,23 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         }
       }
       compassImageView.onClick { viewModel.onCompassClick() }
-      flightImageView.onClick { viewModel.onFlightClick() }
+      flightImageView.onClick {
+        routeCoordinates.clear()
+        viewModel.onFlightClick()
+      }
 
       viewModel.style.observe { mapboxMap?.setStyle(it) }
       viewModel.toast.observe { toast(it) }
       viewModel.locationData.observe {
         mapboxMap?.locationComponent?.forceLocationUpdate(it)
 
-
+        routeCoordinates.add(Point.fromLngLat(it.longitude, it.latitude, it.altitude))
+        mapboxMap?.style?.let {
+          val source = it.getSourceAs<GeoJsonSource>("line-source")
+          source?.setGeoJson(FeatureCollection.fromFeatures(arrayOf(Feature.fromGeometry(
+            LineString.fromLngLats(routeCoordinates)
+          ))))
+        }
       }
 
       versionTextView.text = BuildConfig.VERSION_NAME

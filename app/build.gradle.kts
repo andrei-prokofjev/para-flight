@@ -73,7 +73,7 @@ dependencies {
   implementation(project(":core-network"))
   implementation(project(":core-preferences"))
   implementation(project(":core-db"))
-  implementation(project(":core-model"))
+
 
   implementation(Libs.kotlin)
   implementation(Libs.ktx)
@@ -84,7 +84,7 @@ dependencies {
 
   implementation(Libs.navigationFragment)
   implementation(Libs.navigationUi)
-  implementation(Libs.navigationFeatures)
+//  implementation(Libs.navigationFeatures)
 
   implementation(Libs.lifecycleExtensions)
   kapt(Libs.lifecycleCompiler)
@@ -111,8 +111,6 @@ dependencies {
   testImplementation(TestLibs.junit)
   androidTestImplementation(TestLibs.testJunit)
   androidTestImplementation(TestLibs.espresso)
-
-  implementation("com.mapbox.mapboxsdk:mapbox-sdk-services:5.8.0-SNAPSHOT")
 
 
 }

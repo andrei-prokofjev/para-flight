@@ -1,6 +1,6 @@
 package com.apro.core.db.entity
 
-import com.apro.core.model.FlightPointModel
+import com.apro.core.db.model.FlightPointModel
 
 fun FlightPointEntity.model() = FlightPointModel(
   time = time,

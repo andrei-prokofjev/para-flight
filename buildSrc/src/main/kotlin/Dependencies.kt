@@ -45,7 +45,7 @@ object Libs {
   // Android navigation
   const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
   const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
-  const val navigationFeatures = "androidx.navigation:navigation-dynamic-features-fragment:${Versions.navigation}"
+  //const val navigationFeatures = "androidx.navigation:navigation-dynamic-features-fragment:${Versions.navigation}"
 
   // Mapbox
   const val mapbox = "com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0"

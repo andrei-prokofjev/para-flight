@@ -1,4 +1,3 @@
-include(":core-model")
 include(":app")
 include(":core-ui")
 include(":core-util")

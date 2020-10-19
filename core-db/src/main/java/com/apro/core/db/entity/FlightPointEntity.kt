@@ -3,7 +3,7 @@ package com.apro.core.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.apro.core.model.FlightPointModel
+import com.apro.core.db.model.FlightPointModel
 
 @Entity(tableName = "flights")
 data class FlightPointEntity(

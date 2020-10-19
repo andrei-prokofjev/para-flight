@@ -3,7 +3,7 @@ package com.apro.paraflight
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.apro.paraflight.ui.main.MainFragment
+import com.apro.paraflight.ui.screen.main.MainFragment
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions

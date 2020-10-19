@@ -13,6 +13,8 @@ interface FlightDao {
   fun getAll(): List<FlightPointEntity>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insertAll(users: List<FlightPointEntity>)
+  fun insertAll(points: List<FlightPointEntity>)
 
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insert(point: FlightPointEntity)
 }

@@ -34,14 +34,6 @@ dependencies {
   implementation(Libs.ktx)
   implementation(Libs.appCompat)
 
-  implementation(Libs.timber)
-
-  implementation(Libs.dagger)
-  kapt(Libs.daggerCompiler)
-
-  implementation(Libs.roomRuntime)
-  implementation(Libs.roomKtx)
-  kapt(Libs.roomCompiler)
 
   testImplementation(TestLibs.junit)
   androidTestImplementation(TestLibs.testJunit)

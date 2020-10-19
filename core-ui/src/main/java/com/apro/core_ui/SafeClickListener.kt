@@ -4,7 +4,7 @@ import android.view.View
 
 class SafeClickListener(
   skipDurationInMillis: Long = 300,
-  private val listener: View.OnClickListener
+  private val listener: (View) -> Unit
 ) : View.OnClickListener {
 
   private val doubleClickPreventer: DoubleClickPreventer =
@@ -14,6 +14,6 @@ class SafeClickListener(
     if (doubleClickPreventer.preventDoubleClick()) {
       return
     }
-    listener.onClick(v)
+    listener.invoke(v)
   }
 }

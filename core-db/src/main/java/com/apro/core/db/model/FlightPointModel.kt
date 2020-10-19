@@ -1,4 +1,4 @@
-package com.apro.core.model
+package com.apro.core.db.model
 
 data class FlightPointModel(
   val time: Long,

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.apro.core.db.api.data.store.FlightsStore
 import com.apro.core.db.api.di.DatabaseApi
-import com.apro.core.model.FlightPointModel
+import com.apro.core.db.model.FlightPointModel
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core_ui.BaseViewModel
 import com.mapbox.mapboxsdk.maps.Style
@@ -20,7 +20,6 @@ class MainScreenViewModel @Inject constructor(
   private val databaseApi: DatabaseApi
 ) : BaseViewModel() {
 
-  private val points = mutableListOf<Location>()
 
   private val _style = MutableLiveData<String>()
   val style: LiveData<String> = _style
@@ -32,24 +31,16 @@ class MainScreenViewModel @Inject constructor(
   private val _locationData = MutableLiveData<Location>()
   val locationData: LiveData<Location> = _locationData
 
-  private val _line = MutableLiveData<List<FlightPointModel>>()
-  val line: LiveData<List<FlightPointModel>> = _line
 
   fun updateLocation(location: Location) {
     _locationData.postValue(location)
-    points.add(location)
-
-    if (points.size > 30) {
-      viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-        locationData.value?.let {
-          val list = points.map { FlightPointModel(it.time, it.latitude, it.longitude, it.altitude) }
-          flightsStore.insertFlightPoints(list)
-          points.clear()
-        }
+    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+      locationData.value?.let {
+        val point = FlightPointModel(it.time, it.latitude, it.longitude, it.altitude)
+        flightsStore.insertFlightPoint(point)
       }
     }
   }
-
 
   fun onSettingsClick() {
     _toast.postValue("settings development in progress")
@@ -68,32 +59,17 @@ class MainScreenViewModel @Inject constructor(
   }
 
   fun onCompassClick() {
-    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-      databaseApi.cleaner().clearAll()
-    }
+
   }
 
   fun onShareClick() {
-
-    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-
-      val points = flightsStore.getFlightPoints()
-
-      _line.postValue(points)
-
-      points.forEach {
-        println(">>> $it")
-      }
-    }
-
 
   }
 
   fun onFlightClick() {
     viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
       locationData.value?.let {
-        val point = FlightPointModel(it.time, it.latitude, it.longitude, it.altitude)
-        flightsStore.insertFlightPoints(listOf(point))
+        databaseApi.cleaner().clearAll()
       }
     }
   }
