@@ -18,7 +18,7 @@ import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentMainBinding
 import com.apro.paraflight.ui.base.viewBinding
 import com.apro.paraflight.viewmodel.main.MainScreenComponent
-import com.apro.paraflight.viewmodel.main.MainScreenViewModel
+import com.apro.paraflight.viewmodel.main.MapboxViewModel
 import com.mapbox.android.core.location.*
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
@@ -48,7 +48,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
 
   private val component by lazy { MainScreenComponent.create() }
   private val binding by viewBinding { FragmentMainBinding.bind(it) }
-  private val viewModel by viewModels<MainScreenViewModel> { component.viewModelFactory() }
+  private val viewModel by viewModels<MapboxViewModel> { component.viewModelFactory() }
 
   private lateinit var mapView: MapView
 

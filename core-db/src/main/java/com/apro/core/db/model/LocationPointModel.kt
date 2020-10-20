@@ -1,6 +1,6 @@
 package com.apro.core.db.model
 
-data class FlightPointModel(
+data class LocationPointModel(
   val time: Long,
   val latitude: Double,
   val longitude: Double,

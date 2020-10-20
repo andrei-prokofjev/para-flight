@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.apro.core.db.AppDatabase
 import com.apro.core.db.api.data.DatabaseClientApi
 import com.apro.core.db.api.data.store.Cleaner
-import com.apro.core.db.api.data.store.FlightsStore
+import com.apro.core.db.api.data.store.RouteStore
 import com.apro.core.db.impl.store.CleanerImpl
 import com.apro.core.db.impl.store.ThreadsStoreImpl
 import dagger.Module
@@ -29,5 +29,5 @@ class DatabaseModule(private val context: Context) {
 
   @Singleton
   @Provides
-  fun provideThreadStore(dbApi: DatabaseClientApi): FlightsStore = ThreadsStoreImpl(dbApi)
+  fun provideThreadStore(dbApi: DatabaseClientApi): RouteStore = ThreadsStoreImpl(dbApi)
 }

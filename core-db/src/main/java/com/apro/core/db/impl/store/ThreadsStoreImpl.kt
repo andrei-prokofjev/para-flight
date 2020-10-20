@@ -1,29 +1,29 @@
 package com.apro.core.db.impl.store
 
 import com.apro.core.db.api.data.DatabaseClientApi
-import com.apro.core.db.api.data.store.FlightsStore
-import com.apro.core.db.entity.FlightPointEntity
+import com.apro.core.db.api.data.store.RouteStore
+import com.apro.core.db.entity.LocationPointEntity
 import com.apro.core.db.entity.model
-import com.apro.core.db.model.FlightPointModel
+import com.apro.core.db.model.LocationPointModel
 import javax.inject.Inject
 
 class ThreadsStoreImpl @Inject constructor(
   private val db: DatabaseClientApi
-) : FlightsStore {
+) : RouteStore {
 
-  override fun insertFlightPoints(points: List<FlightPointModel>) {
+  override fun insertRoute(points: List<LocationPointModel>) {
     db.inTransaction {
-      val entities = points.map { FlightPointEntity.from(it) }
+      val entities = points.map { LocationPointEntity.from(it) }
       db.flightDao().insertAll(entities)
     }
   }
 
-  override fun insertFlightPoint(point: FlightPointModel) {
+  override fun insertLocationPoint(point: LocationPointModel) {
     db.inTransaction {
-      db.flightDao().insert(FlightPointEntity.from(point))
+      db.flightDao().insert(LocationPointEntity.from(point))
     }
   }
 
-  override fun getFlightPoints(): List<FlightPointModel> = db.flightDao().getAll().map { it.model() }
+  override fun getRoute(): List<LocationPointModel> = db.flightDao().getAll().map { it.model() }
 
 }

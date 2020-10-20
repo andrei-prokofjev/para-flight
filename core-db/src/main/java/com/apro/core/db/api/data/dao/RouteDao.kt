@@ -4,17 +4,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.apro.core.db.entity.FlightPointEntity
+import com.apro.core.db.entity.LocationPointEntity
 
 @Dao
-interface FlightDao {
+interface RouteDao {
 
   @Query("SELECT * FROM flights")
-  fun getAll(): List<FlightPointEntity>
+  fun getAll(): List<LocationPointEntity>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insertAll(points: List<FlightPointEntity>)
+  fun insertAll(points: List<LocationPointEntity>)
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insert(point: FlightPointEntity)
+  fun insert(point: LocationPointEntity)
 }
