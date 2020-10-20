@@ -1,9 +1,9 @@
-package com.apro.paraflight
+package com.apro.paraflight.ui
 
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.apro.paraflight.ui.screen.main.MainFragment
+import com.apro.paraflight.R
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions
@@ -32,9 +32,9 @@ class MainActivity : AppCompatActivity() {
             .build()
         )
 
-      val ft = supportFragmentManager.beginTransaction()
-      ft.add(R.id.fragmentContainerLayout, MainFragment.newInstance(options))
-      ft.commit()
+//      val ft = supportFragmentManager.beginTransaction()
+//      ft.add(R.id.fragmentContainerLayout, MainFragment.newInstance(options))
+//      ft.commit()
     }
   }
 }

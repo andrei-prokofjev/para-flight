@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/mainFragment">
+
+  <fragment
+      android:id="@+id/mainFragment"
+      android:name="com.apro.paraflight.ui.screen.MainFragment"
+      android:label="FlightFragment"
+      tools:layout="@layout/fragment_main">
+
+    <action
+        android:id="@+id/action_main_to_settings"
+        app:destination="@id/settingsFragment"
+        app:enterAnim="@anim/slide_in_left"
+        app:exitAnim="@anim/slide_out_right" />
+
+    <action
+        android:id="@+id/action_main_to_preflight"
+        app:destination="@id/preflightFragment" />
+  </fragment>
+
+  <fragment
+      android:id="@+id/preflightFragment"
+      android:name="com.apro.paraflight.ui.screen.PreflightFragment"
+      android:label="PreflightCheckFragment"
+      tools:layout="@layout/fragment_preflight">
+    <action
+        android:id="@+id/action_preflight_to_flight"
+        app:destination="@id/flightFragment" />
+  </fragment>
+
+  <fragment
+      android:id="@+id/flightFragment"
+      android:name="com.apro.paraflight.ui.screen.FlightFragment"
+      android:label="FlightFragment"
+      tools:layout="@layout/fragment_flight" />
+
+
+  <fragment
+      android:id="@+id/settingsFragment"
+      android:name="com.apro.paraflight.ui.screen.SettingsFragment"
+      android:label="SettingsFragment"
+      tools:layout="@layout/fragment_settings" />
+
+</navigation>
+
+    <!--<action-->
+    <!--android:id="@+id/action_title_screen_to_leaderboard"-->
+    <!--app:destination="@id/flightScreenFragment"-->
+    <!--app:enterAnim="@anim/slide_in_right"-->
+    <!--app:exitAnim="@anim/slide_out_left"-->
+    <!--app:popEnterAnim="@anim/slide_in_left"-->
+    <!--app:popExitAnim="@anim/slide_out_right" />-->

@@ -1,4 +1,4 @@
-package com.apro.paraflight.ui.screen.main
+package com.apro.paraflight.ui.screen
 
 
 import android.Manifest
@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.apro.core.ui.BaseFragment
 import com.apro.core.ui.onClick
 import com.apro.core.ui.toast
@@ -17,6 +18,7 @@ import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentMainBinding
 import com.apro.paraflight.ui.base.viewBinding
+
 import com.apro.paraflight.viewmodel.main.MainScreenComponent
 import com.apro.paraflight.viewmodel.main.MapboxViewModel
 import com.mapbox.android.core.location.*
@@ -94,7 +96,13 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         }
       }
 
-      settingsImageView.onClick { viewModel.onSettingsClick() }
+      settingsImageView.onClick {
+        val navigation = Navigation.findNavController(requireActivity(), R.id.navigationFragment)
+        navigation.navigate(R.id.action_main_to_settings)
+
+      }
+
+
       shareImageView.onClick { viewModel.onShareClick() }
       layerImageView.onClick { viewModel.onLayerClick() }
       nearMeImageView.onClick { viewModel.onNearMeClick() }
@@ -108,17 +116,21 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         }
       }
       compassImageView.onClick { viewModel.onCompassClick() }
+
       flightImageView.onClick {
-        if (locationEngine == null) {
-          flightImageView.setImageResource(R.drawable.ic_flight_land)
-          viewModel.clearRouteStore()
-          routeCoordinates.clear()
-          initLocationEngine()
-        } else {
-          flightImageView.setImageResource(R.drawable.ic_flight_takeoff)
-          locationEngine?.removeLocationUpdates(callback)
-          locationEngine = null
-        }
+
+        val navigation = Navigation.findNavController(requireActivity(), R.id.navigationFragment)
+        navigation.navigate(R.id.action_main_to_preflight)
+//        if (locationEngine == null) {
+//          flightImageView.setImageResource(R.drawable.ic_flight_land)
+//          viewModel.clearRouteStore()
+//          routeCoordinates.clear()
+//          initLocationEngine()
+//        } else {
+//          flightImageView.setImageResource(R.drawable.ic_flight_takeoff)
+//          locationEngine?.removeLocationUpdates(callback)
+//          locationEngine = null
+//        }
       }
 
       viewModel.style.observe { mapboxMap?.setStyle(it) }

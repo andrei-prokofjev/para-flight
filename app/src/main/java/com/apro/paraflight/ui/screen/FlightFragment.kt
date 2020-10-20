@@ -1,4 +1,4 @@
-package com.apro.paraflight.ui.screen.flight
+package com.apro.paraflight.ui.screen
 
 import com.apro.core.ui.BaseFragment
 import com.apro.paraflight.R
