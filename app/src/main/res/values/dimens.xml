@@ -4,4 +4,6 @@
   <dimen name="activity_vertical_margin">16dp</dimen>
 
   <dimen name="bg_meter_view_radius">10dp</dimen>
+
+  <dimen name="anim_duration">15000</dimen>
 </resources>

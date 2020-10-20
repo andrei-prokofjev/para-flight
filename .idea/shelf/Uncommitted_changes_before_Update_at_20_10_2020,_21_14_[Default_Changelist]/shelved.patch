@@ -1,0 +1,416 @@
+Index: app/src/main/java/com/apro/paraflight/ui/customview/MeterView.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.apro.paraflight.ui.customview\n\nimport android.content.Context\nimport android.util.AttributeSet\nimport android.view.LayoutInflater\nimport androidx.constraintlayout.widget.ConstraintLayout\nimport com.apro.core_ui.textColor\nimport com.apro.paraflight.R\nimport com.apro.paraflight.databinding.ViewMeterBinding\nimport com.apro.paraflight.ui.mapbox.MeterStyle\n\nclass MeterView constructor(context: Context, attr: AttributeSet?) :\n  ConstraintLayout(context, attr) {\n\n  private val binding: ViewMeterBinding = ViewMeterBinding.inflate(LayoutInflater.from(context), this, true)\n\n  private var title: String? = null\n    set(value) {\n      binding.titleTextView.text = value\n      field = value\n    }\n\n  var amount: String? = null\n    set(value) {\n      binding.amountTextView.text = value\n      field = value\n    }\n\n  private var unit: String? = null\n    set(value) {\n      binding.unitTextView.text = value\n      field = value\n    }\n\n  var style: MeterStyle = MeterStyle.Default\n    set(value) {\n      with(binding) {\n        titleTextView.textColor(value.color)\n        amountTextView.textColor(value.color)\n        unitTextView.textColor(value.color)\n        field = value\n      }\n    }\n\n  init {\n    val a = context.obtainStyledAttributes(attr, R.styleable.MeterView)\n    title = a.getString(R.styleable.MeterView_mv_title)\n    unit = a.getString(R.styleable.MeterView_mv_unit)\n    a.recycle()\n  }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/apro/paraflight/ui/customview/MeterView.kt	(revision acd8d8b3cb1a69fd6e3c5947db3f47b4d66febc6)
++++ app/src/main/java/com/apro/paraflight/ui/customview/MeterView.kt	(date 1603131183000)
+@@ -7,45 +7,44 @@
+ import com.apro.core_ui.textColor
+ import com.apro.paraflight.R
+ import com.apro.paraflight.databinding.ViewMeterBinding
+-import com.apro.paraflight.ui.mapbox.MeterStyle
+ 
+ class MeterView constructor(context: Context, attr: AttributeSet?) :
+   ConstraintLayout(context, attr) {
+ 
+-  private val binding: ViewMeterBinding = ViewMeterBinding.inflate(LayoutInflater.from(context), this, true)
+-
+-  private var title: String? = null
+-    set(value) {
+-      binding.titleTextView.text = value
+-      field = value
+-    }
+-
+-  var amount: String? = null
+-    set(value) {
+-      binding.amountTextView.text = value
+-      field = value
+-    }
+-
+-  private var unit: String? = null
+-    set(value) {
+-      binding.unitTextView.text = value
+-      field = value
+-    }
+-
+-  var style: MeterStyle = MeterStyle.Default
+-    set(value) {
+-      with(binding) {
+-        titleTextView.textColor(value.color)
+-        amountTextView.textColor(value.color)
+-        unitTextView.textColor(value.color)
+-        field = value
+-      }
+-    }
+-
+-  init {
+-    val a = context.obtainStyledAttributes(attr, R.styleable.MeterView)
+-    title = a.getString(R.styleable.MeterView_mv_title)
+-    unit = a.getString(R.styleable.MeterView_mv_unit)
+-    a.recycle()
+-  }
++//  private val binding: ViewMeterBinding = ViewMeterBinding.inflate(LayoutInflater.from(context), this, true)
++//
++//  private var title: String? = null
++//    set(value) {
++//      binding.titleTextView.text = value
++//      field = value
++//    }
++//
++//  var amount: String? = null
++//    set(value) {
++//      binding.amountTextView.text = value
++//      field = value
++//    }
++//
++//  private var unit: String? = null
++//    set(value) {
++//      binding.unitTextView.text = value
++//      field = value
++//    }
++//
++//  var style: MeterStyle = MeterStyle.Default
++//    set(value) {
++//      with(binding) {
++//        titleTextView.textColor(value.color)
++//        amountTextView.textColor(value.color)
++//        unitTextView.textColor(value.color)
++//        field = value
++//      }
++//    }
++//
++//  init {
++//    val a = context.obtainStyledAttributes(attr, R.styleable.MeterView)
++//    title = a.getString(R.styleable.MeterView_mv_title)
++//    unit = a.getString(R.styleable.MeterView_mv_unit)
++//    a.recycle()
++//  }
+ }
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"CompilerConfiguration\">\n    <bytecodeTargetLevel>\n      <module name=\"build-src\" target=\"1.7\" />\n    </bytecodeTargetLevel>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/compiler.xml	(revision acd8d8b3cb1a69fd6e3c5947db3f47b4d66febc6)
++++ .idea/compiler.xml	(date 1603132864000)
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="CompilerConfiguration">
+-    <bytecodeTargetLevel>
++    <bytecodeTargetLevel target="1.8">
+       <module name="build-src" target="1.7" />
+     </bytecodeTargetLevel>
+   </component>
+Index: app/src/main/java/com/apro/paraflight/ui/mapbox/MapboxFragment.kt
+===================================================================
+--- app/src/main/java/com/apro/paraflight/ui/mapbox/MapboxFragment.kt	(revision acd8d8b3cb1a69fd6e3c5947db3f47b4d66febc6)
++++ app/src/main/java/com/apro/paraflight/ui/mapbox/MapboxFragment.kt	(revision acd8d8b3cb1a69fd6e3c5947db3f47b4d66febc6)
+@@ -1,224 +0,0 @@
+-package com.apro.paraflight.ui.mapbox
+-
+-
+-import android.Manifest
+-import android.annotation.SuppressLint
+-import android.os.Bundle
+-import android.view.LayoutInflater
+-import android.view.View
+-import android.view.ViewGroup
+-import android.widget.ImageView
+-import androidx.core.view.isVisible
+-import androidx.fragment.app.viewModels
+-import com.apro.core_ui.BaseFragment
+-import com.apro.core_ui.onClick
+-import com.apro.core_ui.toast
+-import com.apro.paraflight.R
+-import com.apro.paraflight.databinding.FragmentMapboxBinding
+-import com.apro.paraflight.viewmodel.mapbox.MapboxViewModel
+-import com.mapbox.android.core.location.*
+-import com.mapbox.mapboxsdk.Mapbox
+-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
+-import com.mapbox.mapboxsdk.location.modes.CameraMode
+-import com.mapbox.mapboxsdk.location.modes.RenderMode
+-import com.mapbox.mapboxsdk.maps.MapView
+-import com.mapbox.mapboxsdk.maps.MapboxMap
+-import com.mapbox.mapboxsdk.maps.MapboxMapOptions
+-import com.mapbox.mapboxsdk.maps.Style
+-import com.mapbox.mapboxsdk.utils.MapFragmentUtils
+-import permissions.dispatcher.*
+-
+-@RuntimePermissions
+-class MapboxFragment : BaseFragment(R.layout.fragment_mapbox) {
+-
+-  private lateinit var binding: FragmentMapboxBinding
+-
+-  val viewModel by viewModels<MapboxViewModel>()
+-
+-  private var mapView: MapView? = null
+-
+-  private var mapboxMap: MapboxMap? = null
+-
+-  private var locationEngine: LocationEngine? = null
+-
+-  private val callback = object : LocationEngineCallback<LocationEngineResult> {
+-    override fun onSuccess(result: LocationEngineResult) {
+-      mapboxMap?.locationComponent?.forceLocationUpdate(result.lastLocation)
+-      viewModel.locationEngineResult = result
+-
+-//      with(binding) {
+-//        result.lastLocation?.let {
+-////          latTextView.text = it.latitude.toString()
+-////          lonTextView.text = it.longitude.toString()
+-////          accTextView.text = it.bearing.toString()
+-//
+-//        }
+-//
+-//
+-//      }
+-    }
+-
+-    override fun onFailure(exception: Exception) {
+-      toast("failure: $exception")
+-    }
+-  }
+-
+-  override fun onCreateView(inflater: LayoutInflater,
+-    container: ViewGroup?,
+-    savedInstanceState: Bundle?): View {
+-    Mapbox.getInstance(requireContext(), getString(R.string.mapbox_access_token))
+-    binding = FragmentMapboxBinding.inflate(inflater, container, false)
+-    return binding.root
+-  }
+-
+-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+-    super.onViewCreated(view, savedInstanceState)
+-    with(binding) {
+-
+-      mapView = MapView(root.context, MapFragmentUtils.resolveArgs(root.context, arguments)).apply {
+-        onCreate(savedInstanceState)
+-        mapboxLayout.addView(this)
+-        getMapAsync {
+-          mapboxLayout.findViewWithTag<ImageView>("logoView")?.isVisible = false
+-          mapboxLayout.findViewWithTag<ImageView>("attrView")?.isVisible = false
+-          mapboxMap = it
+-          it.setStyle(Style.OUTDOORS) { style -> enableLocationComponentWithPermissionCheck(style) }
+-        }
+-      }
+-
+-      viewModel.speed.observe {
+-        speedMeterView.amount = it.toString()
+-      }
+-
+-      viewModel.altitude.observe {
+-        altitudeMeterView.amount = it.toString()
+-      }
+-
+-      speedMeterView.onClick {
+-        mapboxMap?.setStyle(Style.SATELLITE)
+-        viewModel.onSpeedMeterClick()
+-      }
+-      altitudeMeterView.onClick {
+-        mapboxMap?.setStyle(Style.TRAFFIC_DAY)
+-        viewModel.onAltitudeClick()
+-      }
+-
+-
+-    }
+-  }
+-
+-  override fun onStart() {
+-    super.onStart()
+-    mapView?.onStart()
+-  }
+-
+-  override fun onResume() {
+-    super.onResume()
+-    mapView?.onResume()
+-    mapboxMap?.style?.let { enableLocationComponentWithPermissionCheck(it) }
+-  }
+-
+-  override fun onPause() {
+-    super.onPause()
+-    mapView?.onPause()
+-  }
+-
+-  override fun onStop() {
+-    super.onStop()
+-    mapView?.onStop()
+-  }
+-
+-  override fun onSaveInstanceState(outState: Bundle) {
+-    super.onSaveInstanceState(outState)
+-    mapView?.onSaveInstanceState(outState)
+-  }
+-
+-  override fun onDestroy() {
+-    super.onDestroy()
+-    mapView?.onDestroy()
+-  }
+-
+-  override fun onLowMemory() {
+-    super.onLowMemory()
+-    mapView?.onLowMemory()
+-  }
+-
+-  @SuppressLint("MissingPermission")
+-  @NeedsPermission(
+-    Manifest.permission.ACCESS_FINE_LOCATION,
+-    Manifest.permission.ACCESS_COARSE_LOCATION
+-  )
+-  fun enableLocationComponent(loadedMapStyle: Style) {
+-    val locationComponent = mapboxMap?.locationComponent
+-    val locationComponentActivationOptions =
+-      LocationComponentActivationOptions.builder(requireContext(), loadedMapStyle)
+-        .useDefaultLocationEngine(false)
+-        .build()
+-
+-    locationComponent?.let {
+-      it.activateLocationComponent(locationComponentActivationOptions)
+-      it.isLocationComponentEnabled = true
+-      it.cameraMode = CameraMode.TRACKING
+-      it.renderMode = RenderMode.COMPASS
+-
+-      initLocationEngine()
+-    }
+-  }
+-
+-  override fun getViewToApplyStatusBarMargin(root: View): Array<View> =
+-    arrayOf(binding.altitudeMeterView, binding.fuelMeterView, binding.speedMeterView)
+-
+-  @SuppressLint("MissingPermission")
+-  private fun initLocationEngine() {
+-    locationEngine = LocationEngineProvider.getBestLocationEngine(requireContext())
+-    val request = LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
+-      .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+-      .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME).build()
+-
+-    locationEngine?.requestLocationUpdates(request, callback, activity?.mainLooper)
+-    locationEngine?.getLastLocation(callback)
+-  }
+-
+-  @SuppressLint("NeedOnRequestPermissionsResult")
+-  override fun onRequestPermissionsResult(
+-    requestCode: Int,
+-    permissions: Array<String>,
+-    grantResults: IntArray
+-  ) {
+-    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+-    onRequestPermissionsResult(requestCode, grantResults)
+-  }
+-
+-  @OnPermissionDenied(
+-    Manifest.permission.ACCESS_FINE_LOCATION,
+-    Manifest.permission.ACCESS_COARSE_LOCATION
+-  )
+-  fun onPermissionDenied() {
+-    toast("PERMISSIONS DENIED")
+-  }
+-
+-  @OnNeverAskAgain(
+-    Manifest.permission.ACCESS_FINE_LOCATION,
+-    Manifest.permission.ACCESS_COARSE_LOCATION
+-  )
+-  fun onNeverAskAgain() {
+-    toast("PERMISSIONS REQUIRED")
+-  }
+-
+-  @OnShowRationale(
+-    Manifest.permission.ACCESS_FINE_LOCATION,
+-    Manifest.permission.ACCESS_COARSE_LOCATION
+-  )
+-  fun onShowRationale() {
+-    toast("PERMISSIONS DENIED")
+-  }
+-
+-  companion object {
+-    private const val DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L
+-    private const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
+-
+-    fun newInstance(options: MapboxMapOptions): MapboxFragment = MapboxFragment().apply {
+-      arguments = MapFragmentUtils.createFragmentArgs(options)
+-    }
+-  }
+-}
+\ No newline at end of file
+Index: app/src/main/java/com/apro/paraflight/ui/mapbox/Meter.kt
+===================================================================
+--- app/src/main/java/com/apro/paraflight/ui/mapbox/Meter.kt	(revision acd8d8b3cb1a69fd6e3c5947db3f47b4d66febc6)
++++ app/src/main/java/com/apro/paraflight/ui/mapbox/Meter.kt	(revision acd8d8b3cb1a69fd6e3c5947db3f47b4d66febc6)
+@@ -1,21 +0,0 @@
+-package com.apro.paraflight.ui.mapbox
+-
+-sealed class Meter {
+-
+-//  var title = ""
+-//  var value = "-"
+-//  var style = MeterStyle.Default
+-
+-//  class com.apro.core_util.Speed(val unit: com.apro.core_util.SpeedUnit) {
+-//    fun setSpeed(speed: Float) {
+-//
+-//    }
+-//
+-//    fun setStyle(style: MeterStyle) {
+-//
+-//    }
+-//  }
+-
+-  class Altitude
+-  class Fuel
+-}
+\ No newline at end of file
+Index: app/src/main/java/com/apro/paraflight/ui/mapbox/MeterStyle.kt
+===================================================================
+--- app/src/main/java/com/apro/paraflight/ui/mapbox/MeterStyle.kt	(revision acd8d8b3cb1a69fd6e3c5947db3f47b4d66febc6)
++++ app/src/main/java/com/apro/paraflight/ui/mapbox/MeterStyle.kt	(revision acd8d8b3cb1a69fd6e3c5947db3f47b4d66febc6)
+@@ -1,9 +0,0 @@
+-package com.apro.paraflight.ui.mapbox
+-
+-import com.apro.paraflight.R
+-
+-enum class MeterStyle(val color: Int) {
+-  Default(R.color.default_meter_style),
+-  Warning(R.color.waring_meter_style),
+-  Error(R.color.error_meter_style)
+-}
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"EntryPointsManager\">\n    <list size=\"1\">\n      <item index=\"0\" class=\"java.lang.String\" itemvalue=\"dagger.Binds\" />\n    </list>\n  </component>\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\n  </component>\n  <component name=\"ProjectType\">\n    <option name=\"id\" value=\"Android\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision acd8d8b3cb1a69fd6e3c5947db3f47b4d66febc6)
++++ .idea/misc.xml	(date 1603132864000)
+@@ -5,7 +5,7 @@
+       <item index="0" class="java.lang.String" itemvalue="dagger.Binds" />
+     </list>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\n  <component name=\"GradleSettings\">\n    <option name=\"linkedExternalProjectsSettings\">\n      <GradleProjectSettings>\n        <option name=\"testRunner\" value=\"PLATFORM\" />\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\n        <option name=\"gradleJvm\" value=\"1.8\" />\n        <option name=\"modules\">\n          <set>\n            <option value=\"$PROJECT_DIR$\" />\n            <option value=\"$PROJECT_DIR$/app\" />\n            <option value=\"$PROJECT_DIR$/buildSrc\" />\n            <option value=\"$PROJECT_DIR$/core-db\" />\n            <option value=\"$PROJECT_DIR$/core-model\" />\n            <option value=\"$PROJECT_DIR$/core-network\" />\n            <option value=\"$PROJECT_DIR$/core-preferences\" />\n            <option value=\"$PROJECT_DIR$/core-ui\" />\n            <option value=\"$PROJECT_DIR$/core-util\" />\n          </set>\n        </option>\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\n      </GradleProjectSettings>\n    </option>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/gradle.xml	(revision acd8d8b3cb1a69fd6e3c5947db3f47b4d66febc6)
++++ .idea/gradle.xml	(date 1603132512000)
+@@ -22,6 +22,7 @@
+           </set>
+         </option>
+         <option name="resolveModulePerSourceSet" value="false" />
++        <option name="useQualifiedModuleNames" value="true" />
+       </GradleProjectSettings>
+     </option>
+   </component>

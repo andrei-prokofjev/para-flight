@@ -15,11 +15,23 @@
         android:id="@+id/action_main_to_settings"
         app:destination="@id/settingsFragment"
         app:enterAnim="@anim/slide_in_left"
-        app:exitAnim="@anim/slide_out_right" />
+        app:exitAnim="@anim/slide_out_right"
+        app:popEnterAnim="@anim/slide_in_right"
+        app:popExitAnim="@anim/fade_out" />
 
     <action
         android:id="@+id/action_main_to_preflight"
         app:destination="@id/preflightFragment" />
+
+  </fragment>
+
+  <fragment
+      android:id="@+id/settingsFragment"
+      android:name="com.apro.paraflight.ui.screen.SettingsFragment"
+      android:label="SettingsFragment"
+      tools:layout="@layout/fragment_settings">
+
+
   </fragment>
 
   <fragment
@@ -38,12 +50,6 @@
       android:label="FlightFragment"
       tools:layout="@layout/fragment_flight" />
 
-
-  <fragment
-      android:id="@+id/settingsFragment"
-      android:name="com.apro.paraflight.ui.screen.SettingsFragment"
-      android:label="SettingsFragment"
-      tools:layout="@layout/fragment_settings" />
 
 </navigation>
 

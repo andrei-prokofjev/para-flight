@@ -8,4 +8,6 @@
   <color name="default_meter_style">@android:color/white</color>
   <color name="waring_meter_style">#ffffff00</color>
   <color name="error_meter_style">@android:color/holo_red_dark</color>
+
+
 </resources>
