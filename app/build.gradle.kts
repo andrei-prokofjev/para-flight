@@ -81,6 +81,7 @@ dependencies {
   implementation(Libs.constraintLayout)
 
   implementation(Libs.mapbox)
+  implementation(Libs.mapboxSurf)
 
   implementation(Libs.navigationFragment)
   implementation(Libs.navigationUi)

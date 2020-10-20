@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
-
+// todo: move to core-ui module
 class FragmentBindingDelegate<T : ViewBinding>(
   val fragment: Fragment,
   private val bindingFactory: (View) -> T

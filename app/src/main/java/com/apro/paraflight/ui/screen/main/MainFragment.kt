@@ -40,6 +40,8 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import com.mapbox.mapboxsdk.utils.MapFragmentUtils
+import com.mapbox.turf.TurfConstants
+import com.mapbox.turf.TurfMeasurement
 import permissions.dispatcher.*
 
 
@@ -58,17 +60,6 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
 
   private val routeCoordinates = mutableListOf<Point>()
 
-  private val callback = object : LocationEngineCallback<LocationEngineResult> {
-    override fun onSuccess(result: LocationEngineResult) {
-      result.lastLocation?.let {
-        viewModel.updateLocation(it)
-      }
-    }
-
-    override fun onFailure(exception: Exception) {
-      toast("failure: $exception")
-    }
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -107,22 +98,28 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
       }
       compassImageView.onClick { viewModel.onCompassClick() }
       flightImageView.onClick {
-        routeCoordinates.clear()
+        initLocationEngine()
         viewModel.onFlightClick()
       }
 
       viewModel.style.observe { mapboxMap?.setStyle(it) }
 
+      // location observer
       viewModel.locationData.observe {
         mapboxMap?.locationComponent?.forceLocationUpdate(it)
         mapboxMap?.cameraPosition = CameraPosition.Builder().target(LatLng(it)).build()
 
-        routeCoordinates.add(Point.fromLngLat(it.longitude, it.latitude))
+
+        val lastPoint = Point.fromLngLat(it.longitude, it.latitude)
+        routeCoordinates.add(lastPoint)
+
+        val dist = TurfMeasurement.distance(routeCoordinates[0], lastPoint, TurfConstants.UNIT_METERS)
+
+
+
         mapboxMap?.style?.let { style ->
           val source = style.getSourceAs<GeoJsonSource>(ROUTE_SOURCE_ID)
-          source?.setGeoJson(FeatureCollection.fromFeatures(arrayOf(Feature.fromGeometry(
-            LineString.fromLngLats(routeCoordinates)
-          ))))
+          source?.setGeoJson(FeatureCollection.fromFeatures(arrayOf(Feature.fromGeometry(LineString.fromLngLats(routeCoordinates)))))
         }
       }
 
@@ -184,8 +181,6 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
       it.isLocationComponentEnabled = true
       it.cameraMode = CameraMode.TRACKING
       it.renderMode = RenderMode.COMPASS
-
-      initLocationEngine()
     }
   }
 
@@ -197,8 +192,20 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
       .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
       .build()
 
+    val callback = object : LocationEngineCallback<LocationEngineResult> {
+      override fun onSuccess(result: LocationEngineResult) {
+        result.lastLocation?.let {
+          viewModel.updateLocation(it)
+        }
+      }
+
+      override fun onFailure(exception: Exception) {
+        toast("failure: $exception")
+      }
+    }
     locationEngine?.requestLocationUpdates(request, callback, activity?.mainLooper)
     locationEngine?.getLastLocation(callback)
+
   }
 
   @SuppressLint("NeedOnRequestPermissionsResult")

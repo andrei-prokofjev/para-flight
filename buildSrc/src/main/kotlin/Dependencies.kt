@@ -49,6 +49,7 @@ object Libs {
 
   // Mapbox
   const val mapbox = "com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0"
+  const val mapboxSurf = "com.mapbox.mapboxsdk:mapbox-sdk-turf:5.5.0"
 //  const val mapboxNavigation = "com.mapbox.navigation:ui:1.0.0"
 
   // App center
