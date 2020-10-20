@@ -60,6 +60,17 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
 
   private val routeCoordinates = mutableListOf<Point>()
 
+  private val callback = object : LocationEngineCallback<LocationEngineResult> {
+    override fun onSuccess(result: LocationEngineResult) {
+      result.lastLocation?.let {
+        viewModel.updateLocation(it)
+      }
+    }
+
+    override fun onFailure(exception: Exception) {
+      toast("failure: $exception")
+    }
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -98,8 +109,16 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
       }
       compassImageView.onClick { viewModel.onCompassClick() }
       flightImageView.onClick {
-        initLocationEngine()
-        viewModel.onFlightClick()
+        if (locationEngine == null) {
+          flightImageView.setImageResource(R.drawable.ic_flight_land)
+          viewModel.clearRouteStore()
+          routeCoordinates.clear()
+          initLocationEngine()
+        } else {
+          flightImageView.setImageResource(R.drawable.ic_flight_takeoff)
+          locationEngine?.removeLocationUpdates(callback)
+          locationEngine = null
+        }
       }
 
       viewModel.style.observe { mapboxMap?.setStyle(it) }
@@ -109,13 +128,10 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
         mapboxMap?.locationComponent?.forceLocationUpdate(it)
         mapboxMap?.cameraPosition = CameraPosition.Builder().target(LatLng(it)).build()
 
-
         val lastPoint = Point.fromLngLat(it.longitude, it.latitude)
         routeCoordinates.add(lastPoint)
 
         val dist = TurfMeasurement.distance(routeCoordinates[0], lastPoint, TurfConstants.UNIT_METERS)
-
-
 
         mapboxMap?.style?.let { style ->
           val source = style.getSourceAs<GeoJsonSource>(ROUTE_SOURCE_ID)
@@ -192,20 +208,9 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
       .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
       .build()
 
-    val callback = object : LocationEngineCallback<LocationEngineResult> {
-      override fun onSuccess(result: LocationEngineResult) {
-        result.lastLocation?.let {
-          viewModel.updateLocation(it)
-        }
-      }
 
-      override fun onFailure(exception: Exception) {
-        toast("failure: $exception")
-      }
-    }
     locationEngine?.requestLocationUpdates(request, callback, activity?.mainLooper)
     locationEngine?.getLastLocation(callback)
-
   }
 
   @SuppressLint("NeedOnRequestPermissionsResult")

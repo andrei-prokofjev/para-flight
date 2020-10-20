@@ -58,7 +58,7 @@ class MapboxViewModel @Inject constructor(
 
   }
 
-  fun onFlightClick() {
+  fun clearRouteStore() {
     viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
       locationData.value?.let {
         databaseApi.cleaner().clearAll()

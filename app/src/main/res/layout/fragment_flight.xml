@@ -6,10 +6,10 @@
     android:keepScreenOn="true">
 
 
-  <FrameLayout
-      android:id="@+id/mapboxLayout"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent" />
+  <!--  <FrameLayout-->
+  <!--      android:id="@+id/mapboxLayout"-->
+  <!--      android:layout_width="match_parent"-->
+  <!--      android:layout_height="match_parent" />-->
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/speedMeterView"
