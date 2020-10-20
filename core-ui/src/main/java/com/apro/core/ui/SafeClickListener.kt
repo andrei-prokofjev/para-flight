@@ -1,4 +1,4 @@
-package com.apro.core_ui
+package com.apro.core.ui
 
 import android.view.View
 

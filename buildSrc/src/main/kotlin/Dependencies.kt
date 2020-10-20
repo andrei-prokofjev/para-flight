@@ -84,5 +84,5 @@ object TestLibs {
 
   const val navigationTesting = "androidx.navigation:navigation-testing:${Versions.navigation}"
 
-  const val roomTesting = "androidx.room:room-testing:${Versions.room}"
+  // const val roomTesting = "androidx.room:room-testing:${Versions.room}"
 }

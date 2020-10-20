@@ -8,7 +8,7 @@ import com.apro.core.db.api.data.store.RouteStore
 import com.apro.core.db.api.di.DatabaseApi
 import com.apro.core.db.model.LocationPointModel
 import com.apro.core.preferenes.api.MapboxPreferences
-import com.apro.core_ui.BaseViewModel
+import com.apro.core.ui.BaseViewModel
 import com.mapbox.mapboxsdk.maps.Style
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

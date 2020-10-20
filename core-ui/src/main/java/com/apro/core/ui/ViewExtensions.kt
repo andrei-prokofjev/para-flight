@@ -1,4 +1,4 @@
-package com.apro.core_ui
+package com.apro.core.ui
 
 import android.app.Activity
 import android.content.Context
@@ -19,22 +19,15 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import kotlin.math.abs
 
 const val DEFAULT_THROTTLE_DURATION = 300L
 
-inline fun <V : View> V.onClick(
-  throttleDuration: Long = DEFAULT_THROTTLE_DURATION,
-  crossinline listener: () -> Unit
-): V {
+inline fun <V : View> V.onClick(throttleDuration: Long = DEFAULT_THROTTLE_DURATION, crossinline listener: () -> Unit): V {
   setOnClickListener(SafeClickListener(throttleDuration) { listener.invoke() })
   return this
 }
 
-inline fun <V : View> Array<V>.onClick(
-  throttleDuration: Long = DEFAULT_THROTTLE_DURATION,
-  crossinline listener: () -> Unit
-) {
+inline fun <V : View> Array<V>.onClick(throttleDuration: Long = DEFAULT_THROTTLE_DURATION, crossinline listener: () -> Unit) {
   forEach { it.setOnClickListener(SafeClickListener(throttleDuration) { listener.invoke() }) }
 }
 
@@ -46,10 +39,7 @@ inline fun <V : View> V.onLongClick(crossinline listener: () -> Unit): V {
   return this
 }
 
-fun throttleClicks(
-  throttleDuration: Long = DEFAULT_THROTTLE_DURATION,
-  vararg pairs: Pair<View, () -> Unit>
-) {
+fun throttleClicks(throttleDuration: Long = DEFAULT_THROTTLE_DURATION, vararg pairs: Pair<View, () -> Unit>) {
   val doubleClickPreventer = DoubleClickPreventer(throttleDuration)
   pairs.forEach { (v, listener) ->
     v.setOnClickListener {
@@ -81,12 +71,7 @@ fun View.setMargins(left: Int? = null, top: Int? = null, right: Int? = null, bot
 }
 
 fun View.setPaddings(left: Int? = null, top: Int? = null, right: Int? = null, bottom: Int? = null) {
-  setPadding(
-    left ?: paddingLeft,
-    top ?: paddingTop,
-    right ?: paddingRight,
-    bottom ?: paddingBottom
-  )
+  setPadding(left ?: paddingLeft, top ?: paddingTop, right ?: paddingRight, bottom ?: paddingBottom)
 }
 
 fun View.setSize(width: Int? = null, height: Int? = null) {
@@ -122,9 +107,7 @@ private fun EditText.showKeyboardImmediately() {
   inputManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }
 
-fun View.getColor(@ColorRes resColor: Int): Int {
-  return ContextCompat.getColor(context, resColor)
-}
+fun View.getColor(@ColorRes resColor: Int): Int = ContextCompat.getColor(context, resColor)
 
 fun Fragment.dpToPx(dp: Float): Int {
   val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -147,9 +130,7 @@ fun Context.dpToPx(dp: Float): Int {
   return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics).toInt()
 }
 
-fun Fragment.statusBarHeight(): Int {
-  return activity?.statusBarHeight() ?: 0
-}
+fun Fragment.statusBarHeight(): Int = activity?.statusBarHeight() ?: 0
 
 fun Activity.statusBarHeight(): Int {
   val rectangle = Rect()
@@ -185,7 +166,6 @@ fun Context.navBarDeviceHeight(): Int {
 }
 
 fun Fragment.navBarHeight(): Int = requireContext().navBarHeight()
-
 
 fun Fragment.toast(@StringRes textId: Int, long: Boolean = false, gravity: Int? = null) {
   toast(getString(textId), long, gravity)
@@ -255,27 +235,6 @@ fun concatBitmaps(width: Int, height: Int, vararg bitmaps: Bitmap): Bitmap {
   val canvas = Canvas(bitmap)
   bitmaps.forEach { canvas.drawBitmap(it, Matrix(), null) }
   return bitmap
-}
-
-fun createMaskPath(size: Int): Path = createMaskPath(size, 0)
-
-fun createMaskPath(size: Int, padding: Int): Path {
-  //Formula: (|x|)^3 + (|y|)^3 = radius^3
-  val radius = size / 2 - padding
-  val radiusToPow = radius * radius * radius.toDouble()
-  val path = Path()
-  path.moveTo(-radius.toFloat(), 0f)
-  for (x in -radius + 1..radius) {
-    path.lineTo(x.toFloat(), Math.cbrt(radiusToPow - abs(x * x * x)).toFloat())
-  }
-  for (x in radius downTo -radius) {
-    path.lineTo(x.toFloat(), (-Math.cbrt(radiusToPow - abs(x * x * x))).toFloat())
-  }
-  path.close()
-  val matrix = Matrix()
-  matrix.postTranslate(size / 2.toFloat(), size / 2.toFloat())
-  path.transform(matrix)
-  return path
 }
 
 fun TextView.textColor(id: Int) {

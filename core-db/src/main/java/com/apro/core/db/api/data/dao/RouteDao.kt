@@ -9,7 +9,7 @@ import com.apro.core.db.entity.LocationPointEntity
 @Dao
 interface RouteDao {
 
-  @Query("SELECT * FROM flights")
+  @Query("SELECT * FROM routes")
   fun getAll(): List<LocationPointEntity>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)

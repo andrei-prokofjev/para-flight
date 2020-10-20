@@ -1,4 +1,4 @@
-package com.apro.core_ui
+package com.apro.core.ui
 
 internal class DoubleClickPreventer(private val skipDurationInMillis: Long) {
 

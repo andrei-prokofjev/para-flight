@@ -2,9 +2,9 @@ package com.apro.paraflight.viewmodel.mapbox
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.Speed
 import com.apro.core.util.metersPerSecond
-import com.apro.core_ui.BaseViewModel
 import com.mapbox.android.core.location.LocationEngineResult
 
 class MapboxViewModel : BaseViewModel() {

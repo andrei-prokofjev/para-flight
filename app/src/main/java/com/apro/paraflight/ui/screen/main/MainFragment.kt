@@ -9,9 +9,9 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import com.apro.core_ui.BaseFragment
-import com.apro.core_ui.onClick
-import com.apro.core_ui.toast
+import com.apro.core.ui.BaseFragment
+import com.apro.core.ui.onClick
+import com.apro.core.ui.toast
 import com.apro.paraflight.BuildConfig
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
@@ -83,8 +83,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
           mapboxMap = it
           it.setStyle(viewModel.getStyle(DI.preferencesApi.mapbox().mapStyle)) { style ->
             enableLocationComponentWithPermissionCheck(style)
-            style.addSource(GeoJsonSource("line-source"))
-            style.addLayer(LineLayer("linelayer", "line-source").withProperties(
+            style.addSource(GeoJsonSource(ROUTE_SOURCE_ID))
+            style.addLayer(LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID).withProperties(
               lineWidth(5f),
               lineColor(Color.BLUE)
             ))
@@ -96,6 +96,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
       shareImageView.onClick { viewModel.onShareClick() }
       layerImageView.onClick { viewModel.onLayerClick() }
       nearMeImageView.onClick { viewModel.onNearMeClick() }
+
       myLocationImageView.onClick {
         viewModel.locationData.value?.let {
           val position = CameraPosition.Builder()
@@ -111,13 +112,14 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
       }
 
       viewModel.style.observe { mapboxMap?.setStyle(it) }
-      viewModel.toast.observe { toast(it) }
+
       viewModel.locationData.observe {
         mapboxMap?.locationComponent?.forceLocationUpdate(it)
+        mapboxMap?.cameraPosition = CameraPosition.Builder().target(LatLng(it)).build()
 
-        routeCoordinates.add(Point.fromLngLat(it.longitude, it.latitude, it.altitude))
-        mapboxMap?.style?.let {
-          val source = it.getSourceAs<GeoJsonSource>("line-source")
+        routeCoordinates.add(Point.fromLngLat(it.longitude, it.latitude))
+        mapboxMap?.style?.let { style ->
+          val source = style.getSourceAs<GeoJsonSource>(ROUTE_SOURCE_ID)
           source?.setGeoJson(FeatureCollection.fromFeatures(arrayOf(Feature.fromGeometry(
             LineString.fromLngLats(routeCoordinates)
           ))))
@@ -232,6 +234,10 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
   companion object {
     private const val DEFAULT_INTERVAL_IN_MILLISECONDS = 2000L
     private const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
+
+    private const val ROUTE_SOURCE_ID = "route-source"
+    private const val ROUTE_LAYER_ID = "route-layer"
+
 
     fun newInstance(options: MapboxMapOptions): MainFragment = MainFragment().apply {
       arguments = MapFragmentUtils.createFragmentArgs(options)
