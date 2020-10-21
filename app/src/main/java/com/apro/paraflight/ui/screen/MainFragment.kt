@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.apro.core.ui.BaseFragment
 import com.apro.core.ui.onClick
 import com.apro.core.ui.toast
@@ -18,7 +18,6 @@ import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentMainBinding
 import com.apro.paraflight.ui.base.viewBinding
-
 import com.apro.paraflight.viewmodel.main.MainScreenComponent
 import com.apro.paraflight.viewmodel.main.MapboxViewModel
 import com.mapbox.android.core.location.*
@@ -76,6 +75,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+
     Mapbox.getInstance(requireContext(), getString(R.string.mapbox_access_token))
     with(binding) {
       mapView = MapView(root.context, MapFragmentUtils.resolveArgs(root.context, arguments)).apply {
@@ -97,8 +98,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
       }
 
       settingsImageView.onClick {
-        val navigation = Navigation.findNavController(requireActivity(), R.id.navigationFragment)
-        navigation.navigate(R.id.action_main_to_settings)
+        findNavController(this@MainFragment).navigate(R.id.action_main_to_settings)
 
       }
 
@@ -118,9 +118,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
       compassImageView.onClick { viewModel.onCompassClick() }
 
       flightImageView.onClick {
+        findNavController(this@MainFragment).navigate(R.id.action_main_to_preflight)
 
-        val navigation = Navigation.findNavController(requireActivity(), R.id.navigationFragment)
-        navigation.navigate(R.id.action_main_to_preflight)
 //        if (locationEngine == null) {
 //          flightImageView.setImageResource(R.drawable.ic_flight_land)
 //          viewModel.clearRouteStore()
