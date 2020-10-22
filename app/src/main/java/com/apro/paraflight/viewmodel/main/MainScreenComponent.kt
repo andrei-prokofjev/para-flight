@@ -5,10 +5,11 @@ import com.apro.core.db.api.data.store.RouteStore
 import com.apro.core.db.api.di.DatabaseApi
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.paraflight.DI
-import com.apro.paraflight.core.di.ScreenScope
-import com.apro.paraflight.core.di.ViewModelFactory
-import com.apro.paraflight.core.di.ViewModelKey
+import com.apro.paraflight.di.ScreenScope
+import com.apro.paraflight.di.ViewModelFactory
+import com.apro.paraflight.di.ViewModelKey
 import com.apro.paraflight.util.ResourceProvider
+import com.github.terrakok.cicerone.Router
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -35,6 +36,9 @@ interface MainScreenComponent {
     @BindsInstance
     fun databaseApi(databaseApi: DatabaseApi): Builder
 
+    @BindsInstance
+    fun appRouter(appRouter: Router): Builder
+
     fun build(): MainScreenComponent
   }
 
@@ -45,6 +49,7 @@ interface MainScreenComponent {
         .mapboxPreferences(DI.preferencesApi.mapbox())
         .flightsStore(DI.databaseApi.flightsStore())
         .databaseApi(DI.databaseApi)
+        .appRouter(DI.appComponent.appRouter())
         .build()
     }
   }

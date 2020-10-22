@@ -4,12 +4,11 @@ import android.app.Application
 import com.apro.core.db.impl.di.DatabaseComponent
 import com.apro.core.network.di.DaggerNetworkComponent
 import com.apro.core.preferenes.di.PreferencesComponent
-import com.apro.paraflight.core.di.DaggerAppComponent
+import com.apro.paraflight.di.DaggerAppComponent
 import timber.log.Timber
 
 @Suppress("unused")
 class App : Application() {
-
 
   override fun onCreate() {
     super.onCreate()

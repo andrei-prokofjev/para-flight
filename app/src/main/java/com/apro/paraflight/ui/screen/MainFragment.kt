@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.apro.core.ui.BaseFragment
 import com.apro.core.ui.onClick
 import com.apro.core.ui.toast
@@ -17,6 +16,7 @@ import com.apro.paraflight.BuildConfig
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentMainBinding
+import com.apro.paraflight.ui.BackButtonListener
 import com.apro.paraflight.ui.base.viewBinding
 import com.apro.paraflight.viewmodel.main.MainScreenComponent
 import com.apro.paraflight.viewmodel.main.MapboxViewModel
@@ -47,7 +47,7 @@ import permissions.dispatcher.*
 
 
 @RuntimePermissions
-class MainFragment : BaseFragment(R.layout.fragment_main) {
+class MainFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {
 
   private val component by lazy { MainScreenComponent.create() }
   private val binding by viewBinding { FragmentMainBinding.bind(it) }
@@ -65,6 +65,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     override fun onSuccess(result: LocationEngineResult) {
       result.lastLocation?.let {
         viewModel.updateLocation(it)
+
+
       }
     }
 
@@ -98,7 +100,9 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
       }
 
       settingsImageView.onClick {
-        findNavController(this@MainFragment).navigate(R.id.action_main_to_settings)
+
+        viewModel.onSettingsClick()
+        // findNavController(this@MainFragment).navigate(R.id.action_main_to_settings)
 
       }
 
@@ -118,7 +122,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
       compassImageView.onClick { viewModel.onCompassClick() }
 
       flightImageView.onClick {
-        findNavController(this@MainFragment).navigate(R.id.action_main_to_preflight)
+        viewModel.onPreflightClick()
+        // findNavController(this@MainFragment).navigate(R.id.action_main_to_preflight)
 
 //        if (locationEngine == null) {
 //          flightImageView.setImageResource(R.drawable.ic_flight_land)
@@ -265,5 +270,11 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     fun newInstance(options: MapboxMapOptions): MainFragment = MainFragment().apply {
       arguments = MapFragmentUtils.createFragmentArgs(options)
     }
+  }
+
+  override fun onBackPressed(): Boolean {
+    println(">>> back$")
+    DI.appComponent.appRouter().exit()
+    return true
   }
 }

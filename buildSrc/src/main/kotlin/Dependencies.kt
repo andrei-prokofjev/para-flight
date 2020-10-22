@@ -42,7 +42,8 @@ object Libs {
   const val permissionsDispatcher = "org.permissionsdispatcher:permissionsdispatcher:${Versions.permissionsDispatcher}"
   const val permissionsDispatcherCompiler = "org.permissionsdispatcher:permissionsdispatcher-processor:${Versions.permissionsDispatcher}"
 
-  // Android navigation
+  // Navigation
+  const val cicerone = "com.github.terrakok:cicerone:6.1"
   const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
   const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
   //const val navigationFeatures = "androidx.navigation:navigation-dynamic-features-fragment:${Versions.navigation}"
@@ -74,7 +75,7 @@ object Libs {
 
 object BuildPlugins {
   const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-  const val androidGradle = "com.android.tools.build:gradle:4.0.2"
+  const val androidGradle = "com.android.tools.build:gradle:4.1.0"
   const val navigationSafeArgsGradlePlugin = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
 }
 

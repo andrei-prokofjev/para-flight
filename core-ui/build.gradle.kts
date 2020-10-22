@@ -36,6 +36,7 @@ dependencies {
   implementation(Libs.coroutines)
   implementation(Libs.timber)
 
+  implementation(Libs.cicerone)
 
   testImplementation(TestLibs.junit)
   androidTestImplementation(TestLibs.testJunit)

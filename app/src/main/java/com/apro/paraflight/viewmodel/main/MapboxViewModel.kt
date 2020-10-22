@@ -9,6 +9,8 @@ import com.apro.core.db.api.di.DatabaseApi
 import com.apro.core.db.model.LocationPointModel
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.BaseViewModel
+import com.apro.paraflight.ui.screen.Screens
+import com.github.terrakok.cicerone.Router
 import com.mapbox.mapboxsdk.maps.Style
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +19,8 @@ import javax.inject.Inject
 class MapboxViewModel @Inject constructor(
   private val mapboxPreferences: MapboxPreferences,
   private val routeStore: RouteStore,
-  private val databaseApi: DatabaseApi
+  private val databaseApi: DatabaseApi,
+  private val appRouter: Router
 ) : BaseViewModel() {
 
 
@@ -38,6 +41,7 @@ class MapboxViewModel @Inject constructor(
   }
 
   fun onSettingsClick() {
+    appRouter.navigateTo(Screens.settings())
   }
 
   fun onNearMeClick() {
@@ -72,4 +76,8 @@ class MapboxViewModel @Inject constructor(
       MapboxPreferences.MapStyle.MAPBOX_STREETS -> Style.MAPBOX_STREETS
       MapboxPreferences.MapStyle.LIGHT -> Style.LIGHT
     }
+
+  fun onPreflightClick() {
+    appRouter.navigateTo(Screens.preflight())
+  }
 }

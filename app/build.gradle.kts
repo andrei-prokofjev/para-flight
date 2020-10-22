@@ -83,6 +83,9 @@ dependencies {
   implementation(Libs.mapbox)
   implementation(Libs.mapboxSurf)
 
+
+  implementation(Libs.cicerone)
+
   implementation(Libs.navigationFragment)
   implementation(Libs.navigationUi)
 //  implementation(Libs.navigationFeatures)

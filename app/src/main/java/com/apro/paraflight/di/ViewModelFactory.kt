@@ -1,4 +1,4 @@
-package com.apro.paraflight.core.di
+package com.apro.paraflight.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

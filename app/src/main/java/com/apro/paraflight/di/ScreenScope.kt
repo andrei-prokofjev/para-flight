@@ -1,4 +1,4 @@
-package com.apro.paraflight.core.di
+package com.apro.paraflight.di
 
 import javax.inject.Scope
 
