@@ -78,6 +78,6 @@ class FlightViewModel @Inject constructor(
     }
 
   fun onPreflightClick() {
-    appRouter.navigateTo(Screens.preflight())
+   // appRouter.navigateTo(Screens.preflight())
   }
 }

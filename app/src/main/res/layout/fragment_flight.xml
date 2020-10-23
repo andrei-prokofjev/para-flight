@@ -5,8 +5,13 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true">
 
+  <FrameLayout
+      android:id="@+id/mapboxLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
 
-<com.apro.paraflight.ui.customview.MeterView
+
+  <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/speedMeterView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

@@ -10,13 +10,10 @@ import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.apro.core.ui.BaseFragment
-import com.apro.core.ui.onClick
 import com.apro.core.ui.toast
-import com.apro.paraflight.BuildConfig
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
-import com.apro.paraflight.databinding.FragmentMainBinding
-import com.apro.paraflight.ui.common.BackButtonListener
+import com.apro.paraflight.databinding.FragmentFlightBinding
 import com.apro.paraflight.ui.common.viewBinding
 import com.apro.paraflight.viewmodel.FlightScreenComponent
 import com.apro.paraflight.viewmodel.FlightViewModel
@@ -27,7 +24,6 @@ import com.mapbox.geojson.LineString
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
@@ -45,10 +41,10 @@ import permissions.dispatcher.*
 
 
 @RuntimePermissions
-class FlightFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {
+class FlightFragment : BaseFragment(R.layout.fragment_flight) {
 
   private val component by lazy { FlightScreenComponent.create() }
-  private val binding by viewBinding { FragmentMainBinding.bind(it) }
+  private val binding by viewBinding { FragmentFlightBinding.bind(it) }
   private val viewModel by viewModels<FlightViewModel> { component.viewModelFactory() }
 
   private lateinit var mapView: MapView
@@ -63,8 +59,6 @@ class FlightFragment : BaseFragment(R.layout.fragment_main), BackButtonListener 
     override fun onSuccess(result: LocationEngineResult) {
       result.lastLocation?.let {
         viewModel.updateLocation(it)
-
-
       }
     }
 
@@ -97,43 +91,43 @@ class FlightFragment : BaseFragment(R.layout.fragment_main), BackButtonListener 
         }
       }
 
-      settingsImageView.onClick {
+//      settingsImageView.onClick {
+//
+//        viewModel.onSettingsClick()
+//        // findNavController(this@MainFragment).navigate(R.id.action_main_to_settings)
+//
+//      }
 
-        viewModel.onSettingsClick()
-        // findNavController(this@MainFragment).navigate(R.id.action_main_to_settings)
 
-      }
+//      shareImageView.onClick { viewModel.onShareClick() }
+//      layerImageView.onClick { viewModel.onLayerClick() }
+//      nearMeImageView.onClick { viewModel.onNearMeClick() }
 
-
-      shareImageView.onClick { viewModel.onShareClick() }
-      layerImageView.onClick { viewModel.onLayerClick() }
-      nearMeImageView.onClick { viewModel.onNearMeClick() }
-
-      myLocationImageView.onClick {
-        viewModel.locationData.value?.let {
-          val position = CameraPosition.Builder()
-            .target(LatLng(it.latitude, it.longitude))
-            .build()
-          mapboxMap?.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000)
-        }
-      }
-      compassImageView.onClick { viewModel.onCompassClick() }
-
-      flightImageView.onClick {
-        viewModel.onPreflightClick()
-        // findNavController(this@MainFragment).navigate(R.id.action_main_to_preflight)
-
-//        if (locationEngine == null) {
-//          flightImageView.setImageResource(R.drawable.ic_flight_land)
-//          viewModel.clearRouteStore()
-//          routeCoordinates.clear()
-//          initLocationEngine()
-//        } else {
-//          flightImageView.setImageResource(R.drawable.ic_flight_takeoff)
-//          locationEngine?.removeLocationUpdates(callback)
-//          locationEngine = null
+//      myLocationImageView.onClick {
+//        viewModel.locationData.value?.let {
+//          val position = CameraPosition.Builder()
+//            .target(LatLng(it.latitude, it.longitude))
+//            .build()
+//          mapboxMap?.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000)
 //        }
-      }
+//      }
+      //compassImageView.onClick { viewModel.onCompassClick() }
+
+//      flightImageView.onClick {
+//        viewModel.onPreflightClick()
+//        // findNavController(this@MainFragment).navigate(R.id.action_main_to_preflight)
+//
+////        if (locationEngine == null) {
+////          flightImageView.setImageResource(R.drawable.ic_flight_land)
+////          viewModel.clearRouteStore()
+////          routeCoordinates.clear()
+////          initLocationEngine()
+////        } else {
+////          flightImageView.setImageResource(R.drawable.ic_flight_takeoff)
+////          locationEngine?.removeLocationUpdates(callback)
+////          locationEngine = null
+////        }
+//      }
 
       viewModel.style.observe { mapboxMap?.setStyle(it) }
 
@@ -153,7 +147,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_main), BackButtonListener 
         }
       }
 
-      versionTextView.text = BuildConfig.VERSION_NAME
+      //versionTextView.text = BuildConfig.VERSION_NAME
     }
   }
 
@@ -268,9 +262,4 @@ class FlightFragment : BaseFragment(R.layout.fragment_main), BackButtonListener 
     fun create(): FlightFragment = FlightFragment()
   }
 
-  override fun onBackPressed(): Boolean {
-    println(">>> back$")
-    DI.appComponent.appRouter().exit()
-    return true
-  }
 }
