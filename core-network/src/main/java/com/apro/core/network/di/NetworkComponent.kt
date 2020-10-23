@@ -1,6 +1,6 @@
 package com.apro.core.network.di
 
-import com.apro.core.BuildConfig
+import com.apro.core.network.BuildConfig
 import com.apro.core.network.api.WeatherApi
 import dagger.Component
 import dagger.Module
