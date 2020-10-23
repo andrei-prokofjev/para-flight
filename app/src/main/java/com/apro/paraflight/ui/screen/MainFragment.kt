@@ -21,7 +21,10 @@ class MainFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {
 
     with(binding) {
       profileImageView.onClick { DI.appComponent.appRouter().navigateTo(Screens.profile()) }
-      flightImageView.onClick { DI.appComponent.appRouter().navigateTo(Screens.preflight()) }
+
+      logbookImageView.onClick { DI.appComponent.appRouter().navigateTo(Screens.logbook()) }
+
+      preflightImageView.onClick { DI.appComponent.appRouter().navigateTo(Screens.preflight()) }
     }
   }
 

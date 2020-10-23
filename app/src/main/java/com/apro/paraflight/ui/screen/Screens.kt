@@ -14,4 +14,6 @@ object Screens {
   fun preflight() = FragmentScreen(PreflightFragment::javaClass.name) { PreflightFragment.create() }
 
   fun flight() = FragmentScreen(FlightFragment::javaClass.name) { FlightFragment.create() }
+
+  fun logbook() = FragmentScreen(LogbookFragment::javaClass.name) { LogbookFragment.create() }
 }
