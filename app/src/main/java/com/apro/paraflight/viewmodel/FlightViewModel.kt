@@ -1,4 +1,4 @@
-package com.apro.paraflight.viewmodel.main
+package com.apro.paraflight.viewmodel
 
 import android.location.Location
 import androidx.lifecycle.LiveData
@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MapboxViewModel @Inject constructor(
+class FlightViewModel @Inject constructor(
   private val mapboxPreferences: MapboxPreferences,
   private val routeStore: RouteStore,
   private val databaseApi: DatabaseApi,

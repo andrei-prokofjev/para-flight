@@ -1,4 +1,4 @@
-package com.apro.paraflight.ui.base
+package com.apro.paraflight.ui.common
 
 import android.view.View
 import androidx.fragment.app.Fragment

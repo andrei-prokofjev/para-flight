@@ -7,7 +7,7 @@ import com.apro.core.ui.onClick
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentPreflightBinding
-import com.apro.paraflight.ui.base.viewBinding
+import com.apro.paraflight.ui.common.viewBinding
 
 class PreflightFragment : BaseFragment(R.layout.fragment_preflight) {
 
@@ -21,6 +21,6 @@ class PreflightFragment : BaseFragment(R.layout.fragment_preflight) {
 
 
   companion object {
-    fun newInstance() = PreflightFragment()
+    fun create() = PreflightFragment()
   }
 }

@@ -2,7 +2,7 @@ package com.apro.paraflight.ui.screen
 
 import com.apro.core.ui.BaseFragment
 import com.apro.paraflight.R
-import com.apro.paraflight.ui.BackButtonListener
+import com.apro.paraflight.ui.common.BackButtonListener
 
 class SettingsFragment : BaseFragment(R.layout.fragment_settings), BackButtonListener {
 
@@ -13,7 +13,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings), BackButtonLis
   }
 
   companion object {
-    fun newInstance() = SettingsFragment()
+    fun create() = SettingsFragment()
   }
 
 

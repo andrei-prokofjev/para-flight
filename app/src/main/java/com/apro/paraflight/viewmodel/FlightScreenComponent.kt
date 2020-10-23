@@ -1,4 +1,4 @@
-package com.apro.paraflight.viewmodel.main
+package com.apro.paraflight.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.apro.core.db.api.data.store.RouteStore
@@ -16,9 +16,9 @@ import dagger.Component
 import dagger.Module
 import dagger.multibindings.IntoMap
 
-@Component(modules = [MainScreenModule::class])
+@Component(modules = [FlightScreenModule::class])
 @ScreenScope
-interface MainScreenComponent {
+interface FlightScreenComponent {
 
   fun viewModelFactory(): ViewModelFactory
 
@@ -39,12 +39,12 @@ interface MainScreenComponent {
     @BindsInstance
     fun appRouter(appRouter: Router): Builder
 
-    fun build(): MainScreenComponent
+    fun build(): FlightScreenComponent
   }
 
   companion object {
     fun create() = with(DI.appComponent) {
-      DaggerMainScreenComponent.builder()
+      DaggerFlightScreenComponent.builder()
         .resources(resources())
         .mapboxPreferences(DI.preferencesApi.mapbox())
         .flightsStore(DI.databaseApi.flightsStore())
@@ -56,10 +56,10 @@ interface MainScreenComponent {
 }
 
 @Module
-abstract class MainScreenModule {
+abstract class FlightScreenModule {
 
   @Binds
   @IntoMap
-  @ViewModelKey(MapboxViewModel::class)
-  abstract fun mainScreenViewModel(viewModel: MapboxViewModel): ViewModel
+  @ViewModelKey(FlightViewModel::class)
+  abstract fun mainScreenViewModel(viewModel: FlightViewModel): ViewModel
 }

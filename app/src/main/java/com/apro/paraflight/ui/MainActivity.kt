@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
+import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.screen.Screens
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.androidx.AppNavigator
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
           .build()
       )
 
-    DI.appComponent.appRouter().newRootScreen(Screens.main(options))
+    DI.appComponent.appRouter().newRootScreen(Screens.main())
 
   }
 
