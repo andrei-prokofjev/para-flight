@@ -8,7 +8,7 @@ import com.apro.core.util.event.EventBus
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
-import com.apro.paraflight.mapbox.FlightLocationEngine
+import com.apro.paraflight.mapbox.FlightLocationEngineImpl
 import com.apro.paraflight.util.ResourceProvider
 import dagger.Binds
 import dagger.BindsInstance
@@ -42,7 +42,7 @@ interface MapboxScreenComponent {
     fun eventBus(eventBus: EventBus): Builder
 
     @BindsInstance
-    fun flightLocationEngine(locationEngine: FlightLocationEngine): Builder
+    fun flightLocationEngine(locationEngineImpl: FlightLocationEngineImpl): Builder
 
     fun build(): MapboxScreenComponent
   }
@@ -55,7 +55,7 @@ interface MapboxScreenComponent {
         .flightsStore(DI.databaseApi.flightsStore())
         .databaseApi(DI.databaseApi)
         .eventBus(eventBus())
-        .flightLocationEngine(FlightLocationEngine(context()))
+        .flightLocationEngine(flightLocationEngine())
         .build()
     }
   }

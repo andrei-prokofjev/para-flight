@@ -13,7 +13,12 @@ import com.apro.core.util.event.EventBus
 import com.apro.paraflight.events.MyLocationEvent
 import com.apro.paraflight.events.StartFlightEvent
 import com.apro.paraflight.events.StopFlightEvent
-import com.apro.paraflight.mapbox.FlightLocationEngine
+import com.apro.paraflight.mapbox.FlightLocationEngineImpl
+import com.mapbox.geojson.Point
+import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.camera.CameraUpdate
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.Style
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -25,8 +30,9 @@ class MapboxViewModel @Inject constructor(
   private val routeStore: RouteStore,
   private val databaseApi: DatabaseApi,
   eventBus: EventBus,
-  private val flightLocationEngine: FlightLocationEngine
+  private val locationEngine: FlightLocationEngineImpl
 ) : BaseViewModel() {
+
 
   private val _style = MutableLiveData<String>()
   val style: LiveData<String> = _style
@@ -34,12 +40,25 @@ class MapboxViewModel @Inject constructor(
   private val _liveLocationData = MutableLiveData<Location>()
   val locationData: LiveData<Location> = _liveLocationData
 
-  private val _cameraPosition = MutableLiveData<Location>()
-  val cameraPosition: LiveData<Location> = _cameraPosition
+  private val _routeData = MutableLiveData<List<Point>>()
+  val routeData: LiveData<List<Point>> = _routeData
+
+  private val _cameraPosition = MutableLiveData<Pair<CameraUpdate, Int>>()
+  val cameraPosition: LiveData<Pair<CameraUpdate, Int>> = _cameraPosition
 
 
   init {
-    eventBus.send(MyLocationEvent(), 1000)
+    // move camera to the current position
+    locationEngine.getLastLocation { location ->
+      location?.let {
+        val position = CameraPosition.Builder()
+          .target(LatLng(it.latitude, it.longitude))
+          .zoom(12.0)
+          .build()
+        val cameraUpdate = CameraUpdateFactory.newCameraPosition(position)
+        eventBus.send(MyLocationEvent(cameraUpdate, 2500), 1500)
+      }
+    }
 
     // change map stayle
     viewModelScope.launch {
@@ -48,22 +67,30 @@ class MapboxViewModel @Inject constructor(
         )
       }
     }
-    // update camera postion with cureent location
+    // update camera position with current location
     viewModelScope.launch {
       EventBus.observeChannel(MyLocationEvent::class).collect {
-        flightLocationEngine.getLastLocation { location ->
-          location?.let { _cameraPosition.postValue(it) }
-        }
+        _cameraPosition.postValue(it.cameraUpdate to it.duration)
       }
     }
-    // update map postion and save current positon into db
+    // update map
     viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-      flightLocationEngine.updateLocationFlow().collect { location ->
-        _liveLocationData.postValue(location)
-
+      locationEngine.updateLocationFlow().collect { location ->
         location?.let {
+          // update location
+          _liveLocationData.postValue(it)
+          // save into base
           val point = LocationPointModel(it.time, it.latitude, it.longitude, it.altitude)
           routeStore.insertLocationPoint(point)
+          // draw route
+          val lastPoint = Point.fromLngLat(it.longitude, it.latitude)
+          val route = mutableListOf<Point>()
+          _routeData.value?.let {
+            route.addAll(it)
+            route.add(lastPoint)
+          } ?: route.add(lastPoint)
+
+          _routeData.postValue(route)
         }
       }
     }
@@ -71,13 +98,14 @@ class MapboxViewModel @Inject constructor(
     viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
       EventBus.observeChannel(StartFlightEvent::class).collect {
         databaseApi.cleaner().clearAll()
-        flightLocationEngine.requestLocationUpdates()
+        locationEngine.requestLocationUpdates()
       }
     }
     // flight land
     viewModelScope.launch {
       EventBus.observeChannel(StopFlightEvent::class).collect {
-        flightLocationEngine.removeLocationUpdates()
+        locationEngine.removeLocationUpdates()
+        _routeData.postValue(emptyList())
       }
     }
   }
@@ -90,7 +118,7 @@ class MapboxViewModel @Inject constructor(
     }
 
   override fun onCleared() {
-    flightLocationEngine.clear()
+    locationEngine.clear()
     super.onCleared()
   }
 }

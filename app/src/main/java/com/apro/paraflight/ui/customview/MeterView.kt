@@ -46,5 +46,6 @@ class MeterView constructor(context: Context, attr: AttributeSet?) :
     title = a.getString(R.styleable.MeterView_mv_title)
     unit = a.getString(R.styleable.MeterView_mv_unit)
     a.recycle()
+
   }
 }

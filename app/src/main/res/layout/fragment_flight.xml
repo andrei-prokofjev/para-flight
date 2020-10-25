@@ -5,11 +5,6 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true">
 
-  <FrameLayout
-      android:id="@+id/mapboxLayout"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent" />
-
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/speedMeterView"
@@ -21,13 +16,11 @@
       app:mv_unit="@string/km_h" />
 
   <com.apro.paraflight.ui.customview.MeterView
-      android:id="@+id/fuelMeterView"
+      android:id="@+id/distMeterView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       app:layout_constraintStart_toEndOf="@+id/speedMeterView"
-      app:layout_constraintTop_toTopOf="parent"
-
-      />
+      app:layout_constraintTop_toTopOf="parent" />
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/altitudeMeterView"
@@ -37,8 +30,6 @@
       app:layout_constraintTop_toTopOf="parent"
       app:mv_title="@string/asl"
       app:mv_unit="@string/m" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

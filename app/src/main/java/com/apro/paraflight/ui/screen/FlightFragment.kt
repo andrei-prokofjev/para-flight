@@ -23,47 +23,29 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
     super.onViewCreated(view, savedInstanceState)
 
     with(binding) {
+      viewModel.locationData.observe {
+        speedMeterView.amount = it.speed.toInt().toString()
+        altitudeMeterView.amount = it.altitude.toInt().toString()
+      }
 
+      viewModel.distData.observe {
+        distMeterView.amount = it.toInt().toString()
+      }
     }
   }
-
-
-//      myLocationImageView.onClick {
-//        viewModel.locationData.value?.let {
-//          val position = CameraPosition.Builder()
-//            .target(LatLng(it.latitude, it.longitude))
-//            .build()
-//          mapboxMap?.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000)
-//        }
-//      }
-
-
-
-  // location observer
-//      viewModel.locationData.observe {
-//        mapboxMap?.locationComponent?.forceLocationUpdate(it)
-//        mapboxMap?.cameraPosition = CameraPosition.Builder().target(LatLng(it)).build()
-//
-//        val lastPoint = Point.fromLngLat(it.longitude, it.latitude)
-//        routeCoordinates.add(lastPoint)
-//
-//        val dist = TurfMeasurement.distance(routeCoordinates[0], lastPoint, TurfConstants.UNIT_METERS)
-//
-//        mapboxMap?.style?.let { style ->
-//          val source = style.getSourceAs<GeoJsonSource>(ROUTE_SOURCE_ID)
-//          source?.setGeoJson(FeatureCollection.fromFeatures(arrayOf(Feature.fromGeometry(LineString.fromLngLats(routeCoordinates)))))
-//        }
-//      }
-
 
   override fun onBackPressed(): Boolean {
     viewModel.land()
     return true
   }
 
+  override fun getViewToApplyStatusBarMargin(root: View): Array<View> = arrayOf(
+    binding.altitudeMeterView,
+    binding.distMeterView,
+    binding.speedMeterView
+  )
+
   companion object {
     fun create(): FlightFragment = FlightFragment()
   }
-
-
 }

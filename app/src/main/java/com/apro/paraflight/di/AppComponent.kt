@@ -3,6 +3,7 @@ package com.apro.paraflight.di
 import android.content.Context
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.App
+import com.apro.paraflight.mapbox.FlightLocationEngineImpl
 import com.apro.paraflight.util.AndroidResourceProvider
 import com.apro.paraflight.util.ResourceProvider
 import com.github.terrakok.cicerone.Cicerone
@@ -28,6 +29,8 @@ interface AppComponent {
   fun appRouter(): Router
 
   fun navigatorHolder(): NavigatorHolder
+
+  fun flightLocationEngine(): FlightLocationEngineImpl
 
   @Component.Builder
   interface Builder {
@@ -57,6 +60,10 @@ class AppModule(val app: App) {
   @Provides
   @Singleton
   fun eventBusProvider(): EventBus = EventBus
+
+  @Provides
+  @Singleton
+  fun provideLocationEngine(): FlightLocationEngineImpl = FlightLocationEngineImpl(app)
 }
 
 @Module

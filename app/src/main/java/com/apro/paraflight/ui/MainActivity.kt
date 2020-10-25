@@ -22,16 +22,17 @@ import com.apro.paraflight.viewmodel.MapboxScreenComponent
 import com.apro.paraflight.viewmodel.MapboxViewModel
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.androidx.AppNavigator
+import com.mapbox.geojson.Feature
+import com.mapbox.geojson.FeatureCollection
+import com.mapbox.geojson.LineString
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.mapboxsdk.maps.MapboxMapOptions
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.style.layers.LineLayer
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor
@@ -68,14 +69,6 @@ class MainActivity : AppCompatActivity() {
     setContentView(binding.root)
 
     with(binding) {
-      val options = MapboxMapOptions.createFromAttributes(this@MainActivity, null)
-        .camera(
-          CameraPosition.Builder()
-            .target(LatLng(59.436962, 24.753574))
-            .zoom(12.0)
-            .build()
-        )
-
       mapView = MapView(this@MainActivity).apply {
         onCreate(savedInstanceState)
         mapboxLayout.addView(this)
@@ -100,12 +93,20 @@ class MainActivity : AppCompatActivity() {
     // set map style
     viewModel.style.observe { mapboxMap.setStyle(it) }
 
-    // update camera position with current location
-    viewModel.cameraPosition.observe {
-      val position = CameraPosition.Builder()
-        .target(LatLng(it.latitude, it.longitude))
-        .build()
-      mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
+    // animate camera position
+    viewModel.cameraPosition.observe { mapboxMap.animateCamera(it.first, it.second) }
+
+    // update location
+    viewModel.locationData.observe {
+      mapboxMap.locationComponent.forceLocationUpdate(it)
+      mapboxMap.cameraPosition = CameraPosition.Builder().target(LatLng(it)).build()
+    }
+    // draw route
+    viewModel.routeData.observe {
+      mapboxMap.style?.let { style ->
+        val source = style.getSourceAs<GeoJsonSource>(ROUTE_SOURCE_ID)
+        source?.setGeoJson(FeatureCollection.fromFeatures(arrayOf(Feature.fromGeometry(LineString.fromLngLats(it)))))
+      }
     }
 
     DI.appComponent.appRouter().newRootScreen(Screens.main())
