@@ -7,6 +7,11 @@
     android:background="@android:color/background_light"
     tools:context="com.apro.paraflight.ui.MainActivity">
 
+  <FrameLayout
+      android:id="@+id/mapboxLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
+
   <androidx.fragment.app.FragmentContainerView
       android:id="@+id/main_container"
       android:layout_width="match_parent"

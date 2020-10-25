@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.apro.core.db.api.data.store.RouteStore
 import com.apro.core.db.api.di.DatabaseApi
 import com.apro.core.preferenes.api.MapboxPreferences
+import com.apro.core.util.event.EventBus
 import com.apro.paraflight.DI
-import com.apro.paraflight.di.ScreenScope
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
 import com.apro.paraflight.util.ResourceProvider
@@ -15,10 +15,11 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
 import dagger.multibindings.IntoMap
+import javax.inject.Singleton
 
-@Component(modules = [FlightScreenModule::class])
-@ScreenScope
-interface FlightScreenComponent {
+@Component(modules = [MapboxScreenModule::class])
+@Singleton
+interface MapboxScreenComponent {
 
   fun viewModelFactory(): ViewModelFactory
 
@@ -39,27 +40,31 @@ interface FlightScreenComponent {
     @BindsInstance
     fun appRouter(appRouter: Router): Builder
 
-    fun build(): FlightScreenComponent
+    @BindsInstance
+    fun eventBus(eventBus: EventBus): Builder
+
+    fun build(): MapboxScreenComponent
   }
 
   companion object {
     fun create() = with(DI.appComponent) {
-      DaggerFlightScreenComponent.builder()
+      DaggerMapboxScreenComponent.builder()
         .resources(resources())
         .mapboxPreferences(DI.preferencesApi.mapbox())
         .flightsStore(DI.databaseApi.flightsStore())
         .databaseApi(DI.databaseApi)
         .appRouter(DI.appComponent.appRouter())
+        .eventBus(DI.appComponent.eventBus())
         .build()
     }
   }
 }
 
 @Module
-abstract class FlightScreenModule {
+abstract class MapboxScreenModule {
 
   @Binds
   @IntoMap
-  @ViewModelKey(FlightViewModel::class)
-  abstract fun mainScreenViewModel(viewModel: FlightViewModel): ViewModel
+  @ViewModelKey(MapboxViewModel::class)
+  abstract fun mainScreenViewModel(viewModel: MapboxViewModel): ViewModel
 }

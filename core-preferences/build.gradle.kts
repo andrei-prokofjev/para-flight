@@ -34,9 +34,7 @@ dependencies {
   implementation(Libs.ktx)
   implementation(Libs.appCompat)
 
-  implementation(Libs.retrofit)
-  implementation(Libs.retrofitGsonConverter)
-  implementation(Libs.okHttpLoggingInterceptor)
+  implementation(Libs.coroutines)
 
   implementation(Libs.timber)
 

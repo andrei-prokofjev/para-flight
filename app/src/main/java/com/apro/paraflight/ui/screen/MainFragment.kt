@@ -3,40 +3,36 @@ package com.apro.paraflight.ui.screen
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.apro.core.ui.BaseFragment
 import com.apro.core.ui.onClick
-import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentMainBinding
-import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.common.viewBinding
+import com.apro.paraflight.viewmodel.MainScreenComponent
+import com.apro.paraflight.viewmodel.MainScreenViewModel
 
 
-class MainFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {
+class MainFragment : BaseFragment(R.layout.fragment_main) {
 
+  private val component by lazy { MainScreenComponent.create() }
   private val binding by viewBinding { FragmentMainBinding.bind(it) }
+  private val viewModel by viewModels<MainScreenViewModel> { component.viewModelFactory() }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
     with(binding) {
-      profileImageView.onClick { DI.appComponent.appRouter().navigateTo(Screens.profile()) }
-
-      logbookImageView.onClick { DI.appComponent.appRouter().navigateTo(Screens.logbook()) }
-
-      preflightImageView.onClick { DI.appComponent.appRouter().navigateTo(Screens.preflight()) }
+      profileImageView.onClick { viewModel.onProfileClick() }
+      logbookImageView.onClick { viewModel.onLogbookClick() }
+      preflightImageView.onClick { viewModel.onPreflightClick() }
+      layerImageView.onClick { viewModel.onLayerClick() }
+      myLocationImageView.onClick { viewModel.onMyLocationClick() }
     }
   }
 
 
   companion object {
-
     fun create(): MainFragment = MainFragment()
-  }
-
-  override fun onBackPressed(): Boolean {
-
-    DI.appComponent.appRouter().exit()
-    return true
   }
 }

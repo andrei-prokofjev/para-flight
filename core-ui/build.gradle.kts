@@ -32,6 +32,7 @@ dependencies {
   implementation(Libs.kotlin)
   implementation(Libs.ktx)
   implementation(Libs.appCompat)
+  implementation(Libs.material)
 
   implementation(Libs.coroutines)
   implementation(Libs.timber)

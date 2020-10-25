@@ -12,7 +12,7 @@ interface DatabaseComponent : DatabaseApi {
   companion object {
     private var databaseComponent: DatabaseComponent? = null
 
-    fun initAndGet(context: Context): DatabaseApi {
+    fun create(context: Context): DatabaseApi {
       if (databaseComponent == null) {
         databaseComponent = DaggerDatabaseComponent.builder()
           .databaseModule(DatabaseModule(context))

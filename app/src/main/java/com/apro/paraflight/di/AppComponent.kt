@@ -1,18 +1,25 @@
 package com.apro.paraflight.di
 
 import android.content.Context
+import com.apro.core.util.event.EventBus
+import com.apro.paraflight.App
 import com.apro.paraflight.util.AndroidResourceProvider
 import com.apro.paraflight.util.ResourceProvider
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Cicerone.Companion.create
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
-import dagger.*
+import dagger.BindsInstance
+import dagger.Component
+import dagger.Module
+import dagger.Provides
 import javax.inject.Singleton
 
 @Component(modules = [AppModule::class, NavigationModule::class])
 @Singleton
 interface AppComponent {
+
+  fun eventBus(): EventBus
 
   fun resources(): ResourceProvider
 
@@ -20,21 +27,34 @@ interface AppComponent {
 
   fun navigatorHolder(): NavigatorHolder
 
-
   @Component.Builder
   interface Builder {
     @BindsInstance
     fun appContext(context: Context): Builder
 
+    fun appModule(appModule: AppModule): Builder
+
     fun build(): AppComponent
+  }
+
+  companion object {
+    fun create(app: App): AppComponent =
+      DaggerAppComponent.builder()
+        .appContext(app.applicationContext)
+        .appModule(AppModule(app))
+        .build()
   }
 }
 
 @Module
-abstract class AppModule {
-  @Binds
+class AppModule(val app: App) {
+  @Provides
   @Singleton
-  abstract fun bindResourceProvider(provider: AndroidResourceProvider): ResourceProvider
+  fun resourceProvider(): ResourceProvider = AndroidResourceProvider(app)
+
+  @Provides
+  @Singleton
+  fun eventBusProvider(): EventBus = EventBus
 }
 
 @Module
@@ -43,13 +63,9 @@ class NavigationModule {
 
   @Provides
   @Singleton
-  fun provideRouter(): Router {
-    return cicerone.router
-  }
+  fun provideRouter(): Router = cicerone.router
 
   @Provides
   @Singleton
-  fun provideNavigatorHolder(): NavigatorHolder {
-    return cicerone.getNavigatorHolder()
-  }
+  fun provideNavigatorHolder(): NavigatorHolder = cicerone.getNavigatorHolder()
 }

@@ -116,5 +116,7 @@ dependencies {
   androidTestImplementation(TestLibs.testJunit)
   androidTestImplementation(TestLibs.espresso)
 
+  debugImplementation(Libs.leakCanary)
+
 
 }

@@ -25,7 +25,7 @@ interface PreferencesComponent : PreferencesApi {
   companion object {
     private var preferencesComponent: PreferencesComponent? = null
 
-    fun initAndGet(app: Application): PreferencesApi {
+    fun create(app: Application): PreferencesApi {
       if (preferencesComponent == null) {
         preferencesComponent = DaggerPreferencesComponent.builder()
           .app(app)

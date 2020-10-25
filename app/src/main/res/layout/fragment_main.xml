@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
-    tools:background="@android:color/white"
+    tools:background="@android:color/transparent"
     tools:context=".ui.MainActivity">
 
   <FrameLayout
@@ -43,65 +43,65 @@
       tools:ignore="ContentDescription" />
 
 
-  <!--  <ImageView-->
-  <!--      android:id="@+id/layerImageView"-->
-  <!--      android:layout_width="wrap_content"-->
-  <!--      android:layout_height="wrap_content"-->
-  <!--      android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
-  <!--      android:background="@drawable/bg_button"-->
-  <!--      android:elevation="@dimen/shadow_elevation"-->
-  <!--      android:foreground="@drawable/selector_button_dark"-->
-  <!--      android:padding="8dp"-->
-  <!--      android:src="@drawable/ic_layers"-->
-  <!--      app:layout_constraintBottom_toBottomOf="parent"-->
-  <!--      app:layout_constraintEnd_toEndOf="parent"-->
-  <!--      app:layout_constraintTop_toTopOf="parent"-->
-  <!--      tools:ignore="ContentDescription" />-->
+  <ImageView
+      android:id="@+id/layerImageView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      android:background="@drawable/bg_button"
+      android:elevation="@dimen/shadow_elevation"
+      android:foreground="@drawable/selector_button_dark"
+      android:padding="8dp"
+      android:src="@drawable/ic_layers"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:ignore="ContentDescription" />
 
-  <!--  <ImageView-->
-  <!--      android:id="@+id/compassImageView"-->
-  <!--      android:layout_width="wrap_content"-->
-  <!--      android:layout_height="wrap_content"-->
-  <!--      android:layout_marginTop="@dimen/activity_vertical_margin"-->
-  <!--      android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
-  <!--      android:background="@drawable/bg_button"-->
-  <!--      android:elevation="@dimen/shadow_elevation"-->
-  <!--      android:foreground="@drawable/selector_button_dark"-->
-  <!--      android:padding="8dp"-->
-  <!--      android:src="@drawable/ic_compass"-->
-  <!--      app:layout_constraintEnd_toEndOf="parent"-->
-  <!--      app:layout_constraintTop_toBottomOf="@+id/layerImageView"-->
-  <!--      tools:ignore="ContentDescription" />-->
+  <!--    <ImageView-->
+  <!--        android:id="@+id/compassImageView"-->
+  <!--        android:layout_width="wrap_content"-->
+  <!--        android:layout_height="wrap_content"-->
+  <!--        android:layout_marginTop="@dimen/activity_vertical_margin"-->
+  <!--        android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
+  <!--        android:background="@drawable/bg_button"-->
+  <!--        android:elevation="@dimen/shadow_elevation"-->
+  <!--        android:foreground="@drawable/selector_button_dark"-->
+  <!--        android:padding="8dp"-->
+  <!--        android:src="@drawable/ic_compass"-->
+  <!--        app:layout_constraintEnd_toEndOf="parent"-->
+  <!--        app:layout_constraintTop_toBottomOf="@+id/layerImageView"-->
+  <!--        tools:ignore="ContentDescription" />-->
 
-  <!--  <ImageView-->
-  <!--      android:id="@+id/nearMeImageView"-->
-  <!--      android:layout_width="wrap_content"-->
-  <!--      android:layout_height="wrap_content"-->
-  <!--      android:layout_marginTop="@dimen/activity_vertical_margin"-->
-  <!--      android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
-  <!--      android:background="@drawable/bg_button"-->
-  <!--      android:elevation="@dimen/shadow_elevation"-->
-  <!--      android:foreground="@drawable/selector_button_dark"-->
-  <!--      android:padding="8dp"-->
-  <!--      android:src="@drawable/ic_near_me"-->
-  <!--      app:layout_constraintEnd_toEndOf="parent"-->
-  <!--      app:layout_constraintTop_toBottomOf="@id/compassImageView"-->
-  <!--      tools:ignore="ContentDescription" />-->
+  <!--    <ImageView-->
+  <!--        android:id="@+id/nearMeImageView"-->
+  <!--        android:layout_width="wrap_content"-->
+  <!--        android:layout_height="wrap_content"-->
+  <!--        android:layout_marginTop="@dimen/activity_vertical_margin"-->
+  <!--        android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
+  <!--        android:background="@drawable/bg_button"-->
+  <!--        android:elevation="@dimen/shadow_elevation"-->
+  <!--        android:foreground="@drawable/selector_button_dark"-->
+  <!--        android:padding="8dp"-->
+  <!--        android:src="@drawable/ic_near_me"-->
+  <!--        app:layout_constraintEnd_toEndOf="parent"-->
+  <!--        app:layout_constraintTop_toBottomOf="@id/compassImageView"-->
+  <!--        tools:ignore="ContentDescription" />-->
 
-  <!--  <ImageView-->
-  <!--      android:id="@+id/myLocationImageView"-->
-  <!--      android:layout_width="wrap_content"-->
-  <!--      android:layout_height="wrap_content"-->
-  <!--      android:layout_marginTop="@dimen/activity_vertical_margin"-->
-  <!--      android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
-  <!--      android:background="@drawable/bg_button"-->
-  <!--      android:elevation="@dimen/shadow_elevation"-->
-  <!--      android:foreground="@drawable/selector_button_dark"-->
-  <!--      android:padding="8dp"-->
-  <!--      android:src="@drawable/ic_my_location"-->
-  <!--      app:layout_constraintEnd_toEndOf="parent"-->
-  <!--      app:layout_constraintTop_toBottomOf="@id/nearMeImageView"-->
-  <!--      tools:ignore="ContentDescription" />-->
+  <ImageView
+      android:id="@+id/myLocationImageView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      android:background="@drawable/bg_button"
+      android:elevation="@dimen/shadow_elevation"
+      android:foreground="@drawable/selector_button_dark"
+      android:padding="8dp"
+      android:src="@drawable/ic_my_location"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/layerImageView"
+      tools:ignore="ContentDescription" />
 
   <ImageView
       android:id="@+id/preflightImageView"

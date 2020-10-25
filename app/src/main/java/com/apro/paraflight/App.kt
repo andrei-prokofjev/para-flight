@@ -4,7 +4,7 @@ import android.app.Application
 import com.apro.core.db.impl.di.DatabaseComponent
 import com.apro.core.network.di.DaggerNetworkComponent
 import com.apro.core.preferenes.di.PreferencesComponent
-import com.apro.paraflight.di.DaggerAppComponent
+import com.apro.paraflight.di.AppComponent
 import timber.log.Timber
 
 @Suppress("unused")
@@ -17,16 +17,13 @@ class App : Application() {
   }
 
   private fun init() {
-    DI.appComponent = DaggerAppComponent.builder()
-      .appContext(this)
-      .build()
-
+    DI.appComponent = AppComponent.create(this)
 
     DI.networkComponent = DaggerNetworkComponent.create()
 
-    DI.preferencesApi = PreferencesComponent.initAndGet(this)
+    DI.preferencesApi = PreferencesComponent.create(this)
 
-    DI.databaseApi = DatabaseComponent.initAndGet(this)
+    DI.databaseApi = DatabaseComponent.create(this)
   }
 
 }

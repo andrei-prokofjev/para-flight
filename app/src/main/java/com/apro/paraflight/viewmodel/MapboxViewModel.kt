@@ -13,10 +13,11 @@ import com.apro.paraflight.ui.screen.Screens
 import com.github.terrakok.cicerone.Router
 import com.mapbox.mapboxsdk.maps.Style
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class FlightViewModel @Inject constructor(
+class MapboxViewModel @Inject constructor(
   private val mapboxPreferences: MapboxPreferences,
   private val routeStore: RouteStore,
   private val databaseApi: DatabaseApi,
@@ -30,6 +31,15 @@ class FlightViewModel @Inject constructor(
   private val _locationData = MutableLiveData<Location>()
   val locationData: LiveData<Location> = _locationData
 
+  init {
+    viewModelScope.launch {
+      mapboxPreferences.styleFlow().collect {
+        _style.postValue(getStyle(it)
+        )
+      }
+    }
+  }
+
   fun updateLocation(location: Location) {
     _locationData.postValue(location)
     viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
@@ -38,6 +48,8 @@ class FlightViewModel @Inject constructor(
         routeStore.insertLocationPoint(point)
       }
     }
+
+
   }
 
   fun onSettingsClick() {
@@ -47,12 +59,6 @@ class FlightViewModel @Inject constructor(
   fun onNearMeClick() {
   }
 
-  fun onLayerClick() {
-    val nextStyle = (mapboxPreferences.mapStyle.ordinal + 1) % MapboxPreferences.MapStyle.values().size
-    val mapStyle = MapboxPreferences.MapStyle.values()[nextStyle]
-    mapboxPreferences.mapStyle = mapStyle
-    _style.postValue(getStyle(mapStyle))
-  }
 
   fun onCompassClick() {
 
@@ -78,6 +84,6 @@ class FlightViewModel @Inject constructor(
     }
 
   fun onPreflightClick() {
-   // appRouter.navigateTo(Screens.preflight())
+    // appRouter.navigateTo(Screens.preflight())
   }
 }
