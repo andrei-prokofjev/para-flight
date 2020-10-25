@@ -14,15 +14,20 @@ import com.apro.core.ui.toast
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.ActivityMainBinding
+import com.apro.paraflight.mapbox.LastLocationEngineResult
 import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.screen.Screens
 import com.apro.paraflight.viewmodel.MapboxScreenComponent
 import com.apro.paraflight.viewmodel.MapboxViewModel
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import com.mapbox.android.core.location.*
+import com.mapbox.android.core.location.LocationEngine
+import com.mapbox.android.core.location.LocationEngineProvider
+import com.mapbox.android.core.location.LocationEngineRequest
+import com.mapbox.android.core.location.LocationEngineResult
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
@@ -41,7 +46,7 @@ import com.microsoft.appcenter.crashes.Crashes
 import permissions.dispatcher.*
 
 @RuntimePermissions
-class MainActivity : AppCompatActivity(), LocationEngineCallback<LocationEngineResult> {
+class MainActivity : AppCompatActivity() {
 
   private val navigator: Navigator = AppNavigator(this, R.id.main_container, supportFragmentManager, supportFragmentManager.fragmentFactory)
 
@@ -83,9 +88,7 @@ class MainActivity : AppCompatActivity(), LocationEngineCallback<LocationEngineR
           mapboxMap = it
           it.setStyle(viewModel.getStyle(DI.preferencesApi.mapbox().mapStyle)) { style ->
             enableLocationComponentWithPermissionCheck(style)
-
             initLocationEngine()
-
             style.addSource(GeoJsonSource(ROUTE_SOURCE_ID))
             style.addLayer(LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID).withProperties(
               lineWidth(5f),
@@ -96,9 +99,13 @@ class MainActivity : AppCompatActivity(), LocationEngineCallback<LocationEngineR
       }
     }
 
-    viewModel.style.observe {
-      println(">>> set stuyle: $it")
-      mapboxMap.setStyle(it)
+    viewModel.style.observe { mapboxMap.setStyle(it) }
+
+    viewModel.cameraPosition.observe {
+      val position = CameraPosition.Builder()
+        .target(LatLng(it.latitude, it.longitude))
+        .build()
+      mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000)
     }
 
     DI.appComponent.appRouter().newRootScreen(Screens.main())
@@ -177,8 +184,13 @@ class MainActivity : AppCompatActivity(), LocationEngineCallback<LocationEngineR
       .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
       .build()
 
-    locationEngine?.requestLocationUpdates(request, this, mainLooper)
-    locationEngine?.getLastLocation(this)
+    locationEngine?.requestLocationUpdates(request,
+      object : LastLocationEngineResult() {
+        override fun onSuccess(result: LocationEngineResult) {
+          result.lastLocation?.let { viewModel.updateLocation(it) }
+        }
+      }, mainLooper)
+    // locationEngine?.getLastLocation(this)
   }
 
   @SuppressLint("NeedOnRequestPermissionsResult")
@@ -211,16 +223,18 @@ class MainActivity : AppCompatActivity(), LocationEngineCallback<LocationEngineR
     toast("PERMISSIONS DENIED")
   }
 
-  override fun onSuccess(result: LocationEngineResult) {
-    result.lastLocation?.let { viewModel.updateLocation(it) }
-
-    mapboxMap.locationComponent.forceLocationUpdate(result.lastLocation)
-    mapboxMap.cameraPosition = CameraPosition.Builder().target(LatLng(result.lastLocation)).build()
-  }
-
-  override fun onFailure(exception: Exception) {
-
-  }
+//  override fun onSuccess(result: LocationEngineResult) {
+//    result.lastLocation?.let { viewModel.updateLocation(it) }
+//
+//    println(">>> result: " + result.lastLocation)
+//
+//    //mapboxMap.locationComponent.forceLocationUpdate(result.lastLocation)
+//    // mapboxMap.cameraPosition = CameraPosition.Builder().target(LatLng(result.lastLocation)).build()
+//  }
+//
+//  override fun onFailure(exception: Exception) {
+//
+//  }
 
   inline fun <T> LiveData<T>.observe(crossinline observer: (T) -> Unit) {
     observe(this@MainActivity, { observer.invoke(it) })

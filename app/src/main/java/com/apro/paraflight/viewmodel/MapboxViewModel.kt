@@ -28,8 +28,11 @@ class MapboxViewModel @Inject constructor(
   private val _style = MutableLiveData<String>()
   val style: LiveData<String> = _style
 
-  private val _locationData = MutableLiveData<Location>()
-  val locationData: LiveData<Location> = _locationData
+  private val _liveLocationData = MutableLiveData<Location>()
+  val locationData: LiveData<Location> = _liveLocationData
+
+  private val _cameraPosition = MutableLiveData<Location>()
+  val cameraPosition: LiveData<Location> = _cameraPosition
 
   init {
     viewModelScope.launch {
@@ -41,7 +44,7 @@ class MapboxViewModel @Inject constructor(
   }
 
   fun updateLocation(location: Location) {
-    _locationData.postValue(location)
+    _liveLocationData.postValue(location)
     viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
       locationData.value?.let {
         val point = LocationPointModel(it.time, it.latitude, it.longitude, it.altitude)

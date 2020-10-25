@@ -40,7 +40,6 @@ interface PreferencesComponent : PreferencesApi {
 
 @Module
 abstract class PreferencesModule {
-
   @Binds
   @Singleton
   internal abstract fun bindsMapboxPrefs(mapboxPreferences: MapboxPreferencesImpl): MapboxPreferences
