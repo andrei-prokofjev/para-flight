@@ -7,24 +7,21 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.LayoutInflater
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import com.apro.core.ui.toast
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.ActivityMainBinding
-import com.apro.paraflight.mapbox.LastLocationEngineResult
 import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.screen.Screens
 import com.apro.paraflight.viewmodel.MapboxScreenComponent
 import com.apro.paraflight.viewmodel.MapboxViewModel
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import com.mapbox.android.core.location.LocationEngine
-import com.mapbox.android.core.location.LocationEngineProvider
-import com.mapbox.android.core.location.LocationEngineRequest
-import com.mapbox.android.core.location.LocationEngineResult
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -60,7 +57,6 @@ class MainActivity : AppCompatActivity() {
 
   lateinit var mapboxMap: MapboxMap
 
-  var locationEngine: LocationEngine? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -80,15 +76,18 @@ class MainActivity : AppCompatActivity() {
             .build()
         )
 
-      mapView = MapView(this@MainActivity, options).apply {
+      mapView = MapView(this@MainActivity).apply {
         onCreate(savedInstanceState)
         mapboxLayout.addView(this)
+
+
+        findViewWithTag<ImageView>("logoView")?.isVisible = false
+        mapboxLayout.findViewWithTag<ImageView>("attrView")?.isVisible = false
         getMapAsync {
 
           mapboxMap = it
           it.setStyle(viewModel.getStyle(DI.preferencesApi.mapbox().mapStyle)) { style ->
             enableLocationComponentWithPermissionCheck(style)
-            initLocationEngine()
             style.addSource(GeoJsonSource(ROUTE_SOURCE_ID))
             style.addLayer(LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID).withProperties(
               lineWidth(5f),
@@ -98,14 +97,15 @@ class MainActivity : AppCompatActivity() {
         }
       }
     }
-
+    // set map style
     viewModel.style.observe { mapboxMap.setStyle(it) }
 
+    // update camera position with current location
     viewModel.cameraPosition.observe {
       val position = CameraPosition.Builder()
         .target(LatLng(it.latitude, it.longitude))
         .build()
-      mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000)
+      mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
     }
 
     DI.appComponent.appRouter().newRootScreen(Screens.main())
@@ -175,24 +175,6 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-  @SuppressLint("MissingPermission")
-  private fun initLocationEngine() {
-
-    locationEngine = LocationEngineProvider.getBestLocationEngine(this)
-    val request = LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
-      .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
-      .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
-      .build()
-
-    locationEngine?.requestLocationUpdates(request,
-      object : LastLocationEngineResult() {
-        override fun onSuccess(result: LocationEngineResult) {
-          result.lastLocation?.let { viewModel.updateLocation(it) }
-        }
-      }, mainLooper)
-    // locationEngine?.getLastLocation(this)
-  }
-
   @SuppressLint("NeedOnRequestPermissionsResult")
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -223,27 +205,11 @@ class MainActivity : AppCompatActivity() {
     toast("PERMISSIONS DENIED")
   }
 
-//  override fun onSuccess(result: LocationEngineResult) {
-//    result.lastLocation?.let { viewModel.updateLocation(it) }
-//
-//    println(">>> result: " + result.lastLocation)
-//
-//    //mapboxMap.locationComponent.forceLocationUpdate(result.lastLocation)
-//    // mapboxMap.cameraPosition = CameraPosition.Builder().target(LatLng(result.lastLocation)).build()
-//  }
-//
-//  override fun onFailure(exception: Exception) {
-//
-//  }
-
-  inline fun <T> LiveData<T>.observe(crossinline observer: (T) -> Unit) {
+  private inline fun <T> LiveData<T>.observe(crossinline observer: (T) -> Unit) {
     observe(this@MainActivity, { observer.invoke(it) })
   }
 
   companion object {
-    private const val DEFAULT_INTERVAL_IN_MILLISECONDS = 2000L
-    private const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
-
     private const val ROUTE_SOURCE_ID = "route-source"
     private const val ROUTE_LAYER_ID = "route-layer"
   }

@@ -1,75 +1,32 @@
 package com.apro.paraflight.ui.screen
 
 
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.viewModels
 import com.apro.core.ui.BaseFragment
-import com.apro.core.ui.toast
 import com.apro.paraflight.R
-import com.mapbox.android.core.location.LocationEngine
-import com.mapbox.android.core.location.LocationEngineCallback
-import com.mapbox.android.core.location.LocationEngineResult
-import com.mapbox.geojson.Point
-import com.mapbox.mapboxsdk.maps.MapView
-import com.mapbox.mapboxsdk.maps.MapboxMap
+import com.apro.paraflight.databinding.FragmentFlightBinding
+import com.apro.paraflight.ui.common.BackButtonListener
+import com.apro.paraflight.ui.common.viewBinding
+import com.apro.paraflight.viewmodel.FlightScreenComponent
+import com.apro.paraflight.viewmodel.FlightScreenViewModel
 
 
-//@RuntimePermissions
-class FlightFragment : BaseFragment(R.layout.fragment_flight) {
+class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListener {
 
-  //private val component by lazy { MapboxScreenComponent.create() }
-  // private val binding by viewBinding { FragmentFlightBinding.bind(it) }
-//  private val viewModel by viewModels<MapboxViewModel> { component.viewModelFactory() }
+  private val component by lazy { FlightScreenComponent.create() }
+  private val binding by viewBinding { FragmentFlightBinding.bind(it) }
+  private val viewModel by viewModels<FlightScreenViewModel> { component.viewModelFactory() }
 
-  private lateinit var mapView: MapView
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
-  private var mapboxMap: MapboxMap? = null
+    with(binding) {
 
-  private var locationEngine: LocationEngine? = null
-
-  private val routeCoordinates = mutableListOf<Point>()
-
-  private val callback = object : LocationEngineCallback<LocationEngineResult> {
-    override fun onSuccess(result: LocationEngineResult) {
-      result.lastLocation?.let {
-        //  viewModel.updateLocation(it)
-      }
-    }
-
-    override fun onFailure(exception: Exception) {
-      toast("failure: $exception")
     }
   }
 
-  //    Mapbox.getInstance(requireContext(), getString(R.string.mapbox_access_token))
-//    with(binding) {
-//      mapView = MapView(root.context).apply {
-//        onCreate(savedInstanceState)
-//        mapboxLayout.addView(this)
-//        getMapAsync {
-//          mapboxLayout.findViewWithTag<ImageView>("logoView")?.isVisible = false
-//          mapboxLayout.findViewWithTag<ImageView>("attrView")?.isVisible = false
-//          mapboxMap = it
-//          it.setStyle(viewModel.getStyle(DI.preferencesApi.mapbox().mapStyle)) { style ->
-//            enableLocationComponentWithPermissionCheck(style)
-//            style.addSource(GeoJsonSource(ROUTE_SOURCE_ID))
-//            style.addLayer(LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID).withProperties(
-//              lineWidth(5f),
-//              lineColor(Color.BLUE)
-//            ))
-//          }
-//        }
-//      }
-
-//      settingsImageView.onClick {
-//
-//        viewModel.onSettingsClick()
-//        // findNavController(this@MainFragment).navigate(R.id.action_main_to_settings)
-//
-//      }
-
-
-//      shareImageView.onClick { viewModel.onShareClick() }
-//      layerImageView.onClick { viewModel.onLayerClick() }
-//      nearMeImageView.onClick { viewModel.onNearMeClick() }
 
 //      myLocationImageView.onClick {
 //        viewModel.locationData.value?.let {
@@ -79,25 +36,8 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight) {
 //          mapboxMap?.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000)
 //        }
 //      }
-      //compassImageView.onClick { viewModel.onCompassClick() }
 
-//      flightImageView.onClick {
-//        viewModel.onPreflightClick()
-//        // findNavController(this@MainFragment).navigate(R.id.action_main_to_preflight)
-//
-////        if (locationEngine == null) {
-////          flightImageView.setImageResource(R.drawable.ic_flight_land)
-////          viewModel.clearRouteStore()
-////          routeCoordinates.clear()
-////          initLocationEngine()
-////        } else {
-////          flightImageView.setImageResource(R.drawable.ic_flight_takeoff)
-////          locationEngine?.removeLocationUpdates(callback)
-////          locationEngine = null
-////        }
-//      }
 
-//      viewModel.style.observe { mapboxMap?.setStyle(it) }
 
   // location observer
 //      viewModel.locationData.observe {
@@ -115,119 +55,15 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight) {
 //        }
 //      }
 
-  //versionTextView.text = BuildConfig.VERSION_NAME
-//    }
-//  }
 
-
-//  override fun onStart() {
-//    super.onStart()
-//    mapView.onStart()
-//  }
-//
-//  override fun onResume() {
-//    super.onResume()
-//    mapView.onResume()
-//    mapboxMap?.style?.let { enableLocationComponentWithPermissionCheck(it) }
-//  }
-//
-//  override fun onPause() {
-//    super.onPause()
-//    mapView.onPause()
-//  }
-//
-//  override fun onStop() {
-//    super.onStop()
-//    mapView.onStop()
-//  }
-//
-//  override fun onSaveInstanceState(outState: Bundle) {
-//    super.onSaveInstanceState(outState)
-//    mapView.onSaveInstanceState(outState)
-//  }
-//
-//  override fun onDestroy() {
-//    super.onDestroy()
-//    mapView.onDestroy()
-//  }
-//
-//  override fun onLowMemory() {
-//    super.onLowMemory()
-//    mapView.onLowMemory()
-//  }
-//
-//  @SuppressLint("MissingPermission")
-//  @NeedsPermission(
-//    Manifest.permission.ACCESS_FINE_LOCATION,
-//    Manifest.permission.ACCESS_COARSE_LOCATION
-//  )
-//  fun enableLocationComponent(loadedMapStyle: Style) {
-//    val locationComponent = mapboxMap?.locationComponent
-//    val locationComponentActivationOptions = LocationComponentActivationOptions
-//      .builder(requireContext(), loadedMapStyle)
-//      .useDefaultLocationEngine(false)
-//      .build()
-//
-//    locationComponent?.let {
-//      it.activateLocationComponent(locationComponentActivationOptions)
-//      it.isLocationComponentEnabled = true
-//      it.cameraMode = CameraMode.TRACKING
-//      it.renderMode = RenderMode.COMPASS
-//    }
-//  }
-//
-//  @SuppressLint("MissingPermission")
-//  private fun initLocationEngine() {
-//    locationEngine = LocationEngineProvider.getBestLocationEngine(requireContext())
-//    val request = LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
-//      .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
-//      .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
-//      .build()
-//
-//
-//    locationEngine?.requestLocationUpdates(request, callback, activity?.mainLooper)
-//    locationEngine?.getLastLocation(callback)
-//  }
-//
-//  @SuppressLint("NeedOnRequestPermissionsResult")
-//  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-//    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//    onRequestPermissionsResult(requestCode, grantResults)
-//  }
-//
-//  @OnPermissionDenied(
-//    Manifest.permission.ACCESS_FINE_LOCATION,
-//    Manifest.permission.ACCESS_COARSE_LOCATION
-//  )
-//  fun onPermissionDenied() {
-//    toast("PERMISSIONS DENIED")
-//  }
-//
-//  @OnNeverAskAgain(
-//    Manifest.permission.ACCESS_FINE_LOCATION,
-//    Manifest.permission.ACCESS_COARSE_LOCATION
-//  )
-//  fun onNeverAskAgain() {
-//    toast("PERMISSIONS REQUIRED")
-//  }
-//
-//  @OnShowRationale(
-//    Manifest.permission.ACCESS_FINE_LOCATION,
-//    Manifest.permission.ACCESS_COARSE_LOCATION
-//  )
-//  fun onShowRationale() {
-//    toast("PERMISSIONS DENIED")
-//  }
+  override fun onBackPressed(): Boolean {
+    viewModel.land()
+    return true
+  }
 
   companion object {
-    private const val DEFAULT_INTERVAL_IN_MILLISECONDS = 2000L
-    private const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
-
-    private const val ROUTE_SOURCE_ID = "route-source"
-    private const val ROUTE_LAYER_ID = "route-layer"
-
-
     fun create(): FlightFragment = FlightFragment()
   }
+
 
 }

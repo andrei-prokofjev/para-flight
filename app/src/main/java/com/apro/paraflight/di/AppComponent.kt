@@ -19,6 +19,8 @@ import javax.inject.Singleton
 @Singleton
 interface AppComponent {
 
+  fun context(): Context
+
   fun eventBus(): EventBus
 
   fun resources(): ResourceProvider

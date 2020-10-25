@@ -8,8 +8,8 @@ import com.apro.core.util.event.EventBus
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
+import com.apro.paraflight.mapbox.FlightLocationEngine
 import com.apro.paraflight.util.ResourceProvider
-import com.github.terrakok.cicerone.Router
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -25,6 +25,7 @@ interface MapboxScreenComponent {
 
   @Component.Builder
   interface Builder {
+
     @BindsInstance
     fun resources(resourceProvider: ResourceProvider): Builder
 
@@ -38,10 +39,10 @@ interface MapboxScreenComponent {
     fun databaseApi(databaseApi: DatabaseApi): Builder
 
     @BindsInstance
-    fun appRouter(appRouter: Router): Builder
+    fun eventBus(eventBus: EventBus): Builder
 
     @BindsInstance
-    fun eventBus(eventBus: EventBus): Builder
+    fun flightLocationEngine(locationEngine: FlightLocationEngine): Builder
 
     fun build(): MapboxScreenComponent
   }
@@ -53,8 +54,8 @@ interface MapboxScreenComponent {
         .mapboxPreferences(DI.preferencesApi.mapbox())
         .flightsStore(DI.databaseApi.flightsStore())
         .databaseApi(DI.databaseApi)
-        .appRouter(DI.appComponent.appRouter())
-        .eventBus(DI.appComponent.eventBus())
+        .eventBus(eventBus())
+        .flightLocationEngine(FlightLocationEngine(context()))
         .build()
     }
   }

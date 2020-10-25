@@ -9,8 +9,11 @@ import com.apro.core.db.api.di.DatabaseApi
 import com.apro.core.db.model.LocationPointModel
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.BaseViewModel
-import com.apro.paraflight.ui.screen.Screens
-import com.github.terrakok.cicerone.Router
+import com.apro.core.util.event.EventBus
+import com.apro.paraflight.events.MyLocationEvent
+import com.apro.paraflight.events.StartFlightEvent
+import com.apro.paraflight.events.StopFlightEvent
+import com.apro.paraflight.mapbox.FlightLocationEngine
 import com.mapbox.mapboxsdk.maps.Style
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -21,9 +24,9 @@ class MapboxViewModel @Inject constructor(
   private val mapboxPreferences: MapboxPreferences,
   private val routeStore: RouteStore,
   private val databaseApi: DatabaseApi,
-  private val appRouter: Router
+  eventBus: EventBus,
+  private val flightLocationEngine: FlightLocationEngine
 ) : BaseViewModel() {
-
 
   private val _style = MutableLiveData<String>()
   val style: LiveData<String> = _style
@@ -34,47 +37,47 @@ class MapboxViewModel @Inject constructor(
   private val _cameraPosition = MutableLiveData<Location>()
   val cameraPosition: LiveData<Location> = _cameraPosition
 
+
   init {
+    eventBus.send(MyLocationEvent(), 1000)
+
+    // change map stayle
     viewModelScope.launch {
       mapboxPreferences.styleFlow().collect {
         _style.postValue(getStyle(it)
         )
       }
     }
-  }
-
-  fun updateLocation(location: Location) {
-    _liveLocationData.postValue(location)
-    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-      locationData.value?.let {
-        val point = LocationPointModel(it.time, it.latitude, it.longitude, it.altitude)
-        routeStore.insertLocationPoint(point)
+    // update camera postion with cureent location
+    viewModelScope.launch {
+      EventBus.observeChannel(MyLocationEvent::class).collect {
+        flightLocationEngine.getLastLocation { location ->
+          location?.let { _cameraPosition.postValue(it) }
+        }
       }
     }
-
-
-  }
-
-  fun onSettingsClick() {
-    appRouter.navigateTo(Screens.settings())
-  }
-
-  fun onNearMeClick() {
-  }
-
-
-  fun onCompassClick() {
-
-  }
-
-  fun onShareClick() {
-
-  }
-
-  fun clearRouteStore() {
+    // update map postion and save current positon into db
     viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-      locationData.value?.let {
+      flightLocationEngine.updateLocationFlow().collect { location ->
+        _liveLocationData.postValue(location)
+
+        location?.let {
+          val point = LocationPointModel(it.time, it.latitude, it.longitude, it.altitude)
+          routeStore.insertLocationPoint(point)
+        }
+      }
+    }
+    // flight take off
+    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+      EventBus.observeChannel(StartFlightEvent::class).collect {
         databaseApi.cleaner().clearAll()
+        flightLocationEngine.requestLocationUpdates()
+      }
+    }
+    // flight land
+    viewModelScope.launch {
+      EventBus.observeChannel(StopFlightEvent::class).collect {
+        flightLocationEngine.removeLocationUpdates()
       }
     }
   }
@@ -86,7 +89,8 @@ class MapboxViewModel @Inject constructor(
       MapboxPreferences.MapStyle.LIGHT -> Style.LIGHT
     }
 
-  fun onPreflightClick() {
-    // appRouter.navigateTo(Screens.preflight())
+  override fun onCleared() {
+    flightLocationEngine.clear()
+    super.onCleared()
   }
 }
