@@ -56,7 +56,7 @@ class MapboxViewModel @Inject constructor(
           .zoom(12.0)
           .build()
         val cameraUpdate = CameraUpdateFactory.newCameraPosition(position)
-        eventBus.send(MyLocationEvent(cameraUpdate, 2500), 1500)
+        eventBus.send(MyLocationEvent(cameraUpdate, 500), 1500)
       }
     }
 

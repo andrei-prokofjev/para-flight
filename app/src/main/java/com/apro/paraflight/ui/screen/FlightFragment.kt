@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.apro.core.ui.BaseFragment
+import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentFlightBinding
 import com.apro.paraflight.ui.common.BackButtonListener
@@ -36,6 +37,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
 
   override fun onBackPressed(): Boolean {
     viewModel.land()
+    DI.appComponent.appRouter().backTo(Screens.main())
     return true
   }
 
