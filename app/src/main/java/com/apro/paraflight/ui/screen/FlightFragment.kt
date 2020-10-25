@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.apro.core.ui.BaseFragment
+import com.apro.core.util.kilometersPerHour
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentFlightBinding
@@ -25,7 +26,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
 
     with(binding) {
       viewModel.locationData.observe {
-        speedMeterView.amount = it.speed.toInt().toString()
+        speedMeterView.amount = it.speed.toInt().kilometersPerHour.toString()
         altitudeMeterView.amount = it.altitude.toInt().toString()
       }
 

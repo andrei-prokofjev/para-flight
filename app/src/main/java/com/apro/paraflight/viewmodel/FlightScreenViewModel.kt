@@ -39,8 +39,11 @@ class FlightScreenViewModel @Inject constructor(
           val point1 = Point.fromLngLat(prevLocation.longitude, prevLocation.latitude)
           val point2 = Point.fromLngLat(it.longitude, it.latitude)
           val dist = TurfMeasurement.distance(point1, point2, TurfConstants.UNIT_METERS)
-          _distData.postValue(dist + _distData.value!!)
-          _locationData.postValue(it)
+          println(">>> dist; $dist ")
+          if (dist > 5) {
+            _distData.postValue(dist + _distData.value!!)
+            _locationData.postValue(it)
+          }
         }
       }
     }
