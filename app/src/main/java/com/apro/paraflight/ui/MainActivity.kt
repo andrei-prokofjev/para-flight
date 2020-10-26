@@ -33,6 +33,7 @@ import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
+import com.mapbox.mapboxsdk.maps.MapboxMapOptions
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.style.layers.LineLayer
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor
@@ -68,7 +69,13 @@ class MainActivity : AppCompatActivity() {
     setContentView(binding.root)
 
     with(binding) {
-      mapView = MapView(this@MainActivity).apply {
+      val options = MapboxMapOptions.createFromAttributes(this@MainActivity, null)
+        .camera(CameraPosition.Builder()
+          .target(LatLng(59.436962, 24.753574))
+          .zoom(12.0)
+          .build()
+        )
+      mapView = MapView(this@MainActivity, options).apply {
         onCreate(savedInstanceState)
         mapboxLayout.addView(this)
         getMapAsync {
