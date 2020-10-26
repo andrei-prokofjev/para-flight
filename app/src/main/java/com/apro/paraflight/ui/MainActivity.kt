@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -72,15 +71,12 @@ class MainActivity : AppCompatActivity() {
       mapView = MapView(this@MainActivity).apply {
         onCreate(savedInstanceState)
         mapboxLayout.addView(this)
-
-        val v = findViewWithTag<View>("attrView")
-        println(">>> v: $v")
-        findViewWithTag<ImageView>("logoView")?.isVisible = false
-        mapboxLayout.findViewWithTag<ImageView>("attrView")?.isVisible = false
         getMapAsync {
-
           mapboxMap = it
           it.setStyle(viewModel.getStyle(DI.preferencesApi.mapbox().mapStyle)) { style ->
+            mapboxLayout.findViewWithTag<ImageView>("logoView")?.isVisible = false
+            mapboxLayout.findViewWithTag<ImageView>("attrView")?.isVisible = false
+            mapboxLayout.findViewWithTag<ImageView>("compassView")?.isVisible = false
             enableLocationComponentWithPermissionCheck(style)
             style.addSource(GeoJsonSource(ROUTE_SOURCE_ID))
             style.addLayer(LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID).withProperties(
