@@ -16,20 +16,20 @@ import kotlinx.coroutines.launch
 
 class FlightLocationEngineImpl(val context: Context) : FlightLocationEngine {
 
-
   var locationEngine = LocationEngineProvider.getBestLocationEngine(context)
 
-  private val locationChannel = ConflatedBroadcastChannel<Location?>()
+  private val locationChannel = ConflatedBroadcastChannel<Location>()
 
   var scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 
   private val locationUpdateCallback = object : LocationEngineCallback<LocationEngineResult> {
     override fun onSuccess(result: LocationEngineResult) {
-      scope.launch { locationChannel.send(result.lastLocation) }
+      result.lastLocation?.let {
+        scope.launch { locationChannel.send(it) }
+      }
     }
 
     override fun onFailure(exception: Exception) {
-      scope.launch { locationChannel.send(null) }
     }
   }
 
@@ -43,7 +43,6 @@ class FlightLocationEngineImpl(val context: Context) : FlightLocationEngine {
       .build()
 
     locationEngine.requestLocationUpdates(request, locationUpdateCallback, context.mainLooper)
-    // locationEngine?.getLastLocation(this)
   }
 
   override fun removeLocationUpdates() {

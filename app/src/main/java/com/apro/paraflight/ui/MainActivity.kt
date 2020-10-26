@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -46,7 +47,7 @@ import permissions.dispatcher.*
 @RuntimePermissions
 class MainActivity : AppCompatActivity() {
 
-  private val navigator: Navigator = AppNavigator(this, R.id.main_container, supportFragmentManager, supportFragmentManager.fragmentFactory)
+  private val navigator: Navigator = AppNavigator(this, R.id.mainContainerView, supportFragmentManager, supportFragmentManager.fragmentFactory)
 
   private val component by lazy { MapboxScreenComponent.create() }
 
@@ -57,7 +58,6 @@ class MainActivity : AppCompatActivity() {
   lateinit var mapView: MapView
 
   lateinit var mapboxMap: MapboxMap
-
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -73,7 +73,8 @@ class MainActivity : AppCompatActivity() {
         onCreate(savedInstanceState)
         mapboxLayout.addView(this)
 
-
+        val v = findViewWithTag<View>("attrView")
+        println(">>> v: $v")
         findViewWithTag<ImageView>("logoView")?.isVisible = false
         mapboxLayout.findViewWithTag<ImageView>("attrView")?.isVisible = false
         getMapAsync {
@@ -114,7 +115,7 @@ class MainActivity : AppCompatActivity() {
 
 
   override fun onBackPressed() {
-    supportFragmentManager.findFragmentById(R.id.main_container)?.let {
+    supportFragmentManager.findFragmentById(R.id.mainContainerView)?.let {
       if (it is BackButtonListener && it.onBackPressed()) return else super.onBackPressed()
     } ?: super.onBackPressed()
   }

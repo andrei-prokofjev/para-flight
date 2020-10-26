@@ -20,8 +20,6 @@ import com.mapbox.mapboxsdk.camera.CameraUpdate
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.Style
-import com.mapbox.turf.TurfConstants
-import com.mapbox.turf.TurfMeasurement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -77,31 +75,21 @@ class MapboxViewModel @Inject constructor(
     }
     // update map
     viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-      locationEngine.updateLocationFlow().collect { location ->
-        location?.let {
-          val prevLocation = _liveLocationData.value ?: it
-          val lastPoint = Point.fromLngLat(it.longitude, it.latitude)
+      locationEngine.updateLocationFlow().collect {
+        val lastPoint = Point.fromLngLat(it.longitude, it.latitude)
+        // update location
+        _liveLocationData.postValue(it)
+        // save into base
+        val point = LocationPointModel(it.time, it.latitude, it.longitude, it.altitude)
+        routeStore.insertLocationPoint(point)
+        // draw route
+        val route = mutableListOf<Point>()
+        _routeData.value?.let {
+          route.addAll(it)
+          route.add(lastPoint)
+        } ?: route.add(lastPoint)
 
-          val point1 = Point.fromLngLat(prevLocation.longitude, prevLocation.latitude)
-          val point2 = Point.fromLngLat(it.longitude, it.latitude)
-
-          val dist = TurfMeasurement.distance(point1, point2, TurfConstants.UNIT_METERS)
-          if (dist > 5) {
-            // update location
-            _liveLocationData.postValue(it)
-            // save into base
-            val point = LocationPointModel(it.time, it.latitude, it.longitude, it.altitude)
-            routeStore.insertLocationPoint(point)
-            // draw route
-            val route = mutableListOf<Point>()
-            _routeData.value?.let {
-              route.addAll(it)
-              route.add(lastPoint)
-            } ?: route.add(lastPoint)
-
-            _routeData.postValue(route)
-          }
-        }
+        _routeData.postValue(route)
       }
     }
     // flight take off

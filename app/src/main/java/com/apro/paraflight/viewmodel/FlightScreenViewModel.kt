@@ -10,9 +10,6 @@ import com.apro.paraflight.events.StopFlightEvent
 import com.apro.paraflight.mapbox.FlightLocationEngine
 import com.apro.paraflight.ui.screen.Screens
 import com.github.terrakok.cicerone.Router
-import com.mapbox.geojson.Point
-import com.mapbox.turf.TurfConstants
-import com.mapbox.turf.TurfMeasurement
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,20 +31,9 @@ class FlightScreenViewModel @Inject constructor(
   init {
     viewModelScope.launch {
       locationEngine.updateLocationFlow().collect {
-        it?.let {
-          val prevLocation = _locationData.value ?: it
-          val point1 = Point.fromLngLat(prevLocation.longitude, prevLocation.latitude)
-          val point2 = Point.fromLngLat(it.longitude, it.latitude)
-          val dist = TurfMeasurement.distance(point1, point2, TurfConstants.UNIT_METERS)
-          println(">>> dist; $dist ")
-          if (dist > 5) {
-            _distData.postValue(dist + _distData.value!!)
-            _locationData.postValue(it)
-          }
-        }
+        _locationData.postValue(it)
       }
     }
-
   }
 
   fun land() {
