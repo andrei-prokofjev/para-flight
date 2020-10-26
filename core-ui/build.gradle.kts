@@ -33,6 +33,7 @@ dependencies {
   implementation(Libs.ktx)
   implementation(Libs.appCompat)
   implementation(Libs.material)
+  implementation(Libs.fragment)
 
   implementation(Libs.coroutines)
   implementation(Libs.timber)

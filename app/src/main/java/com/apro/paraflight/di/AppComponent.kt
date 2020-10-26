@@ -2,13 +2,12 @@ package com.apro.paraflight.di
 
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.App
+import com.apro.paraflight.AppRouter
 import com.apro.paraflight.mapbox.FlightLocationEngineImpl
 import com.apro.paraflight.util.AndroidResourceProvider
 import com.apro.paraflight.util.ResourceProvider
-import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Cicerone.Companion.create
 import com.github.terrakok.cicerone.NavigatorHolder
-import com.github.terrakok.cicerone.Router
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -22,7 +21,7 @@ interface AppComponent {
 
   fun resources(): ResourceProvider
 
-  fun appRouter(): Router
+  fun appRouter(): AppRouter
 
   fun navigatorHolder(): NavigatorHolder
 
@@ -53,13 +52,13 @@ class AppModule(val app: App) {
 
 @Module
 class NavigationModule {
-  private val cicerone: Cicerone<Router> = create()
+  private val cicerone = create(AppRouter())
 
   @Provides
   @Singleton
-  fun provideRouter(): Router = cicerone.router
+  fun provideRouter() = cicerone.router
 
   @Provides
   @Singleton
-  fun provideNavigatorHolder(): NavigatorHolder = cicerone.getNavigatorHolder()
+  fun provideNavigatorHolder() = cicerone.getNavigatorHolder()
 }
