@@ -1,4 +1,4 @@
-package com.apro.core_navigation
+package com.apro.core.network
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
   fun useAppContext() {
     // Context of the app under test.
     val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-    assertEquals("com.apro.core_navigation.test", appContext.packageName)
+    assertEquals("com.apro.core.network.test", appContext.packageName)
   }
 }
