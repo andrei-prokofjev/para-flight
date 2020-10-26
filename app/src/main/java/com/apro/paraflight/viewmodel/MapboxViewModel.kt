@@ -15,10 +15,7 @@ import com.apro.paraflight.events.StartFlightEvent
 import com.apro.paraflight.events.StopFlightEvent
 import com.apro.paraflight.mapbox.FlightLocationEngineImpl
 import com.mapbox.geojson.Point
-import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdate
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.Style
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -48,17 +45,6 @@ class MapboxViewModel @Inject constructor(
 
 
   init {
-    // move camera to the current position
-    locationEngine.getLastLocation { location ->
-      location?.let {
-        val position = CameraPosition.Builder()
-          .target(LatLng(it.latitude, it.longitude))
-          .zoom(12.0)
-          .build()
-        val cameraUpdate = CameraUpdateFactory.newCameraPosition(position)
-        eventBus.send(MyLocationEvent(cameraUpdate, 500), 1500)
-      }
-    }
 
     // change map stayle
     viewModelScope.launch {

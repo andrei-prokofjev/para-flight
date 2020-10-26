@@ -7,7 +7,7 @@ import com.apro.core.db.entity.model
 import com.apro.core.db.model.LocationPointModel
 import javax.inject.Inject
 
-class ThreadsStoreImpl @Inject constructor(
+class RouteStoreImpl @Inject constructor(
   private val db: DatabaseClientApi
 ) : RouteStore {
 

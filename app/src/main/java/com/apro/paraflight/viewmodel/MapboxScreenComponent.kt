@@ -52,7 +52,7 @@ interface MapboxScreenComponent {
       DaggerMapboxScreenComponent.builder()
         .resources(resources())
         .mapboxPreferences(DI.preferencesApi.mapbox())
-        .flightsStore(DI.databaseApi.flightsStore())
+        .flightsStore(DI.databaseApi.routeStore())
         .databaseApi(DI.databaseApi)
         .eventBus(eventBus())
         .flightLocationEngine(flightLocationEngine())

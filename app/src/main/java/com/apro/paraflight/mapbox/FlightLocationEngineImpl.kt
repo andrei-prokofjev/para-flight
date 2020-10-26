@@ -13,6 +13,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class FlightLocationEngineImpl(val context: Context) : FlightLocationEngine {
 
@@ -25,6 +26,7 @@ class FlightLocationEngineImpl(val context: Context) : FlightLocationEngine {
   private val locationUpdateCallback = object : LocationEngineCallback<LocationEngineResult> {
     override fun onSuccess(result: LocationEngineResult) {
       result.lastLocation?.let {
+        Timber.d(">>> location update: $it")
         scope.launch { locationChannel.send(it) }
       }
     }
@@ -37,6 +39,7 @@ class FlightLocationEngineImpl(val context: Context) : FlightLocationEngine {
 
   @SuppressLint("MissingPermission")
   override fun requestLocationUpdates() {
+    Timber.d(">>> requestLocationUpdates")
     val request = LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
       .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
       .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
@@ -46,18 +49,18 @@ class FlightLocationEngineImpl(val context: Context) : FlightLocationEngine {
   }
 
   override fun removeLocationUpdates() {
+    Timber.d(">>> removeLocationUpdates")
     locationEngine.removeLocationUpdates(locationUpdateCallback)
   }
 
   @SuppressLint("MissingPermission")
-  override fun getLastLocation(callback: (Location?) -> Unit) {
+  override fun getLastLocation(callback: (Location) -> Unit) {
     locationEngine.getLastLocation(object : LocationEngineCallback<LocationEngineResult> {
       override fun onSuccess(result: LocationEngineResult) {
-        callback.invoke(result.lastLocation)
+        result.lastLocation?.let { callback.invoke(it) }
       }
 
       override fun onFailure(exception: java.lang.Exception) {
-        callback.invoke(null)
       }
     })
   }

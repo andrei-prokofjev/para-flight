@@ -7,6 +7,6 @@ interface FlightLocationEngine {
   fun updateLocationFlow(): Flow<Location>
   fun requestLocationUpdates()
   fun removeLocationUpdates()
-  fun getLastLocation(callback: (Location?) -> Unit)
+  fun getLastLocation(callback: (Location) -> Unit)
   fun clear()
 }

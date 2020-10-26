@@ -5,5 +5,5 @@ import com.apro.core.db.api.data.store.RouteStore
 
 interface DatabaseApi {
   fun cleaner(): Cleaner
-  fun flightsStore(): RouteStore
+  fun routeStore(): RouteStore
 }
