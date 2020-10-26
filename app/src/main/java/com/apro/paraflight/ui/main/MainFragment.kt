@@ -6,7 +6,6 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.apro.core.ui.BaseFragment
 import com.apro.core.ui.onClick
-import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentMainBinding
 import com.apro.paraflight.ui.common.BackButtonListener
@@ -25,16 +24,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {
     with(binding) {
       profileImageView.onClick { viewModel.onProfileClick() }
       logbookImageView.onClick { viewModel.onLogbookClick() }
-      preflightImageView.onClick {
-
-
-        //  viewModel.onPreflightClick()
-
-        // ConfirmationBottomSheetDialog.create().show(parentFragmentManager, null)
-
-        DI.appComponent.appRouter().openModalBottomSheet()
-
-      }
+      preflightImageView.onClick { viewModel.onPreflightClick() }
       layerImageView.onClick { viewModel.onLayerClick() }
       myLocationImageView.onClick { viewModel.onMyLocationClick() }
     }

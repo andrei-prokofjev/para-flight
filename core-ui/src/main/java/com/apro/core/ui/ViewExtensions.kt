@@ -19,6 +19,8 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 const val DEFAULT_THROTTLE_DURATION = 300L
 
@@ -145,6 +147,10 @@ fun Activity.statusBarHeightFromResources(): Int {
     return resources.getDimensionPixelSize(resourceId)
   }
   return 0
+}
+
+fun FragmentActivity.modal(fragment: BottomSheetDialogFragment) {
+  fragment.show(supportFragmentManager, fragment.javaClass.simpleName)
 }
 
 fun Context.navBarHeight(isLandscapeMode: Boolean = false): Int {

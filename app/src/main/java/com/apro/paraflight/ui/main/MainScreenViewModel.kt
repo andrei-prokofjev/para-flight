@@ -1,19 +1,19 @@
 package com.apro.paraflight.ui.main
 
+import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.events.MyLocationEvent
 import com.apro.paraflight.mapbox.FlightLocationEngine
 import com.apro.paraflight.ui.Screens
-import com.github.terrakok.cicerone.Router
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import javax.inject.Inject
 
 class MainScreenViewModel @Inject constructor(
-  val appRouter: Router,
+  val appRouter: AppRouter,
   private val eventBus: EventBus,
   private val mapboxPreferences: MapboxPreferences,
   private val locationEngine: FlightLocationEngine
@@ -29,7 +29,8 @@ class MainScreenViewModel @Inject constructor(
   }
 
   fun onPreflightClick() {
-    appRouter.navigateTo(Screens.preflight())
+    appRouter.openModalBottomSheet(ConfirmationBottomSheetDialog.create())
+    //appRouter.navigateTo(Screens.preflight())
   }
 
   fun onLayerClick() {

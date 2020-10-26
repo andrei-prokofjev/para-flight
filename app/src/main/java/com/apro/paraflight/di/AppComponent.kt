@@ -1,12 +1,13 @@
 package com.apro.paraflight.di
 
+import com.apro.core.navigation.AppRouter
+import com.apro.core.navigation.di.NavigationModule
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.App
-import com.apro.paraflight.AppRouter
+
 import com.apro.paraflight.mapbox.FlightLocationEngineImpl
 import com.apro.paraflight.util.AndroidResourceProvider
 import com.apro.paraflight.util.ResourceProvider
-import com.github.terrakok.cicerone.Cicerone.Companion.create
 import com.github.terrakok.cicerone.NavigatorHolder
 import dagger.Component
 import dagger.Module
@@ -50,15 +51,4 @@ class AppModule(val app: App) {
   fun provideLocationEngine(): FlightLocationEngineImpl = FlightLocationEngineImpl(app)
 }
 
-@Module
-class NavigationModule {
-  private val cicerone = create(AppRouter())
 
-  @Provides
-  @Singleton
-  fun provideRouter() = cicerone.router
-
-  @Provides
-  @Singleton
-  fun provideNavigatorHolder() = cicerone.getNavigatorHolder()
-}

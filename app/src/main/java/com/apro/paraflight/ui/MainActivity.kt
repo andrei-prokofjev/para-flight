@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
+import com.apro.core.navigation.AppNavigator
 import com.apro.core.ui.toast
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
@@ -19,8 +20,6 @@ import com.apro.paraflight.databinding.ActivityMainBinding
 import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.mapbox.MapboxScreenComponent
 import com.apro.paraflight.ui.mapbox.MapboxViewModel
-import com.github.terrakok.cicerone.Navigator
-import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.LineString
@@ -46,7 +45,7 @@ import permissions.dispatcher.*
 @RuntimePermissions
 class MainActivity : AppCompatActivity() {
 
-  private val navigator: Navigator = AppNavigator(this, R.id.mainContainerView, supportFragmentManager, supportFragmentManager.fragmentFactory)
+  private val navigator = AppNavigator(this, R.id.mainContainerView, supportFragmentManager, supportFragmentManager.fragmentFactory)
 
   private val component by lazy { MapboxScreenComponent.create() }
 

@@ -3,7 +3,6 @@ plugins {
   id("kotlin-android")
   id("kotlin-android-extensions")
   id("kotlin-kapt")
-
 }
 
 android {
@@ -73,7 +72,7 @@ dependencies {
   implementation(project(":core-network"))
   implementation(project(":core-preferences"))
   implementation(project(":core-db"))
-
+  implementation(project(":core-navigation"))
 
   implementation(Libs.kotlin)
   implementation(Libs.ktx)
@@ -82,9 +81,6 @@ dependencies {
 
   implementation(Libs.mapbox)
   implementation(Libs.mapboxSurf)
-
-
-  implementation(Libs.cicerone)
 
   implementation(Libs.navigationFragment)
   implementation(Libs.navigationUi)

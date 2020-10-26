@@ -1,12 +1,11 @@
 package com.apro.paraflight.ui.profile
 
 import androidx.lifecycle.ViewModel
+import com.apro.core.navigation.AppRouter
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
-
-import com.github.terrakok.cicerone.Router
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -22,7 +21,7 @@ interface ProfileScreenComponent {
   interface Builder {
 
     @BindsInstance
-    fun appRouter(router: Router): Builder
+    fun appRouter(router: AppRouter): Builder
 
     @BindsInstance
     fun eventBus(eventBus: EventBus): Builder

@@ -1,14 +1,14 @@
 package com.apro.paraflight.ui.preflight
 
+import com.apro.core.navigation.AppRouter
 import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.events.StartFlightEvent
 import com.apro.paraflight.ui.Screens
-import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class PreflightScreenViewModel @Inject constructor(
-  val appRouter: Router,
+  val appRouter: AppRouter,
   val eventBus: EventBus
 ) : BaseViewModel() {
 

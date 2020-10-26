@@ -30,7 +30,7 @@ object Libs {
   const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8"
 
   const val material = "com.google.android.material:material:1.1.0"
-  const val fragment = "androidx.fragment:fragment-ktx:1.2.4"
+  const val fragment = "androidx.fragment:fragment-ktx:1.2.5"
 
   const val timber = "com.jakewharton.timber:timber:4.7.1"
 
