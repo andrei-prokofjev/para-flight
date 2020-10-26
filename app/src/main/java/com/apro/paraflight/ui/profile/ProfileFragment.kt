@@ -1,4 +1,4 @@
-package com.apro.paraflight.ui.screen
+package com.apro.paraflight.ui.profile
 
 
 import android.os.Bundle
@@ -8,6 +8,7 @@ import com.apro.core.ui.onClick
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentProfileBinding
+import com.apro.paraflight.ui.Screens
 import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.common.viewBinding
 

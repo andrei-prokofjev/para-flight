@@ -1,4 +1,4 @@
-package com.apro.paraflight.viewmodel
+package com.apro.paraflight.ui.main
 
 import androidx.lifecycle.ViewModel
 import com.apro.core.preferenes.api.MapboxPreferences
@@ -7,6 +7,7 @@ import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
 import com.apro.paraflight.mapbox.FlightLocationEngine
+
 import com.github.terrakok.cicerone.Router
 import dagger.Binds
 import dagger.BindsInstance
@@ -31,7 +32,7 @@ interface MainScreenComponent {
     fun mapboxPreferences(mapboxPreferences: MapboxPreferences): Builder
 
     @BindsInstance
-    fun flightLocationEngine(flightLocationEngine: FlightLocationEngine): Builder
+    fun flightLocationEngine(locationEngine: FlightLocationEngine): Builder
 
     fun build(): MainScreenComponent
   }

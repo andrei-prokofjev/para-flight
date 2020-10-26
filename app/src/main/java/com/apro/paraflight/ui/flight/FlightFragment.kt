@@ -1,4 +1,4 @@
-package com.apro.paraflight.ui.screen
+package com.apro.paraflight.ui.flight
 
 
 import android.os.Bundle
@@ -10,10 +10,9 @@ import com.apro.core.util.metersPerSecond
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentFlightBinding
+import com.apro.paraflight.ui.Screens
 import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.common.viewBinding
-import com.apro.paraflight.viewmodel.FlightScreenComponent
-import com.apro.paraflight.viewmodel.FlightScreenViewModel
 
 
 class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListener {

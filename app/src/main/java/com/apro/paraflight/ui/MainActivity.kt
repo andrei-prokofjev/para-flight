@@ -17,9 +17,8 @@ import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.ActivityMainBinding
 import com.apro.paraflight.ui.common.BackButtonListener
-import com.apro.paraflight.ui.screen.Screens
-import com.apro.paraflight.viewmodel.MapboxScreenComponent
-import com.apro.paraflight.viewmodel.MapboxViewModel
+import com.apro.paraflight.ui.mapbox.MapboxScreenComponent
+import com.apro.paraflight.ui.mapbox.MapboxViewModel
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.mapbox.geojson.Feature

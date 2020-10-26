@@ -1,5 +1,12 @@
-package com.apro.paraflight.ui.screen
+package com.apro.paraflight.ui
 
+import com.apro.paraflight.ui.about.AboutFragment
+import com.apro.paraflight.ui.flight.FlightFragment
+import com.apro.paraflight.ui.logbook.LogbookFragment
+import com.apro.paraflight.ui.main.MainFragment
+import com.apro.paraflight.ui.preflight.PreflightFragment
+import com.apro.paraflight.ui.profile.ProfileFragment
+import com.apro.paraflight.ui.settings.SettingsFragment
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 
 object Screens {

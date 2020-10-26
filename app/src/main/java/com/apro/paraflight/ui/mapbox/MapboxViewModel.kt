@@ -1,4 +1,4 @@
-package com.apro.paraflight.viewmodel
+package com.apro.paraflight.ui.mapbox
 
 import android.location.Location
 import androidx.lifecycle.LiveData

@@ -1,4 +1,4 @@
-package com.apro.paraflight.ui.screen
+package com.apro.paraflight.ui.main
 
 
 import android.os.Bundle
@@ -10,8 +10,6 @@ import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentMainBinding
 import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.common.viewBinding
-import com.apro.paraflight.viewmodel.MainScreenComponent
-import com.apro.paraflight.viewmodel.MainScreenViewModel
 
 
 class MainFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {

@@ -1,6 +1,5 @@
 package com.apro.paraflight.di
 
-import android.content.Context
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.App
 import com.apro.paraflight.mapbox.FlightLocationEngineImpl
@@ -10,7 +9,6 @@ import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Cicerone.Companion.create
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
-import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -19,8 +17,6 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class, NavigationModule::class])
 @Singleton
 interface AppComponent {
-
-  fun context(): Context
 
   fun eventBus(): EventBus
 
@@ -32,20 +28,9 @@ interface AppComponent {
 
   fun flightLocationEngine(): FlightLocationEngineImpl
 
-  @Component.Builder
-  interface Builder {
-    @BindsInstance
-    fun appContext(context: Context): Builder
-
-    fun appModule(appModule: AppModule): Builder
-
-    fun build(): AppComponent
-  }
-
   companion object {
     fun create(app: App): AppComponent =
       DaggerAppComponent.builder()
-        .appContext(app.applicationContext)
         .appModule(AppModule(app))
         .build()
   }

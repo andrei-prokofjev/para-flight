@@ -1,4 +1,4 @@
-package com.apro.paraflight.viewmodel
+package com.apro.paraflight.ui.flight
 
 import android.location.Location
 import androidx.lifecycle.LiveData
@@ -8,7 +8,7 @@ import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.events.StopFlightEvent
 import com.apro.paraflight.mapbox.FlightLocationEngine
-import com.apro.paraflight.ui.screen.Screens
+import com.apro.paraflight.ui.Screens
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

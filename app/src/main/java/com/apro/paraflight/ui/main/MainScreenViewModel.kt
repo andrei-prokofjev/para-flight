@@ -1,11 +1,11 @@
-package com.apro.paraflight.viewmodel
+package com.apro.paraflight.ui.main
 
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.events.MyLocationEvent
 import com.apro.paraflight.mapbox.FlightLocationEngine
-import com.apro.paraflight.ui.screen.Screens
+import com.apro.paraflight.ui.Screens
 import com.github.terrakok.cicerone.Router
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -40,7 +40,7 @@ class MainScreenViewModel @Inject constructor(
 
   fun onMyLocationClick() {
     locationEngine.getLastLocation { location ->
-      location?.let {
+      location.let {
         val position = CameraPosition.Builder()
           .target(LatLng(it.latitude, it.longitude))
           .zoom(12.0)

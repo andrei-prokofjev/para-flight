@@ -1,4 +1,4 @@
-package com.apro.paraflight.ui.screen
+package com.apro.paraflight.ui.preflight
 
 import android.os.Bundle
 import android.view.View
@@ -8,8 +8,6 @@ import com.apro.core.ui.onClick
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentPreflightBinding
 import com.apro.paraflight.ui.common.viewBinding
-import com.apro.paraflight.viewmodel.PreflightScreenComponent
-import com.apro.paraflight.viewmodel.PreflightScreenViewModel
 
 class PreflightFragment : BaseFragment(R.layout.fragment_preflight) {
 

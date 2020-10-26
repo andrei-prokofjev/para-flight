@@ -1,11 +1,11 @@
-package com.apro.paraflight.viewmodel
+package com.apro.paraflight.ui.profile
 
 import androidx.lifecycle.ViewModel
-import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
+
 import com.github.terrakok.cicerone.Router
 import dagger.Binds
 import dagger.BindsInstance
@@ -13,8 +13,8 @@ import dagger.Component
 import dagger.Module
 import dagger.multibindings.IntoMap
 
-@Component(modules = [PreflightScreenModule::class])
-interface PreflightScreenComponent {
+@Component(modules = [ProfileScreenModule::class])
+interface ProfileScreenComponent {
 
   fun viewModelFactory(): ViewModelFactory
 
@@ -27,27 +27,23 @@ interface PreflightScreenComponent {
     @BindsInstance
     fun eventBus(eventBus: EventBus): Builder
 
-    @BindsInstance
-    fun mapboxPreferences(mapboxPreferences: MapboxPreferences): Builder
-
-    fun build(): PreflightScreenComponent
+    fun build(): ProfileScreenComponent
   }
 
   companion object {
     fun create() = with(DI.appComponent) {
-      DaggerPreflightScreenComponent.builder()
+      DaggerProfileScreenComponent.builder()
         .appRouter(appRouter())
         .eventBus(eventBus())
-        .mapboxPreferences(DI.preferencesApi.mapbox())
         .build()
     }
   }
 }
 
 @Module
-abstract class PreflightScreenModule {
+abstract class ProfileScreenModule {
   @Binds
   @IntoMap
-  @ViewModelKey(PreflightScreenViewModel::class)
-  abstract fun preflightScreenViewModel(viewModel: PreflightScreenViewModel): ViewModel
+  @ViewModelKey(ProfileScreenViewModel::class)
+  abstract fun flightScreenViewModel(viewModel: ProfileScreenViewModel): ViewModel
 }

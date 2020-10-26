@@ -1,4 +1,4 @@
-package com.apro.paraflight.viewmodel
+package com.apro.paraflight.ui.mapbox
 
 import androidx.lifecycle.ViewModel
 import com.apro.core.db.api.data.store.RouteStore

@@ -1,9 +1,9 @@
-package com.apro.paraflight.viewmodel
+package com.apro.paraflight.ui.preflight
 
 import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.events.StartFlightEvent
-import com.apro.paraflight.ui.screen.Screens
+import com.apro.paraflight.ui.Screens
 import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
