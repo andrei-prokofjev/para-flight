@@ -6,5 +6,12 @@
   <string name="km_h">km/h</string>
   <string name="asl">ASL</string>
   <string name="m">m</string>
+  <string name="landed">Landed</string>
+  <string name="cancel">Cancel</string>
+  <string name="save">Save</string>
+  <string name="speed">Speed</string>
+  <string name="alt">Alt</string>
+  <string name="alt_diff">Alt Diff</string>
+  <string name="take_off_detection">Take Off Detection</string>
 
 </resources>

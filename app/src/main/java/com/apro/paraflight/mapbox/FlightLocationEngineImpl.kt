@@ -32,6 +32,7 @@ class FlightLocationEngineImpl(val context: Context) : FlightLocationEngine {
     }
 
     override fun onFailure(exception: Exception) {
+      Timber.e(">>> !!! location update error: $exception")
     }
   }
 

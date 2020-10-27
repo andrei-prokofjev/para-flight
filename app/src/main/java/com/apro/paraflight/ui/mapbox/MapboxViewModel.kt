@@ -82,6 +82,7 @@ class MapboxViewModel @Inject constructor(
     viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
       EventBus.observeChannel(StartFlightEvent::class).collect {
         databaseApi.cleaner().clearAll()
+        _routeData.postValue(emptyList())
         locationEngine.requestLocationUpdates()
       }
     }
@@ -89,7 +90,6 @@ class MapboxViewModel @Inject constructor(
     viewModelScope.launch {
       EventBus.observeChannel(StopFlightEvent::class).collect {
         locationEngine.removeLocationUpdates()
-        _routeData.postValue(emptyList())
       }
     }
   }

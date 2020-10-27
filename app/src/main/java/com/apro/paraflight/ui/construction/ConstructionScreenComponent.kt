@@ -1,20 +1,20 @@
-package com.apro.paraflight.ui.flight
+package com.apro.paraflight.ui.construction
 
 import androidx.lifecycle.ViewModel
 import com.apro.core.navigation.AppRouter
+import com.apro.core.preferenes.api.ConstructionPreferences
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
-import com.apro.paraflight.mapbox.FlightLocationEngine
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
 import dagger.multibindings.IntoMap
 
-@Component(modules = [FlightScreenModule::class])
-interface FlightScreenComponent {
+@Component(modules = [ConstructionScreenModule::class])
+interface ConstructionScreenComponent {
 
   fun viewModelFactory(): ViewModelFactory
 
@@ -28,26 +28,26 @@ interface FlightScreenComponent {
     fun eventBus(eventBus: EventBus): Builder
 
     @BindsInstance
-    fun flightLocationEngine(locationEngine: FlightLocationEngine): Builder
+    fun constructionPrefs(constructionPreferences: ConstructionPreferences): Builder
 
-    fun build(): FlightScreenComponent
+    fun build(): ConstructionScreenComponent
   }
 
   companion object {
     fun create() = with(DI.appComponent) {
-      DaggerFlightScreenComponent.builder()
+      DaggerConstructionScreenComponent.builder()
         .appRouter(appRouter())
         .eventBus(eventBus())
-        .flightLocationEngine(flightLocationEngine())
+        .constructionPrefs(DI.preferencesApi.construction())
         .build()
     }
   }
 }
 
 @Module
-abstract class FlightScreenModule {
+abstract class ConstructionScreenModule {
   @Binds
   @IntoMap
-  @ViewModelKey(FlightScreenViewModel::class)
-  abstract fun flightScreenViewModel(viewModel: FlightScreenViewModel): ViewModel
+  @ViewModelKey(ConstructionScreenViewModel::class)
+  abstract fun constructionScreenViewModel(viewModel: ConstructionScreenViewModel): ViewModel
 }

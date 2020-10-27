@@ -1,6 +1,7 @@
 package com.apro.paraflight.ui
 
 import com.apro.paraflight.ui.about.AboutFragment
+import com.apro.paraflight.ui.construction.ConstructionFragment
 import com.apro.paraflight.ui.flight.FlightFragment
 import com.apro.paraflight.ui.logbook.LogbookFragment
 import com.apro.paraflight.ui.main.MainFragment
@@ -23,4 +24,6 @@ object Screens {
   fun flight() = FragmentScreen(FlightFragment::javaClass.name) { FlightFragment.create() }
 
   fun logbook() = FragmentScreen(LogbookFragment::javaClass.name) { LogbookFragment.create() }
+
+  fun construction() = FragmentScreen(ConstructionFragment::javaClass.name) { ConstructionFragment.create() }
 }

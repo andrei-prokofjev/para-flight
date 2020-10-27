@@ -4,18 +4,16 @@ import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.apro.core.navigation.AppRouter
 import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
-import com.apro.paraflight.events.StopFlightEvent
 import com.apro.paraflight.mapbox.FlightLocationEngine
-import com.apro.paraflight.ui.Screens
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FlightScreenViewModel @Inject constructor(
-  val appRouter: Router,
+  val appRouter: AppRouter,
   val eventBus: EventBus,
   private val locationEngine: FlightLocationEngine
 ) : BaseViewModel() {
@@ -34,10 +32,5 @@ class FlightScreenViewModel @Inject constructor(
         _locationData.postValue(it)
       }
     }
-  }
-
-  fun land() {
-    appRouter.navigateTo(Screens.main())
-    eventBus.send(StopFlightEvent())
   }
 }

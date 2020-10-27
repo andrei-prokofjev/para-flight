@@ -1,7 +1,9 @@
 package com.apro.core.preferenes.di
 
 import android.app.Application
+import com.apro.core.preferenes.api.ConstructionPreferences
 import com.apro.core.preferenes.api.MapboxPreferences
+import com.apro.core.preferenes.impl.ConstructionPreferencesImpl
 import com.apro.core.preferenes.impl.MapboxPreferencesImpl
 import dagger.Binds
 import dagger.BindsInstance
@@ -43,4 +45,8 @@ abstract class PreferencesModule {
   @Binds
   @Singleton
   internal abstract fun bindsMapboxPrefs(mapboxPreferences: MapboxPreferencesImpl): MapboxPreferences
+
+  @Binds
+  @Singleton
+  internal abstract fun bindsConstructionPrefs(constructionPreferences: ConstructionPreferencesImpl): ConstructionPreferences
 }
