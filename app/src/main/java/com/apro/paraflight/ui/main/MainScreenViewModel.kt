@@ -29,8 +29,8 @@ class MainScreenViewModel @Inject constructor(
   }
 
   fun onPreflightClick() {
-    appRouter.openModalBottomSheet(ConfirmationBottomSheetDialog.create())
-    //appRouter.navigateTo(Screens.preflight())
+    //appRouter.openModalBottomSheet(ConfirmationBottomSheetDialog.create())
+    appRouter.navigateTo(Screens.preflight())
   }
 
   fun onLayerClick() {
