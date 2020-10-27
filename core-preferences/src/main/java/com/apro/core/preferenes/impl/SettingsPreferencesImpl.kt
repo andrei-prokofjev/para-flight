@@ -2,7 +2,7 @@ package com.apro.core.preferenes.impl
 
 import android.app.Application
 import android.content.Context
-import com.apro.core.preferenes.api.ConstructionPreferences
+import com.apro.core.preferenes.api.SettingsPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class ConstructionPreferencesImpl @Inject constructor(
+class SettingsPreferencesImpl @Inject constructor(
   app: Application
-) : ConstructionPreferences {
+) : SettingsPreferences {
 
   private val prefs by lazy { app.getSharedPreferences(PREFS, Context.MODE_PRIVATE) }
 
@@ -45,7 +45,7 @@ class ConstructionPreferencesImpl @Inject constructor(
     }
 
   private companion object {
-    const val PREFS = "construction_preferences"
+    const val PREFS = "settings_preferences"
 
     const val DEFAULT_TAKE_OFF_SPEED = 20
     const val TAKE_OFF_SPEED = "take_off_speed"

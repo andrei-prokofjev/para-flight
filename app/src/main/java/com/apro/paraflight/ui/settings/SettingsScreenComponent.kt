@@ -1,12 +1,12 @@
 package com.apro.paraflight.ui.settings
 
 import androidx.lifecycle.ViewModel
+import com.apro.core.navigation.AppRouter
+import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
-
-import com.github.terrakok.cicerone.Router
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -22,10 +22,13 @@ interface SettingsScreenComponent {
   interface Builder {
 
     @BindsInstance
-    fun appRouter(router: Router): Builder
+    fun appRouter(router: AppRouter): Builder
 
     @BindsInstance
     fun eventBus(eventBus: EventBus): Builder
+
+    @BindsInstance
+    fun settingsPrefs(settingsPreferences: SettingsPreferences): Builder
 
     fun build(): SettingsScreenComponent
   }
@@ -35,6 +38,7 @@ interface SettingsScreenComponent {
       DaggerSettingsScreenComponent.builder()
         .appRouter(appRouter())
         .eventBus(eventBus())
+        .settingsPrefs(DI.preferencesApi.construction())
         .build()
     }
   }
@@ -45,5 +49,5 @@ abstract class SettingsScreenModule {
   @Binds
   @IntoMap
   @ViewModelKey(SettingsScreenViewModel::class)
-  abstract fun settingsScreenViewModel(viewModel: SettingsScreenViewModel): ViewModel
+  abstract fun constructionScreenViewModel(viewModel: SettingsScreenViewModel): ViewModel
 }

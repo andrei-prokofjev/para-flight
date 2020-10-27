@@ -2,7 +2,7 @@ package com.apro.core.preferenes.api
 
 import kotlinx.coroutines.flow.Flow
 
-interface ConstructionPreferences {
+interface SettingsPreferences {
 
   var takeOffSpeed: Int
   fun takeOffSpeedFlow(): Flow<Int>

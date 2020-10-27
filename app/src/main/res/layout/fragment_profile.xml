@@ -40,22 +40,6 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:ignore="ContentDescription" />
 
-  <ImageView
-      android:id="@+id/constructionImageView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/activity_horizontal_margin"
-      android:layout_marginTop="@dimen/activity_vertical_margin"
-      android:layout_marginEnd="@dimen/activity_horizontal_margin"
-      android:background="@drawable/bg_button"
-      android:elevation="@dimen/shadow_elevation"
-      android:foreground="@drawable/selector_button_dark"
-      android:padding="8dp"
-      android:src="@drawable/ic_construction"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsImageView"
-      tools:ignore="ContentDescription" />
-
 
   <TextView
       android:id="@+id/textView"

@@ -24,7 +24,6 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile), BackButtonListe
     with(binding) {
       backImageView.onClick { DI.appComponent.appRouter().exit() }
       settingsImageView.onClick { DI.appComponent.appRouter().navigateTo(Screens.settings()) }
-      constructionImageView.onClick { DI.appComponent.appRouter().navigateTo(Screens.construction()) }
       textView.onClick { DI.appComponent.appRouter().navigateTo(Screens.about()) }
 
     }

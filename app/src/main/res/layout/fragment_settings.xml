@@ -23,18 +23,108 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:ignore="ContentDescription" />
 
-
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="SETTINGS"
-      android:textAllCaps="true"
+      android:fontFamily="@font/roboto_medium"
+      android:padding="8dp"
+      android:text="@string/take_off_detection"
       android:textColor="@color/black"
-      android:textSize="40sp"
-      app:layout_constraintBottom_toBottomOf="parent"
+      android:textSize="20dp"
+      app:layout_constraintBottom_toTopOf="@id/takeOffDetectionLayout"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/takeOffDetectionLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/activity_horizontal_margin"
+      android:layout_marginTop="120dp"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      android:background="@drawable/bg_construction_module"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/speed"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/takeOffSpeedPicker"
+        app:layout_constraintEnd_toEndOf="@id/takeOffSpeedPicker"
+        app:layout_constraintStart_toStartOf="@id/takeOffSpeedPicker" />
+
+    <NumberPicker
+        android:id="@+id/takeOffSpeedPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:theme="@style/MyStyle.NumberPicker"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/takeOffAltDiffPicker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/alt_diff"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/takeOffAltDiffPicker"
+        app:layout_constraintEnd_toEndOf="@id/takeOffAltDiffPicker"
+        app:layout_constraintStart_toStartOf="@id/takeOffAltDiffPicker" />
+
+    <NumberPicker
+        android:id="@+id/takeOffAltDiffPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:theme="@style/MyStyle.NumberPicker"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/takeOffSpeedPicker"
+        app:layout_constraintTop_toTopOf="parent" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="60dp"
+      android:layout_marginStart="@dimen/activity_horizontal_margin"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      android:background="@drawable/bg_construction_module"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toBottomOf="@+id/takeOffDetectionLayout">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:text="@string/voice_guidance"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/voiceGuidanceSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
