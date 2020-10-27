@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/core-preferences" />
             <option value="$PROJECT_DIR$/core-ui" />
             <option value="$PROJECT_DIR$/core-util" />
+            <option value="$PROJECT_DIR$/core-voice-guidance" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

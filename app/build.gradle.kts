@@ -73,6 +73,7 @@ dependencies {
   implementation(project(":core-preferences"))
   implementation(project(":core-db"))
   implementation(project(":core-navigation"))
+  implementation(project(":core-voice-guidance"))
 
   implementation(Libs.kotlin)
   implementation(Libs.ktx)

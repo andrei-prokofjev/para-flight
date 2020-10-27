@@ -4,6 +4,7 @@ import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
+import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.paraflight.events.MyLocationEvent
 import com.apro.paraflight.mapbox.FlightLocationRepository
 import com.apro.paraflight.ui.Screens
@@ -16,7 +17,8 @@ class MainScreenViewModel @Inject constructor(
   val appRouter: AppRouter,
   private val eventBus: EventBus,
   private val mapboxPreferences: MapboxPreferences,
-  private val locationRepository: FlightLocationRepository
+  private val locationRepository: FlightLocationRepository,
+  private val voiceGuidance: VoiceGuidance
 ) : BaseViewModel() {
 
 
@@ -29,8 +31,9 @@ class MainScreenViewModel @Inject constructor(
   }
 
   fun onPreflightClick() {
-    //appRouter.openModalBottomSheet(ConfirmationBottomSheetDialog.create())
-    appRouter.navigateTo(Screens.preflight())
+//    appRouter.navigateTo(Screens.preflight())
+
+    voiceGuidance.speak("привет мир")
   }
 
   fun onLayerClick() {

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.util.event.EventBus
+import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
@@ -33,6 +34,9 @@ interface MainScreenComponent {
     @BindsInstance
     fun flightLocationEngine(locationRepository: FlightLocationRepository): Builder
 
+    @BindsInstance
+    fun voiceGuidance(voiceGuidance: VoiceGuidance): Builder
+
     fun build(): MainScreenComponent
   }
 
@@ -42,7 +46,8 @@ interface MainScreenComponent {
         .appRouter(appRouter())
         .eventBus(eventBus())
         .mapboxPreferences(DI.preferencesApi.mapbox())
-        .flightLocationEngine(flightLocationEngine())
+        .flightLocationEngine(flightLocationRepository())
+        .voiceGuidance(voiceGuidance())
         .build()
     }
   }

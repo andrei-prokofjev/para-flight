@@ -1,3 +1,4 @@
+include(":core-voice-guidance")
 include(":core-navigation")
 include(":app")
 include(":core-ui")

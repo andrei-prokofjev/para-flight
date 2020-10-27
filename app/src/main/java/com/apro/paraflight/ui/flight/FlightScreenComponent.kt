@@ -38,7 +38,7 @@ interface FlightScreenComponent {
       DaggerFlightScreenComponent.builder()
         .appRouter(appRouter())
         .eventBus(eventBus())
-        .flightLocationEngine(flightLocationEngine())
+        .flightLocationEngine(flightLocationRepository())
         .build()
     }
   }

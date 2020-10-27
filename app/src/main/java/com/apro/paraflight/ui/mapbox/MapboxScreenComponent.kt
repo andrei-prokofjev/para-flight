@@ -42,7 +42,7 @@ interface MapboxScreenComponent {
     fun eventBus(eventBus: EventBus): Builder
 
     @BindsInstance
-    fun flightLocationEngine(locationEngineImpl: FlightLocationRepositoryImpl): Builder
+    fun flightLocationRepository(locationRepository: FlightLocationRepositoryImpl): Builder
 
     fun build(): MapboxScreenComponent
   }
@@ -55,7 +55,7 @@ interface MapboxScreenComponent {
         .flightsStore(DI.databaseApi.routeStore())
         .databaseApi(DI.databaseApi)
         .eventBus(eventBus())
-        .flightLocationEngine(flightLocationEngine())
+        .flightLocationRepository(flightLocationRepository())
         .build()
     }
   }

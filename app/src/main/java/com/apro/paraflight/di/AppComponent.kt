@@ -3,8 +3,8 @@ package com.apro.paraflight.di
 import com.apro.core.navigation.AppRouter
 import com.apro.core.navigation.di.NavigationModule
 import com.apro.core.util.event.EventBus
+import com.apro.core.voiceguidance.impl.VoiceGuidanceImpl
 import com.apro.paraflight.App
-
 import com.apro.paraflight.mapbox.FlightLocationRepositoryImpl
 import com.apro.paraflight.util.AndroidResourceProvider
 import com.apro.paraflight.util.ResourceProvider
@@ -26,7 +26,9 @@ interface AppComponent {
 
   fun navigatorHolder(): NavigatorHolder
 
-  fun flightLocationEngine(): FlightLocationRepositoryImpl
+  fun flightLocationRepository(): FlightLocationRepositoryImpl
+
+  fun voiceGuidance(): VoiceGuidanceImpl
 
   companion object {
     fun create(app: App): AppComponent =
@@ -48,7 +50,12 @@ class AppModule(val app: App) {
 
   @Provides
   @Singleton
-  fun provideLocationEngine(): FlightLocationRepositoryImpl = FlightLocationRepositoryImpl(app)
+  fun provideLocationRepository(): FlightLocationRepositoryImpl = FlightLocationRepositoryImpl(app)
+
+  @Provides
+  @Singleton
+  fun provideVoiceGuidance(): VoiceGuidanceImpl = VoiceGuidanceImpl(app)
 }
+
 
 

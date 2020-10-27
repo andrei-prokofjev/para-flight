@@ -24,9 +24,9 @@ class MainFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {
     with(binding) {
       profileImageView.onClick { viewModel.onProfileClick() }
       logbookImageView.onClick { viewModel.onLogbookClick() }
-      preflightImageView.onClick { viewModel.onPreflightClick() }
       layerImageView.onClick { viewModel.onLayerClick() }
       myLocationImageView.onClick { viewModel.onMyLocationClick() }
+      preflightImageView.onClick { viewModel.onPreflightClick() }
     }
   }
 

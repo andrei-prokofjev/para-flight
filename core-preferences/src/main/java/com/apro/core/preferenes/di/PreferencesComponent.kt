@@ -48,5 +48,5 @@ abstract class PreferencesModule {
 
   @Binds
   @Singleton
-  internal abstract fun bindsConstructionPrefs(constructionPreferences: SettingsPreferencesImpl): SettingsPreferences
+  internal abstract fun bindsSettingsPrefs(settingsPreferences: SettingsPreferencesImpl): SettingsPreferences
 }
