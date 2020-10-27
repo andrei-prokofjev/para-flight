@@ -35,6 +35,15 @@ class ConstructionPreferencesImpl @Inject constructor(
       GlobalScope.launch(Dispatchers.IO) { takeOffAltDiffChannel.send(value) }
     }
 
+  private val voiceGuidanceChannel = ConflatedBroadcastChannel<Boolean>()
+  override fun voiceGuidanceFlow() = voiceGuidanceChannel.asFlow()
+  override var voiceGuidance: Boolean
+    get() = prefs.getBoolean(VOICE_GUIDANCE, true)
+    set(value) {
+      prefs.edit().putBoolean(VOICE_GUIDANCE, value).apply()
+      GlobalScope.launch(Dispatchers.IO) { voiceGuidanceChannel.send(value) }
+    }
+
   private companion object {
     const val PREFS = "construction_preferences"
 
@@ -43,5 +52,7 @@ class ConstructionPreferencesImpl @Inject constructor(
 
     const val DEFAULT_TAKE_OFF_ALT_DIFF = 6
     const val TAKE_OFF_ALT_DIFF = "take_off_alt_diff"
+
+    const val VOICE_GUIDANCE = "voice_guidance"
   }
 }

@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class FlightLocationEngineImpl(val context: Context) : FlightLocationEngine {
+class FlightLocationRepositoryImpl(private val context: Context) : FlightLocationRepository {
 
   var locationEngine = LocationEngineProvider.getBestLocationEngine(context)
 
@@ -25,8 +25,8 @@ class FlightLocationEngineImpl(val context: Context) : FlightLocationEngine {
 
   private val locationUpdateCallback = object : LocationEngineCallback<LocationEngineResult> {
     override fun onSuccess(result: LocationEngineResult) {
+      Timber.d(">>> location update: $result")
       result.lastLocation?.let {
-        Timber.d(">>> location update: $it")
         scope.launch { locationChannel.send(it) }
       }
     }

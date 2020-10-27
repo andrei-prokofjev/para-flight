@@ -13,7 +13,7 @@ import com.apro.core.util.event.EventBus
 import com.apro.paraflight.events.MyLocationEvent
 import com.apro.paraflight.events.StartFlightEvent
 import com.apro.paraflight.events.StopFlightEvent
-import com.apro.paraflight.mapbox.FlightLocationEngineImpl
+import com.apro.paraflight.mapbox.FlightLocationRepositoryImpl
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.camera.CameraUpdate
 import com.mapbox.mapboxsdk.maps.Style
@@ -27,7 +27,7 @@ class MapboxViewModel @Inject constructor(
   private val routeStore: RouteStore,
   private val databaseApi: DatabaseApi,
   eventBus: EventBus,
-  private val locationEngine: FlightLocationEngineImpl
+  private val locationEngine: FlightLocationRepositoryImpl
 ) : BaseViewModel() {
 
 

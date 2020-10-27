@@ -5,7 +5,7 @@ import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.events.MyLocationEvent
-import com.apro.paraflight.mapbox.FlightLocationEngine
+import com.apro.paraflight.mapbox.FlightLocationRepository
 import com.apro.paraflight.ui.Screens
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -16,7 +16,7 @@ class MainScreenViewModel @Inject constructor(
   val appRouter: AppRouter,
   private val eventBus: EventBus,
   private val mapboxPreferences: MapboxPreferences,
-  private val locationEngine: FlightLocationEngine
+  private val locationRepository: FlightLocationRepository
 ) : BaseViewModel() {
 
 
@@ -40,7 +40,7 @@ class MainScreenViewModel @Inject constructor(
   }
 
   fun onMyLocationClick() {
-    locationEngine.getLastLocation { location ->
+    locationRepository.getLastLocation { location ->
       location.let {
         val position = CameraPosition.Builder()
           .target(LatLng(it.latitude, it.longitude))

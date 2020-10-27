@@ -3,7 +3,7 @@ package com.apro.paraflight.mapbox
 import android.location.Location
 import kotlinx.coroutines.flow.Flow
 
-interface FlightLocationEngine {
+interface FlightLocationRepository {
   fun updateLocationFlow(): Flow<Location>
   fun requestLocationUpdates()
   fun removeLocationUpdates()

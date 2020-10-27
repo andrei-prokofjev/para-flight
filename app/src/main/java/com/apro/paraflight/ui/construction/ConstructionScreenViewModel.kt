@@ -23,7 +23,16 @@ class ConstructionScreenViewModel @Inject constructor(
   private val _takeOffAltDiffData = MutableLiveData(constructionPreferences.takeOffAltDiff)
   val takeOffAltDiffData: LiveData<Int> = _takeOffAltDiffData
 
+  private val _voiceGuidanceData = MutableLiveData(constructionPreferences.voiceGuidance)
+  val voiceGuidanceData: LiveData<Boolean> = _voiceGuidanceData
+
   init {
+    viewModelScope.launch {
+      constructionPreferences.voiceGuidanceFlow().collect {
+        _voiceGuidanceData.postValue(it)
+      }
+    }
+
     viewModelScope.launch {
       constructionPreferences.takeOffSpeedFlow().collect {
         _takeOffSpeedData.postValue(it)
@@ -31,9 +40,13 @@ class ConstructionScreenViewModel @Inject constructor(
     }
   }
 
-  fun saveConstruction(takeOffSpeed: Int, takeOffAltDiff: Int) {
+  fun saveTakeOffDetectionParams(takeOffSpeed: Int, takeOffAltDiff: Int) {
     constructionPreferences.takeOffSpeed = takeOffSpeed
     constructionPreferences.takeOffAltDiff = takeOffAltDiff
+  }
+
+  fun saveVoiceGuidance(on: Boolean) {
+    constructionPreferences.voiceGuidance = on
   }
 
   fun onBackClicked() {

@@ -5,7 +5,7 @@ import com.apro.core.navigation.di.NavigationModule
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.App
 
-import com.apro.paraflight.mapbox.FlightLocationEngineImpl
+import com.apro.paraflight.mapbox.FlightLocationRepositoryImpl
 import com.apro.paraflight.util.AndroidResourceProvider
 import com.apro.paraflight.util.ResourceProvider
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -26,7 +26,7 @@ interface AppComponent {
 
   fun navigatorHolder(): NavigatorHolder
 
-  fun flightLocationEngine(): FlightLocationEngineImpl
+  fun flightLocationEngine(): FlightLocationRepositoryImpl
 
   companion object {
     fun create(app: App): AppComponent =
@@ -48,7 +48,7 @@ class AppModule(val app: App) {
 
   @Provides
   @Singleton
-  fun provideLocationEngine(): FlightLocationEngineImpl = FlightLocationEngineImpl(app)
+  fun provideLocationEngine(): FlightLocationRepositoryImpl = FlightLocationRepositoryImpl(app)
 }
 
 

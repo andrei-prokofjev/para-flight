@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.apro.core.navigation.AppRouter
 import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
-import com.apro.paraflight.mapbox.FlightLocationEngine
+import com.apro.paraflight.mapbox.FlightLocationRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class FlightScreenViewModel @Inject constructor(
   val appRouter: AppRouter,
   val eventBus: EventBus,
-  private val locationEngine: FlightLocationEngine
+  private val locationRepository: FlightLocationRepository
 ) : BaseViewModel() {
 
   private val _locationData = MutableLiveData<Location>()
@@ -28,7 +28,7 @@ class FlightScreenViewModel @Inject constructor(
 
   init {
     viewModelScope.launch {
-      locationEngine.updateLocationFlow().collect {
+      locationRepository.updateLocationFlow().collect {
         _locationData.postValue(it)
       }
     }

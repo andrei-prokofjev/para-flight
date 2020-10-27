@@ -6,7 +6,7 @@ import com.apro.core.util.event.EventBus
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
-import com.apro.paraflight.mapbox.FlightLocationEngine
+import com.apro.paraflight.mapbox.FlightLocationRepository
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -28,7 +28,7 @@ interface FlightScreenComponent {
     fun eventBus(eventBus: EventBus): Builder
 
     @BindsInstance
-    fun flightLocationEngine(locationEngine: FlightLocationEngine): Builder
+    fun flightLocationEngine(locationRepository: FlightLocationRepository): Builder
 
     fun build(): FlightScreenComponent
   }

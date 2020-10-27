@@ -23,30 +23,28 @@ class ConstructionFragment : BaseFragment(R.layout.fragment_construction), BackB
 
     with(binding) {
       backImageView.onClick {
-        viewModel.saveConstruction(takeOffSpeedPicker.value, takeOffAltDiffPicker.value)
+        viewModel.saveTakeOffDetectionParams(takeOffSpeedPicker.value, takeOffAltDiffPicker.value)
         viewModel.onBackClicked()
       }
 
       takeOffSpeedPicker.minValue = ConstructionPreferences.MIN_TAKE_OFF_SPEED
       takeOffSpeedPicker.maxValue = ConstructionPreferences.MAX_TAKE_OFF_SPEED
       takeOffSpeedPicker.wrapSelectorWheel = false
-
-      viewModel.takeOffSpeedData.observe {
-        takeOffSpeedPicker.value = it
-      }
+      viewModel.takeOffSpeedData.observe { takeOffSpeedPicker.value = it }
 
       takeOffAltDiffPicker.minValue = ConstructionPreferences.MIN_TAKE_OFF_ALT_DIFF
       takeOffAltDiffPicker.maxValue = ConstructionPreferences.MAX_TAKE_OFF_ALT_DIFF
       takeOffAltDiffPicker.wrapSelectorWheel = false
+      viewModel.takeOffAltDiffData.observe { takeOffAltDiffPicker.value = it }
 
-      viewModel.takeOffAltDiffData.observe {
-        takeOffAltDiffPicker.value = it
-      }
+      voiceGuidanceSwitch.setOnCheckedChangeListener { _, on -> viewModel.saveVoiceGuidance(on) }
+      viewModel.voiceGuidanceData.observe { voiceGuidanceSwitch.isChecked = it }
+
     }
   }
 
   override fun onBackPressed(): Boolean {
-    viewModel.saveConstruction(binding.takeOffSpeedPicker.value, binding.takeOffAltDiffPicker.value)
+    viewModel.saveTakeOffDetectionParams(binding.takeOffSpeedPicker.value, binding.takeOffAltDiffPicker.value)
     return false
   }
 

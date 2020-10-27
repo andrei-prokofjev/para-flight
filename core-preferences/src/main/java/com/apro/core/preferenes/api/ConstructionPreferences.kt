@@ -11,6 +11,9 @@ interface ConstructionPreferences {
   var takeOffAltDiff: Int
   fun takeOffAltDiffFlow(): Flow<Int>
 
+  var voiceGuidance: Boolean
+  fun voiceGuidanceFlow(): Flow<Boolean>
+
   companion object {
     const val MIN_TAKE_OFF_SPEED = 5
     const val MAX_TAKE_OFF_SPEED = 25
