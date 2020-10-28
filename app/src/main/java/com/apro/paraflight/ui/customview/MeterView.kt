@@ -13,6 +13,12 @@ class MeterView constructor(context: Context, attr: AttributeSet?) :
 
   private val binding: ViewMeterBinding = ViewMeterBinding.inflate(LayoutInflater.from(context), this, true)
 
+  private var name: String? = null
+    set(value) {
+      binding.nameTextView.text = value
+      field = value
+    }
+
   private var title: String? = null
     set(value) {
       binding.titleTextView.text = value
@@ -31,18 +37,9 @@ class MeterView constructor(context: Context, attr: AttributeSet?) :
       field = value
     }
 
-//  var style: MeterStyle = MeterStyle.Default
-//    set(value) {
-//      with(binding) {
-//        titleTextView.textColor(value.color)
-//        amountTextView.textColor(value.color)
-//        unitTextView.textColor(value.color)
-//        field = value
-//      }
-//    }
-
   init {
     val a = context.obtainStyledAttributes(attr, R.styleable.MeterView)
+    name = a.getString(R.styleable.MeterView_mv_name)
     title = a.getString(R.styleable.MeterView_mv_title)
     unit = a.getString(R.styleable.MeterView_mv_unit)
     a.recycle()

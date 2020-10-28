@@ -10,22 +10,12 @@ class VoiceGuidanceImpl @Inject constructor(
   context: Context
 ) : VoiceGuidance {
 
-  private val textToSpeech = TextToSpeech(context, ::onInit, null)
-
-  private var inited = false
-
-  private var text: String? = null
+  private val textToSpeech = TextToSpeech(context, { }, null)
 
   override fun speak(text: String) {
-    this.text = text
-    if (inited) {
-      Timber.d(">>> speak: $text")
-      textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null, null)
-    }
+    Timber.d(">>> speak: $text")
+    textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null, null)
   }
 
-  private fun onInit(status: Int) {
-    inited = status == TextToSpeech.SUCCESS
-    if (inited) text?.let { speak(it) }
-  }
+
 }

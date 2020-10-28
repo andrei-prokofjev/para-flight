@@ -7,10 +7,9 @@
     android:background="@color/meter_view_background"
     android:foreground="@drawable/selector_dark">
 
-
   <TextView
-      android:id="@+id/titleTextView"
-      android:layout_width="match_parent"
+      android:id="@+id/nameTextView"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:fontFamily="@font/roboto_medium"
       android:paddingStart="8dp"
@@ -20,6 +19,19 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:ignore="RtlSymmetry"
       tools:text="@string/gs" />
+
+
+  <TextView
+      android:id="@+id/titleTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:fontFamily="@font/roboto_medium"
+      android:textColor="@android:color/white"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:ignore="RtlSymmetry"
+      tools:text="@string/flight_time" />
 
   <TextView
       android:id="@+id/amountTextView"

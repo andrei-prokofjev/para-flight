@@ -14,5 +14,6 @@
   <string name="alt_diff">Alt Diff</string>
   <string name="take_off_detection">Take Off Detection</string>
   <string name="voice_guidance">Voice Guidance</string>
+  <string name="flight_time">Flight Time</string>
 
 </resources>
