@@ -38,7 +38,7 @@ interface SettingsScreenComponent {
       DaggerSettingsScreenComponent.builder()
         .appRouter(appRouter())
         .eventBus(eventBus())
-        .settingsPrefs(DI.preferencesApi.construction())
+        .settingsPrefs(DI.preferencesApi.settings())
         .build()
     }
   }

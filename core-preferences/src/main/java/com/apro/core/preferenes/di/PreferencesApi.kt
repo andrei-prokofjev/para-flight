@@ -7,6 +7,6 @@ import com.apro.core.preferenes.api.SettingsPreferences
 interface PreferencesApi {
   fun mapbox(): MapboxPreferences
 
-  fun construction(): SettingsPreferences
+  fun settings(): SettingsPreferences
 
 }

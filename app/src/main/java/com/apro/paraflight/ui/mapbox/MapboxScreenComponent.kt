@@ -1,9 +1,8 @@
 package com.apro.paraflight.ui.mapbox
 
 import androidx.lifecycle.ViewModel
-import com.apro.core.db.api.data.store.RouteStore
-import com.apro.core.db.api.di.DatabaseApi
 import com.apro.core.preferenes.api.MapboxPreferences
+import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
@@ -35,16 +34,13 @@ interface MapboxScreenComponent {
     fun mapboxPreferences(mapboxPreferences: MapboxPreferences): Builder
 
     @BindsInstance
-    fun flightsStore(routeStore: RouteStore): Builder
-
-    @BindsInstance
-    fun databaseApi(databaseApi: DatabaseApi): Builder
-
-    @BindsInstance
     fun eventBus(eventBus: EventBus): Builder
 
     @BindsInstance
     fun flightRepository(repository: FlightRepository): Builder
+
+    @BindsInstance
+    fun settingsPreferences(settingsPref: SettingsPreferences): Builder
 
     fun build(): MapboxScreenComponent
   }
@@ -54,10 +50,9 @@ interface MapboxScreenComponent {
       DaggerMapboxScreenComponent.builder()
         .resources(resources())
         .mapboxPreferences(DI.preferencesApi.mapbox())
-        .flightsStore(DI.databaseApi.routeStore())
-        .databaseApi(DI.databaseApi)
         .eventBus(eventBus())
         .flightRepository(flightRepository())
+        .settingsPreferences(DI.preferencesApi.settings())
         .build()
     }
   }

@@ -7,8 +7,8 @@ import com.mapbox.android.core.location.LocationEngineCallback
 import com.mapbox.android.core.location.LocationEngineProvider
 import com.mapbox.android.core.location.LocationEngineRequest
 import com.mapbox.android.core.location.LocationEngineResult
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
@@ -21,13 +21,18 @@ class FlightRepositoryImpl(private val context: Context) : FlightRepository {
 
   private val locationChannel = ConflatedBroadcastChannel<Location>()
 
-  var scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+  var scope: CoroutineScope? = null
+
+  init {
+    clear()
+    scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
+  }
 
   private val locationUpdateCallback = object : LocationEngineCallback<LocationEngineResult> {
     override fun onSuccess(result: LocationEngineResult) {
-      Timber.d(">>> location update: $result")
+      Timber.d("location update: %s", result.lastLocation)
       result.lastLocation?.let {
-        scope.launch { locationChannel.send(it) }
+        scope?.launch { locationChannel.send(it) }
       }
     }
 
@@ -67,7 +72,7 @@ class FlightRepositoryImpl(private val context: Context) : FlightRepository {
   }
 
   override fun clear() {
-    scope.launch { cancel() }
+    scope?.launch { cancel() }
   }
 
   companion object {

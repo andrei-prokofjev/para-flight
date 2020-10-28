@@ -2,6 +2,7 @@ package com.apro.paraflight.ui.flight
 
 import androidx.lifecycle.ViewModel
 import com.apro.core.navigation.AppRouter
+import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
@@ -21,6 +22,7 @@ interface FlightScreenComponent {
   @Component.Builder
   interface Builder {
 
+
     @BindsInstance
     fun appRouter(router: AppRouter): Builder
 
@@ -29,6 +31,9 @@ interface FlightScreenComponent {
 
     @BindsInstance
     fun flightRepository(repository: FlightRepository): Builder
+
+    @BindsInstance
+    fun settingsPreferences(preferences: SettingsPreferences): Builder
 
     fun build(): FlightScreenComponent
   }
@@ -39,6 +44,7 @@ interface FlightScreenComponent {
         .appRouter(appRouter())
         .eventBus(eventBus())
         .flightRepository(flightRepository())
+        .settingsPreferences(DI.preferencesApi.settings())
         .build()
     }
   }

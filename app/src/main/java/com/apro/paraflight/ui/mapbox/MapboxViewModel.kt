@@ -4,8 +4,6 @@ import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.apro.core.db.api.data.store.RouteStore
-import com.apro.core.db.api.di.DatabaseApi
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
@@ -20,8 +18,6 @@ import javax.inject.Inject
 
 class MapboxViewModel @Inject constructor(
   private val mapboxPreferences: MapboxPreferences,
-  private val routeStore: RouteStore,
-  private val databaseApi: DatabaseApi,
   private val flightInteractor: FlightInteractor
 ) : BaseViewModel() {
 
@@ -40,10 +36,6 @@ class MapboxViewModel @Inject constructor(
 
 
   init {
-
-    println(">>> flightInteractorImpl: $ " + flightInteractor.hashCode())
-
-    // change map stayle
     viewModelScope.launch {
       mapboxPreferences.styleFlow().collect {
         _style.postValue(getStyle(it)
