@@ -6,16 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.apro.core.navigation.AppRouter
 import com.apro.core.ui.BaseViewModel
-import com.apro.core.util.event.EventBus
-import com.apro.paraflight.mapbox.FlightLocationRepository
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FlightScreenViewModel @Inject constructor(
   val appRouter: AppRouter,
-  val eventBus: EventBus,
-  private val locationRepository: FlightLocationRepository
+  private val flightInteractor: FlightInteractor
 ) : BaseViewModel() {
 
   private val _locationData = MutableLiveData<Location>()
@@ -27,10 +23,17 @@ class FlightScreenViewModel @Inject constructor(
   // val dist = TurfMeasurement.distance(route?.get(0), lastPoint, TurfConstants.UNIT_METERS)
 
   init {
+
+    println(">>> init:  $ " + flightInteractor.hashCode())
     viewModelScope.launch {
-      locationRepository.updateLocationFlow().collect {
-        _locationData.postValue(it)
-      }
+//      repository.updateLocationFlow().collect {
+//        _locationData.postValue(it)
+//      }
     }
   }
+
+  override fun onCleared() {
+    flightInteractor.clear()
+  }
+
 }

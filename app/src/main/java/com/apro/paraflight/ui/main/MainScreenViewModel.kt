@@ -6,7 +6,7 @@ import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
 import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.paraflight.events.MyLocationEvent
-import com.apro.paraflight.mapbox.FlightLocationRepository
+import com.apro.paraflight.mapbox.FlightRepository
 import com.apro.paraflight.ui.Screens
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -17,7 +17,7 @@ class MainScreenViewModel @Inject constructor(
   val appRouter: AppRouter,
   private val eventBus: EventBus,
   private val mapboxPreferences: MapboxPreferences,
-  private val locationRepository: FlightLocationRepository,
+  private val repository: FlightRepository,
   private val voiceGuidance: VoiceGuidance
 ) : BaseViewModel() {
 
@@ -31,9 +31,7 @@ class MainScreenViewModel @Inject constructor(
   }
 
   fun onPreflightClick() {
-//    appRouter.navigateTo(Screens.preflight())
-
-    voiceGuidance.speak("Hello world")
+    appRouter.navigateTo(Screens.preflight())
   }
 
   fun onLayerClick() {
@@ -43,7 +41,7 @@ class MainScreenViewModel @Inject constructor(
   }
 
   fun onMyLocationClick() {
-    locationRepository.getLastLocation { location ->
+    repository.getLastLocation { location ->
       location.let {
         val position = CameraPosition.Builder()
           .target(LatLng(it.latitude, it.longitude))

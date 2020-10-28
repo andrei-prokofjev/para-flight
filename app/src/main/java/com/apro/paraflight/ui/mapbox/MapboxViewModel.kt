@@ -6,18 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.apro.core.db.api.data.store.RouteStore
 import com.apro.core.db.api.di.DatabaseApi
-import com.apro.core.db.model.LocationPointModel
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
 import com.apro.paraflight.events.MyLocationEvent
-import com.apro.paraflight.events.StartFlightEvent
-import com.apro.paraflight.events.StopFlightEvent
-import com.apro.paraflight.mapbox.FlightLocationRepositoryImpl
+import com.apro.paraflight.ui.flight.FlightInteractor
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.camera.CameraUpdate
 import com.mapbox.mapboxsdk.maps.Style
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,8 +22,7 @@ class MapboxViewModel @Inject constructor(
   private val mapboxPreferences: MapboxPreferences,
   private val routeStore: RouteStore,
   private val databaseApi: DatabaseApi,
-  eventBus: EventBus,
-  private val locationEngine: FlightLocationRepositoryImpl
+  private val flightInteractor: FlightInteractor
 ) : BaseViewModel() {
 
 
@@ -46,6 +41,8 @@ class MapboxViewModel @Inject constructor(
 
   init {
 
+    println(">>> flightInteractorImpl: $ " + flightInteractor.hashCode())
+
     // change map stayle
     viewModelScope.launch {
       mapboxPreferences.styleFlow().collect {
@@ -59,39 +56,39 @@ class MapboxViewModel @Inject constructor(
         _cameraPosition.postValue(it.cameraUpdate to it.duration)
       }
     }
-    // update map
-    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-      locationEngine.updateLocationFlow().collect {
-        val lastPoint = Point.fromLngLat(it.longitude, it.latitude)
-        // update location
-        _liveLocationData.postValue(it)
-        // save into base
-        val point = LocationPointModel(it.time, it.latitude, it.longitude, it.altitude)
-        routeStore.insertLocationPoint(point)
-        // draw route
-        val route = mutableListOf<Point>()
-        _routeData.value?.let {
-          route.addAll(it)
-          route.add(lastPoint)
-        } ?: route.add(lastPoint)
-
-        _routeData.postValue(route)
-      }
-    }
-    // flight take off
-    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-      EventBus.observeChannel(StartFlightEvent::class).collect {
-        databaseApi.cleaner().clearAll()
-        _routeData.postValue(emptyList())
-        locationEngine.requestLocationUpdates()
-      }
-    }
-    // flight land
-    viewModelScope.launch {
-      EventBus.observeChannel(StopFlightEvent::class).collect {
-        locationEngine.removeLocationUpdates()
-      }
-    }
+//    // update map
+//    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+//      locationEngine.updateLocationFlow().collect {
+//        val lastPoint = Point.fromLngLat(it.longitude, it.latitude)
+//        // update location
+//        _liveLocationData.postValue(it)
+//        // save into base
+//        val point = LocationPointModel(it.time, it.latitude, it.longitude, it.altitude)
+//        routeStore.insertLocationPoint(point)
+//        // draw route
+//        val route = mutableListOf<Point>()
+//        _routeData.value?.let {
+//          route.addAll(it)
+//          route.add(lastPoint)
+//        } ?: route.add(lastPoint)
+//
+//        _routeData.postValue(route)
+//      }
+//    }
+//    // flight take off
+//    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+//      EventBus.observeChannel(StartFlightEvent::class).collect {
+//        databaseApi.cleaner().clearAll()
+//        _routeData.postValue(emptyList())
+//        locationEngine.requestLocationUpdates()
+//      }
+//    }
+//    // flight land
+//    viewModelScope.launch {
+//      EventBus.observeChannel(StopFlightEvent::class).collect {
+//        locationEngine.removeLocationUpdates()
+//      }
+//    }
   }
 
   fun getStyle(mapStyle: MapboxPreferences.MapStyle) =
@@ -100,9 +97,4 @@ class MapboxViewModel @Inject constructor(
       MapboxPreferences.MapStyle.MAPBOX_STREETS -> Style.MAPBOX_STREETS
       MapboxPreferences.MapStyle.LIGHT -> Style.LIGHT
     }
-
-  override fun onCleared() {
-    locationEngine.clear()
-    super.onCleared()
-  }
 }

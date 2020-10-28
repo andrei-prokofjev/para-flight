@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class FlightLocationRepositoryImpl(private val context: Context) : FlightLocationRepository {
+class FlightRepositoryImpl(private val context: Context) : FlightRepository {
 
   var locationEngine = LocationEngineProvider.getBestLocationEngine(context)
 

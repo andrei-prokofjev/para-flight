@@ -36,7 +36,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
 
   override fun onBackPressed(): Boolean {
     //viewModel.land()
-    return true
+    return false
   }
 
   override fun getViewToApplyStatusBarMargin(root: View): Array<View> = arrayOf(
