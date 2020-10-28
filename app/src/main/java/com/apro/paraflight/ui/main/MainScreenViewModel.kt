@@ -33,7 +33,7 @@ class MainScreenViewModel @Inject constructor(
   fun onPreflightClick() {
 //    appRouter.navigateTo(Screens.preflight())
 
-    voiceGuidance.speak("привет мир")
+    voiceGuidance.speak("Hello world")
   }
 
   fun onLayerClick() {
