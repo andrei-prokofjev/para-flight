@@ -35,6 +35,9 @@ interface FlightScreenComponent {
     @BindsInstance
     fun settingsPreferences(preferences: SettingsPreferences): Builder
 
+//    @BindsInstance
+//    fun voiceGuidanceInteractor(voiceGuidanceInteractor: VoiceGuidanceInteractor):Builder
+
     fun build(): FlightScreenComponent
   }
 
@@ -59,4 +62,7 @@ abstract class FlightScreenModule {
 
   @Binds
   abstract fun flightInteractor(interactor: FlightInteractorImpl): FlightInteractor
+
+//  @Binds
+//  abstract fun voiceGuidanceInteractor(interactor: VoiceGuidanceInteractorImpl): VoiceGuidanceInteractor
 }

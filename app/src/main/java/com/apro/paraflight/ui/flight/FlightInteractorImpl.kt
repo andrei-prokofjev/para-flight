@@ -22,7 +22,8 @@ import kotlin.math.roundToInt
 class FlightInteractorImpl @Inject constructor(
   val evenBus: EventBus,
   private val mapboxLocationEngineRepository: MapboxLocationEngineRepository,
-  private val settingsPreferences: SettingsPreferences
+  private val settingsPreferences: SettingsPreferences,
+  //private val voiceGuidanceInteractor: VoiceGuidanceInteractor
 ) : FlightInteractor {
 
   private var scope: CoroutineScope? = null
@@ -57,12 +58,7 @@ class FlightInteractorImpl @Inject constructor(
 
     scope?.launch {
       mapboxLocationEngineRepository.updateLocationFlow().collect {
-        val flightModel = FlightModel(
-          lon = it.longitude,
-          lat = it.latitude,
-          alt = it.altitude,
-          speed = it.speed
-        )
+        val flightModel = FlightModel(lon = it.longitude, lat = it.latitude, alt = it.altitude, speed = it.speed)
         when (flightState) {
           FlightInteractor.FlightState.PREPARING -> {
             totalDistance = 0.0
@@ -84,6 +80,7 @@ class FlightInteractorImpl @Inject constructor(
             } else {
               val baseAltitude = getBaseAltitude(it)
               if ((baseAltitude - it.altitude).absoluteValue > settingsPreferences.takeOffAltDiff) {
+                //   voiceGuidanceInteractor.speak("take off")
                 flightState = FlightInteractor.FlightState.FLIGHT
               }
             }
