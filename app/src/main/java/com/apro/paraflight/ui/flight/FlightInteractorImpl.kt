@@ -22,7 +22,7 @@ class FlightInteractorImpl @Inject constructor(
 
   private var scope: CoroutineScope? = null
 
-  private val updateLocationChannel = ConflatedBroadcastChannel<FlightDataModel>()
+  private val updateLocationChannel = ConflatedBroadcastChannel<FlightModel>()
 
   enum class FlightState {
     PREPARING,
@@ -32,7 +32,7 @@ class FlightInteractorImpl @Inject constructor(
 
   private var flightState = FlightState.PREPARING
 
-  private val flightData = mutableListOf<FlightDataModel>()
+  private val flightData = mutableListOf<FlightModel>()
 
   override fun init() {
     clear()
@@ -58,7 +58,7 @@ class FlightInteractorImpl @Inject constructor(
 //        val prevPoint = Point.f(lastFlightData)
 
         // totalDistance += TurfMeasurement.distance(currentPoint, prevPoint, TurfConstants.UNIT_METERS)
-        val flightPoint = FlightDataModel(
+        val flightPoint = FlightModel(
           lon = it.longitude,
           lat = it.latitude,
           alt = it.altitude,

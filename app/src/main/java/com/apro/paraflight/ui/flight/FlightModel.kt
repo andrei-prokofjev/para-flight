@@ -1,6 +1,6 @@
 package com.apro.paraflight.ui.flight
 
-data class FlightDataModel(
+data class FlightModel(
   val lon: Double,
   val lat: Double,
   val alt: Double,

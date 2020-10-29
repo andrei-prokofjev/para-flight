@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 interface FlightInteractor {
   fun init()
 
-  fun updateLocationFlow(): Flow<FlightDataModel>
+  fun updateLocationFlow(): Flow<FlightModel>
 
   fun clear()
 }

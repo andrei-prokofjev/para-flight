@@ -14,15 +14,19 @@ class FlightScreenViewModel @Inject constructor(
   private val flightInteractor: FlightInteractor
 ) : BaseViewModel() {
 
-  private val _flightData = MutableLiveData<FlightDataModel>()
-  val flightData: LiveData<FlightDataModel> = _flightData
+  private val _flightData = MutableLiveData<FlightScreenModel>()
+  val flight: LiveData<FlightScreenModel> = _flightData
 
   // val dist = TurfMeasurement.distance(route?.get(0), lastPoint, TurfConstants.UNIT_METERS)
 
   init {
     flightInteractor.init()
 
-    viewModelScope.launch { flightInteractor.updateLocationFlow().collect { _flightData.postValue(it) } }
+    viewModelScope.launch {
+      flightInteractor.updateLocationFlow().collect {
+        _flightData.postValue(it.toFlightScreenModel())
+      }
+    }
 
 
   }

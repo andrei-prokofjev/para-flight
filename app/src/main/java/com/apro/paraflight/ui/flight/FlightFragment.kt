@@ -1,7 +1,6 @@
 package com.apro.paraflight.ui.flight
 
 
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -10,7 +9,6 @@ import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentFlightBinding
 import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.common.viewBinding
-import java.util.*
 
 
 class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListener {
@@ -22,21 +20,12 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-
-    val fmt = SimpleDateFormat("h:mm", Locale.getDefault())
-
-
     with(binding) {
-      viewModel.flightData.observe {
-        val cal = Calendar.getInstance()
-        cal.timeInMillis = it.duration
-
-        println(">>> defalut: " + resources.configuration?.locale)
-        println(">>> it $ " + (it.duration / 1000))
-        speedMeterView.amount = it.speed.toString()
-        altitudeMeterView.amount = it.alt.toString()
-        timeMeterView.amount = fmt.format(cal.time)
-        distMeterView.amount = it.dist.toString()
+      viewModel.flight.observe {
+        speedMeterView.amount = it.speed
+        altitudeMeterView.amount = it.alt
+        timeMeterView.amount = it.duration
+        distMeterView.amount = it.dist
       }
     }
   }
