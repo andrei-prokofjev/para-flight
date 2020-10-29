@@ -7,7 +7,7 @@ import com.apro.core.util.event.EventBus
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
-import com.apro.paraflight.mapbox.FlightRepository
+import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -30,7 +30,7 @@ interface FlightScreenComponent {
     fun eventBus(eventBus: EventBus): Builder
 
     @BindsInstance
-    fun flightRepository(repository: FlightRepository): Builder
+    fun flightRepository(repository: MapboxLocationEngineRepository): Builder
 
     @BindsInstance
     fun settingsPreferences(preferences: SettingsPreferences): Builder

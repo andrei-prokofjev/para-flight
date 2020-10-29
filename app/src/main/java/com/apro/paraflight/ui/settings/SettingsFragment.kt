@@ -8,11 +8,10 @@ import com.apro.core.ui.BaseFragment
 import com.apro.core.ui.onClick
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentSettingsBinding
-import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.common.viewBinding
 
 
-class SettingsFragment : BaseFragment(R.layout.fragment_settings), BackButtonListener {
+class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
 
   private val component by lazy { SettingsScreenComponent.create() }
   private val binding by viewBinding { FragmentSettingsBinding.bind(it) }
@@ -23,29 +22,25 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings), BackButtonLis
 
     with(binding) {
       backImageView.onClick {
-        viewModel.saveTakeOffDetectionParams(takeOffSpeedPicker.value, takeOffAltDiffPicker.value)
         viewModel.onBackClicked()
       }
 
       takeOffSpeedPicker.minValue = SettingsPreferences.MIN_TAKE_OFF_SPEED
       takeOffSpeedPicker.maxValue = SettingsPreferences.MAX_TAKE_OFF_SPEED
       takeOffSpeedPicker.wrapSelectorWheel = false
+      takeOffSpeedPicker.setOnValueChangedListener { _, _, new -> viewModel.saveTakeOffSpeed(new) }
       viewModel.takeOffSpeedData.observe { takeOffSpeedPicker.value = it }
 
       takeOffAltDiffPicker.minValue = SettingsPreferences.MIN_TAKE_OFF_ALT_DIFF
       takeOffAltDiffPicker.maxValue = SettingsPreferences.MAX_TAKE_OFF_ALT_DIFF
       takeOffAltDiffPicker.wrapSelectorWheel = false
+      takeOffAltDiffPicker.setOnValueChangedListener { _, _, new -> viewModel.saveTakeOffAlt(new) }
       viewModel.takeOffAltDiffData.observe { takeOffAltDiffPicker.value = it }
 
       voiceGuidanceSwitch.setOnCheckedChangeListener { _, on -> viewModel.saveVoiceGuidance(on) }
       viewModel.voiceGuidanceData.observe { voiceGuidanceSwitch.isChecked = it }
 
     }
-  }
-
-  override fun onBackPressed(): Boolean {
-    viewModel.saveTakeOffDetectionParams(binding.takeOffSpeedPicker.value, binding.takeOffAltDiffPicker.value)
-    return false
   }
 
   companion object {

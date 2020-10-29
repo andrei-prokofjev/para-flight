@@ -8,7 +8,7 @@ import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
-import com.apro.paraflight.mapbox.FlightRepository
+import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -32,7 +32,7 @@ interface MainScreenComponent {
     fun mapboxPreferences(mapboxPreferences: MapboxPreferences): Builder
 
     @BindsInstance
-    fun flightLocationEngine(repository: FlightRepository): Builder
+    fun flightLocationEngine(repository: MapboxLocationEngineRepository): Builder
 
     @BindsInstance
     fun voiceGuidance(voiceGuidance: VoiceGuidance): Builder

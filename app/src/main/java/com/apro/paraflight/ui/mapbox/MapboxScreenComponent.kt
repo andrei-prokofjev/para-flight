@@ -7,7 +7,7 @@ import com.apro.core.util.event.EventBus
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
-import com.apro.paraflight.mapbox.FlightRepository
+import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
 import com.apro.paraflight.ui.flight.FlightInteractor
 import com.apro.paraflight.ui.flight.FlightInteractorImpl
 import com.apro.paraflight.util.ResourceProvider
@@ -37,7 +37,7 @@ interface MapboxScreenComponent {
     fun eventBus(eventBus: EventBus): Builder
 
     @BindsInstance
-    fun flightRepository(repository: FlightRepository): Builder
+    fun flightRepository(repository: MapboxLocationEngineRepository): Builder
 
     @BindsInstance
     fun settingsPreferences(settingsPref: SettingsPreferences): Builder
