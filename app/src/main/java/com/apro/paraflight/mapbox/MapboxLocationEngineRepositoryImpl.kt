@@ -30,7 +30,7 @@ class MapboxLocationEngineRepositoryImpl(private val context: Context) : MapboxL
 
   private val locationUpdateCallback = object : LocationEngineCallback<LocationEngineResult> {
     override fun onSuccess(result: LocationEngineResult) {
-      Timber.d("location update: %s", result.lastLocation)
+     // Timber.d("location update: %s", result.lastLocation)
       result.lastLocation?.let {
         scope?.launch { locationChannel.send(it) }
       }

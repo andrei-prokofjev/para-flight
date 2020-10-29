@@ -4,10 +4,14 @@ import androidx.lifecycle.ViewModel
 import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.util.event.EventBus
+import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
+import com.apro.paraflight.interactors.VoiceGuidanceInteractor
+import com.apro.paraflight.interactors.VoiceGuidanceInteractorImpl
 import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
+import com.apro.paraflight.util.ResourceProvider
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -22,6 +26,8 @@ interface FlightScreenComponent {
   @Component.Builder
   interface Builder {
 
+    @BindsInstance
+    fun resources(resourceProvider: ResourceProvider): Builder
 
     @BindsInstance
     fun appRouter(router: AppRouter): Builder
@@ -35,8 +41,8 @@ interface FlightScreenComponent {
     @BindsInstance
     fun settingsPreferences(preferences: SettingsPreferences): Builder
 
-//    @BindsInstance
-//    fun voiceGuidanceInteractor(voiceGuidanceInteractor: VoiceGuidanceInteractor):Builder
+    @BindsInstance
+    fun voiceGuidance(voiceGuidance: VoiceGuidance): Builder
 
     fun build(): FlightScreenComponent
   }
@@ -44,9 +50,11 @@ interface FlightScreenComponent {
   companion object {
     fun create() = with(DI.appComponent) {
       DaggerFlightScreenComponent.builder()
+        .resources(resources())
         .appRouter(appRouter())
         .eventBus(eventBus())
         .flightRepository(flightRepository())
+        .voiceGuidance(voiceGuidance())
         .settingsPreferences(DI.preferencesApi.settings())
         .build()
     }
@@ -63,6 +71,6 @@ abstract class FlightScreenModule {
   @Binds
   abstract fun flightInteractor(interactor: FlightInteractorImpl): FlightInteractor
 
-//  @Binds
-//  abstract fun voiceGuidanceInteractor(interactor: VoiceGuidanceInteractorImpl): VoiceGuidanceInteractor
+  @Binds
+  abstract fun voiceGuidanceInteractor(interactor: VoiceGuidanceInteractorImpl): VoiceGuidanceInteractor
 }

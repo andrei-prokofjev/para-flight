@@ -17,8 +17,6 @@ class FlightScreenViewModel @Inject constructor(
   private val _flightData = MutableLiveData<FlightScreenModel>()
   val flight: LiveData<FlightScreenModel> = _flightData
 
-  // val dist = TurfMeasurement.distance(route?.get(0), lastPoint, TurfConstants.UNIT_METERS)
-
   init {
     flightInteractor.init()
 

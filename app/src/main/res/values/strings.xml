@@ -16,4 +16,8 @@
   <string name="voice_guidance">Voice Guidance</string>
   <string name="flight_time">Flight Time</string>
 
+  <string name="tts_flight_off_detected">Take Off detected</string>
+  <string name="tts_have_a_nice_flight">Have a nice flight!</string>
+  <string name="tts_Landed">Landed</string>
+
 </resources>

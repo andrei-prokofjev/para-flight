@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.util.event.EventBus
+import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
+import com.apro.paraflight.interactors.VoiceGuidanceInteractor
+import com.apro.paraflight.interactors.VoiceGuidanceInteractorImpl
 import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
 import com.apro.paraflight.ui.flight.FlightInteractor
 import com.apro.paraflight.ui.flight.FlightInteractorImpl
@@ -42,6 +45,9 @@ interface MapboxScreenComponent {
     @BindsInstance
     fun settingsPreferences(settingsPref: SettingsPreferences): Builder
 
+    @BindsInstance
+    fun voiceGuidance(voiceGuidance: VoiceGuidance): Builder
+
     fun build(): MapboxScreenComponent
   }
 
@@ -53,6 +59,7 @@ interface MapboxScreenComponent {
         .eventBus(eventBus())
         .flightRepository(flightRepository())
         .settingsPreferences(DI.preferencesApi.settings())
+        .voiceGuidance(voiceGuidance())
         .build()
     }
   }
@@ -68,4 +75,7 @@ abstract class MapboxScreenModule {
 
   @Binds
   abstract fun flightInteractor(interactor: FlightInteractorImpl): FlightInteractor
+
+  @Binds
+  abstract fun voiceGuidanceInteractor(interactor: VoiceGuidanceInteractorImpl): VoiceGuidanceInteractor
 }

@@ -25,10 +25,10 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile), BackButtonListe
       backImageView.onClick { DI.appComponent.appRouter().exit() }
       settingsImageView.onClick { DI.appComponent.appRouter().navigateTo(Screens.settings()) }
       textView.onClick { DI.appComponent.appRouter().navigateTo(Screens.about()) }
-      button.onClick {
-        if (DI.preferencesApi.settings().voiceGuidance && editText.text.isNullOrEmpty().not())
-          DI.appComponent.voiceGuidance().speak(editText.text.toString())
-      }
+//      button.onClick {
+//        if (DI.preferencesApi.settings().voiceGuidance && editText.text.isNullOrEmpty().not())
+//          DI.appComponent.voiceGuidance().speak(editText.text.toString())
+//      }
 
     }
   }
