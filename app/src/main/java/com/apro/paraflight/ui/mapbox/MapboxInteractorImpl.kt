@@ -28,12 +28,21 @@ class MapboxInteractorImpl @Inject constructor(
   override val mapStyleFlow = mapStyleChannel.asFlow()
 
   init {
-    clear()
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
 
     scope?.launch {
       mapboxPreferences.mapStyleFlow().collect {
         mapStyleChannel.send(it.toStyle())
+      }
+    }
+
+    scope?.launch {
+      mapboxRepository.lastLocationFlow().collect {
+        val position = CameraPosition.Builder()
+          .target(LatLng(it.latitude, it.longitude))
+          .zoom(12.0)
+          .build()
+        cameraPositionChannel.send(CameraUpdateFactory.newCameraPosition(position))
       }
     }
   }
@@ -45,21 +54,11 @@ class MapboxInteractorImpl @Inject constructor(
   }
 
   override fun navigateToCurrentPosition() {
-    mapboxRepository.getLastLocation { location ->
-      location.let {
-        val position = CameraPosition.Builder()
-          .target(LatLng(it.latitude, it.longitude))
-          .zoom(12.0)
-          .build()
-        scope?.launch {
-          println(">>> aaaa")
-          cameraPositionChannel.send(CameraUpdateFactory.newCameraPosition(position))
-        }
-      }
-    }
+    mapboxRepository.getLastLocation()
   }
 
-  fun MapboxPreferences.MapStyle.toStyle(): String {
+  // todo: remove duplicate
+  private fun MapboxPreferences.MapStyle.toStyle(): String {
     return when (this) {
       MapboxPreferences.MapStyle.SATELLITE -> Style.SATELLITE
       MapboxPreferences.MapStyle.MAPBOX_STREETS -> Style.MAPBOX_STREETS

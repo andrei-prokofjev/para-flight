@@ -30,6 +30,10 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
       }
 
       layerImageView.onClick { viewModel.onLayerClick() }
+
+      viewModel.testData.observe {
+        stateTextView.text = it
+      }
     }
   }
 

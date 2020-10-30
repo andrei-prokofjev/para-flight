@@ -11,9 +11,9 @@ interface FlightInteractor {
     LANDED
   }
 
-  fun init()
 
   fun flightStateFlow(): Flow<FlightState>
   fun updateLocationFlow(): Flow<FlightModel>
   fun clear()
+  val testFlow: Flow<String>
 }

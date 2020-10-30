@@ -12,8 +12,8 @@ class MainScreenViewModel @Inject constructor(
 ) : BaseViewModel() {
 
 
-  fun onProfileClick() {
-    appRouter.navigateTo(Screens.profile())
+  fun onSettingsClick() {
+    appRouter.navigateTo(Screens.settings())
   }
 
   fun onLogbookClick() {
@@ -21,7 +21,8 @@ class MainScreenViewModel @Inject constructor(
   }
 
   fun onPreflightClick() {
-    appRouter.navigateTo(Screens.preflight())
+    //appRouter.navigateTo(Screens.preflight())
+    appRouter.navigateTo(Screens.flight())
   }
 
   fun onLayerClick() {
@@ -29,8 +30,6 @@ class MainScreenViewModel @Inject constructor(
   }
 
   fun onMyLocationClick() {
-    println(">>> my loc$")
     mapboxInteractor.navigateToCurrentPosition()
   }
-
 }

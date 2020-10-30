@@ -5,8 +5,14 @@ import kotlinx.coroutines.flow.Flow
 
 interface MapboxLocationEngineRepository {
   fun updateLocationFlow(): Flow<Location>
+
+  fun lastLocationFlow(): Flow<Location>
+
   fun requestLocationUpdates()
+
   fun removeLocationUpdates()
-  fun getLastLocation(callback: (Location) -> Unit)
+
   fun clear()
+
+  fun getLastLocation()
 }

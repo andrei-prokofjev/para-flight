@@ -71,6 +71,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/km_h"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/takeOffSpeedPicker"
+        app:layout_constraintStart_toEndOf="@id/takeOffSpeedPicker"
+        app:layout_constraintTop_toTopOf="@id/takeOffSpeedPicker" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="@string/alt_diff"
         android:textAllCaps="true"
@@ -89,6 +99,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/takeOffSpeedPicker"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/m"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/takeOffAltDiffPicker"
+        app:layout_constraintStart_toEndOf="@id/takeOffAltDiffPicker"
+        app:layout_constraintTop_toTopOf="@id/takeOffAltDiffPicker" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

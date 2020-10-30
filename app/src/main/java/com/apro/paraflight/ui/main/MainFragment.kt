@@ -22,7 +22,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {
     super.onViewCreated(view, savedInstanceState)
 
     with(binding) {
-      profileImageView.onClick { viewModel.onProfileClick() }
+      settingsImageView.onClick { viewModel.onSettingsClick() }
       logbookImageView.onClick { viewModel.onLogbookClick() }
       layerImageView.onClick { viewModel.onLayerClick() }
       myLocationImageView.onClick { viewModel.onMyLocationClick() }

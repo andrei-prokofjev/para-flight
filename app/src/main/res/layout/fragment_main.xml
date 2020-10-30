@@ -14,7 +14,7 @@
       android:layout_height="match_parent" />
 
   <ImageView
-      android:id="@+id/profileImageView"
+      android:id="@+id/settingsImageView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -23,7 +23,7 @@
       android:elevation="@dimen/shadow_elevation"
       android:foreground="@drawable/selector_button_dark"
       android:padding="8dp"
-      android:src="@drawable/ic_profile"
+      android:src="@drawable/ic_settings"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       tools:ignore="ContentDescription" />
@@ -39,7 +39,7 @@
       android:padding="8dp"
       android:src="@drawable/ic_logbook"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/profileImageView"
+      app:layout_constraintTop_toTopOf="@id/settingsImageView"
       tools:ignore="ContentDescription" />
 
 

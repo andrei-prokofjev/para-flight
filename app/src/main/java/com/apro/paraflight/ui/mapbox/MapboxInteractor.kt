@@ -13,4 +13,5 @@ interface MapboxInteractor {
   fun navigateToCurrentPosition()
 
   fun clear()
+
 }

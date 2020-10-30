@@ -20,6 +20,10 @@ class MapboxLocationEngineRepositoryImpl(private val context: Context) : MapboxL
   var locationEngine = LocationEngineProvider.getBestLocationEngine(context)
 
   private val locationChannel = ConflatedBroadcastChannel<Location>()
+  override fun updateLocationFlow() = locationChannel.asFlow()
+
+  private val lastLocationChannel = ConflatedBroadcastChannel<Location>()
+  override fun lastLocationFlow() = lastLocationChannel.asFlow()
 
   var scope: CoroutineScope? = null
 
@@ -30,7 +34,7 @@ class MapboxLocationEngineRepositoryImpl(private val context: Context) : MapboxL
 
   private val locationUpdateCallback = object : LocationEngineCallback<LocationEngineResult> {
     override fun onSuccess(result: LocationEngineResult) {
-     // Timber.d("location update: %s", result.lastLocation)
+      // Timber.d("location update: %s", result.lastLocation)
       result.lastLocation?.let {
         scope?.launch { locationChannel.send(it) }
       }
@@ -41,7 +45,6 @@ class MapboxLocationEngineRepositoryImpl(private val context: Context) : MapboxL
     }
   }
 
-  override fun updateLocationFlow() = locationChannel.asFlow()
 
   @SuppressLint("MissingPermission")
   override fun requestLocationUpdates() {
@@ -60,10 +63,12 @@ class MapboxLocationEngineRepositoryImpl(private val context: Context) : MapboxL
   }
 
   @SuppressLint("MissingPermission")
-  override fun getLastLocation(callback: (Location) -> Unit) {
+  override fun getLastLocation() {
     locationEngine.getLastLocation(object : LocationEngineCallback<LocationEngineResult> {
       override fun onSuccess(result: LocationEngineResult) {
-        result.lastLocation?.let { callback.invoke(it) }
+        result.lastLocation?.let {
+          scope?.launch { lastLocationChannel.send(it) }
+        }
       }
 
       override fun onFailure(exception: java.lang.Exception) {

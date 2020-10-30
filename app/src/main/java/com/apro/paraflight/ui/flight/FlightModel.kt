@@ -5,6 +5,6 @@ data class FlightModel(
   val lat: Double,
   val alt: Double,
   val speed: Float,
-  val dist: Double = 0.0,
-  val duration: Long = 0L
+  val dist: Double? = null,
+  val duration: Long? = null
 )

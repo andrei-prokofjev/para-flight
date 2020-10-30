@@ -2,8 +2,9 @@ package com.apro.paraflight.ui.flight
 
 import android.location.Location
 import android.text.format.DateUtils
+import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.SettingsPreferences
-import com.apro.core.util.event.EventBus
+import com.apro.core.util.roundTo
 import com.apro.paraflight.R
 import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
 import com.apro.paraflight.util.ResourceProvider
@@ -22,7 +23,7 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 class FlightInteractorImpl @Inject constructor(
-  val evenBus: EventBus,
+  val appRouter: AppRouter,
   val resources: ResourceProvider,
   private val mapboxRepository: MapboxLocationEngineRepository,
   private val settingsPreferences: SettingsPreferences,
@@ -35,6 +36,9 @@ class FlightInteractorImpl @Inject constructor(
   private val flightStateChannel = ConflatedBroadcastChannel<FlightInteractor.FlightState>()
 
   private val timeNotificationChannel = ConflatedBroadcastChannel<Long>()
+
+  private val testChannel = ConflatedBroadcastChannel<String>()
+  override val testFlow = testChannel.asFlow()
 
   override fun updateLocationFlow() = updateLocationChannel.asFlow()
 
@@ -50,8 +54,8 @@ class FlightInteractorImpl @Inject constructor(
 
   private val baseAltitudes = mutableListOf<Double>() // calculate average base altitudes
 
-  override fun init() {
-    clear()
+
+  init {
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
 
     mapboxRepository.requestLocationUpdates()
@@ -71,13 +75,8 @@ class FlightInteractorImpl @Inject constructor(
         when (flightState) {
 
           FlightInteractor.FlightState.PREPARING -> {
-            totalDistance = 0.0
-            duration = 0L
             baseAltitude = getBaseAltitude(it)
-            flightData.clear()
-            if (it.speed >= settingsPreferences.takeOffSpeed) {
-              takeOffTime = System.currentTimeMillis()
-              flightData.add(flightModel.copy(duration = takeOffTime))
+            if (it.speed > settingsPreferences.takeOffSpeed) {
               flightState = FlightInteractor.FlightState.TAKE_OFF
             }
           }
@@ -85,13 +84,11 @@ class FlightInteractorImpl @Inject constructor(
           FlightInteractor.FlightState.TAKE_OFF -> {
             totalDistance += getDistance(it)
             duration = System.currentTimeMillis() - takeOffTime
-            flightData.add(flightModel.copy(dist = totalDistance, duration = duration))
-            if (it.speed < settingsPreferences.takeOffSpeed) {
+            flightData.add(flightModel)
+            if ((baseAltitude - it.altitude).absoluteValue > settingsPreferences.takeOffAltDiff) {
+              flightState = FlightInteractor.FlightState.FLIGHT
+            } else if (it.speed < 3) { // todo: check duration and distance
               flightState = FlightInteractor.FlightState.PREPARING
-            } else {
-              if ((baseAltitude - it.altitude).absoluteValue > settingsPreferences.takeOffAltDiff) {
-                flightState = FlightInteractor.FlightState.FLIGHT
-              }
             }
           }
 
@@ -99,31 +96,39 @@ class FlightInteractorImpl @Inject constructor(
             totalDistance += getDistance(it)
             duration = System.currentTimeMillis() - takeOffTime
             flightData.add(flightModel.copy(dist = totalDistance, duration = duration))
-            if (it.speed < 1f) {
+            if (it.speed < 3f) { // todo: take from settings
               flightState = FlightInteractor.FlightState.LANDED
             }
           }
 
           FlightInteractor.FlightState.LANDED -> {
             flightState = FlightInteractor.FlightState.PREPARING
-
           }
         }
 
-        updateLocationChannel.send(flightModel.copy(dist = totalDistance, duration = duration))
+        updateLocationChannel.send(flightModel)
       }
     }
 
     scope?.launch {
       flightStateFlow().collect {
+        testChannel.send(it.toString())
+
         when (it) {
           FlightInteractor.FlightState.PREPARING -> {
+            totalDistance = 0.0
+            duration = 0L
+            flightData.clear()
+          }
+
+          FlightInteractor.FlightState.TAKE_OFF -> {
 
           }
-          FlightInteractor.FlightState.TAKE_OFF -> {
-            // todo:
-          }
+
           FlightInteractor.FlightState.FLIGHT -> {
+            duration = 0
+            totalDistance = 0.0
+            takeOffTime = System.currentTimeMillis()
 
             notifyFlightTime(timeNotificationChannel, duration, settingsPreferences.timeNotificationInterval)
 
@@ -138,13 +143,25 @@ class FlightInteractorImpl @Inject constructor(
             voiceGuidanceInteractor.speak(resources.getString(R.string.tts_we_certainly_enjoyed_serving_you_in_flight_today))
             delay(500)
             voiceGuidanceInteractor.speak(resources.getString(R.string.tts_hope_to_serve_you_soon_again))
+
+            showFlightSummary(totalDistance, duration)
+
             baseAltitudes.clear()
-            // todo: show modal bottom sheet
           }
         }
       }
     }
   }
+
+  // todo: refactor
+  private fun showFlightSummary(totalDistance: Double, duration: Long) {
+    var sum = 0f
+    flightData.forEach { sum += it.speed }
+    val averageSpeed = sum / flightData.size
+
+    appRouter.openModalBottomSheet(FlightSummaryBottomSheetDialogFragment.create(totalDistance.toInt(), duration, averageSpeed.roundTo(1)))
+  }
+
 
   private fun getDistance(it: Location): Double {
     if (flightData.isEmpty()) return 0.0
@@ -172,7 +189,7 @@ class FlightInteractorImpl @Inject constructor(
 
   private suspend fun notifyFlightTime(channel: SendChannel<Long>, duration: Long, delay: Long) {
     while (true) {
-      if (flightState != FlightInteractor.FlightState.FLIGHT) break
+      //  if (flightState != FlightInteractor.FlightState.FLIGHT) break
       delay(delay)
       val minutes = duration / DateUtils.MINUTE_IN_MILLIS % 60
       val hours = duration / DateUtils.HOUR_IN_MILLIS
@@ -181,6 +198,10 @@ class FlightInteractorImpl @Inject constructor(
       else resources.getString(R.string.tts_flight_time_x_minutes, minutes)
 
       voiceGuidanceInteractor.speak(tts)
+      withContext(Dispatchers.Main) {
+        showFlightSummary(3452.0, 60_000 * 78)
+      }
+
       channel.send(duration)
     }
   }

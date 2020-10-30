@@ -19,12 +19,20 @@ class FlightScreenViewModel @Inject constructor(
   private val _flightData = MutableLiveData<FlightScreenModel>()
   val flight: LiveData<FlightScreenModel> = _flightData
 
+  private val _testData = MutableLiveData<String>()
+  val testData: LiveData<String> = _testData
+
   init {
-    flightInteractor.init()
 
     viewModelScope.launch {
       flightInteractor.updateLocationFlow().collect {
         _flightData.postValue(it.toFlightScreenModel())
+      }
+    }
+
+    viewModelScope.launch {
+      flightInteractor.testFlow.collect {
+        _testData.postValue(it)
       }
     }
   }

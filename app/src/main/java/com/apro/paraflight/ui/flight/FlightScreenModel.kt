@@ -17,8 +17,8 @@ fun FlightModel.toFlightScreenModel(): FlightScreenModel {
     FlightScreenModel(
       alt = alt.roundToInt().toString(),
       speed = speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount.roundToInt().toString(),
-      dist = dist.roundToInt().toString(),
-      duration = duration.toSimpleFormat()
+      dist = dist?.roundToInt()?.toString() ?: "-",
+      duration = duration?.toSimpleFormat() ?: "-:-"
     )
   }
 }
