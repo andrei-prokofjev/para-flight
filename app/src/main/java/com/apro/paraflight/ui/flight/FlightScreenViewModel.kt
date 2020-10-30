@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class FlightScreenViewModel @Inject constructor(
   val appRouter: AppRouter,
-  private val flightInteractor: FlightInteractor,
+  val flightInteractor: FlightInteractor,
   private val mapboxInteractor: MapboxInteractor
 ) : BaseViewModel() {
 

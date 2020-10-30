@@ -1,10 +1,10 @@
 package com.apro.paraflight.di
 
+import android.content.Context
 import com.apro.core.navigation.AppRouter
 import com.apro.core.navigation.di.NavigationModule
 import com.apro.core.util.event.EventBus
 import com.apro.core.voiceguidance.impl.VoiceGuidanceImpl
-import com.apro.paraflight.App
 import com.apro.paraflight.mapbox.MapboxLocationEngineRepositoryImpl
 import com.apro.paraflight.util.AndroidResourceProvider
 import com.apro.paraflight.util.ResourceProvider
@@ -32,18 +32,18 @@ interface AppComponent {
 
 
   companion object {
-    fun create(app: App): AppComponent =
+    fun create(context: Context): AppComponent =
       DaggerAppComponent.builder()
-        .appModule(AppModule(app))
+        .appModule(AppModule(context))
         .build()
   }
 }
 
 @Module
-class AppModule(val app: App) {
+class AppModule(private val context: Context) {
   @Provides
   @Singleton
-  fun resourceProvider(): ResourceProvider = AndroidResourceProvider(app)
+  fun resourceProvider(): ResourceProvider = AndroidResourceProvider(context)
 
   @Provides
   @Singleton
@@ -51,11 +51,11 @@ class AppModule(val app: App) {
 
   @Provides
   @Singleton
-  fun provideFlightRepository(): MapboxLocationEngineRepositoryImpl = MapboxLocationEngineRepositoryImpl(app)
+  fun provideFlightRepository(): MapboxLocationEngineRepositoryImpl = MapboxLocationEngineRepositoryImpl(context)
 
   @Provides
   @Singleton
-  fun provideVoiceGuidance(): VoiceGuidanceImpl = VoiceGuidanceImpl(app)
+  fun provideVoiceGuidance(): VoiceGuidanceImpl = VoiceGuidanceImpl(context)
 }
 
 

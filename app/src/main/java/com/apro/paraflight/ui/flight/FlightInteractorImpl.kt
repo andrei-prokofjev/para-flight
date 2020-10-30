@@ -4,6 +4,8 @@ import android.location.Location
 import android.text.format.DateUtils
 import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.SettingsPreferences
+import com.apro.core.util.Speed
+import com.apro.core.util.metersPerSecond
 import com.apro.core.util.roundTo
 import com.apro.paraflight.R
 import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
@@ -75,19 +77,21 @@ class FlightInteractorImpl @Inject constructor(
         when (flightState) {
 
           FlightInteractor.FlightState.PREPARING -> {
+            updateLocationChannel.send(flightModel)
             baseAltitude = getBaseAltitude(it)
-            if (it.speed > settingsPreferences.takeOffSpeed) {
+            if (it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount > settingsPreferences.takeOffSpeed) {
               flightState = FlightInteractor.FlightState.TAKE_OFF
             }
           }
 
           FlightInteractor.FlightState.TAKE_OFF -> {
+            updateLocationChannel.send(flightModel)
             totalDistance += getDistance(it)
             duration = System.currentTimeMillis() - takeOffTime
             flightData.add(flightModel)
             if ((baseAltitude - it.altitude).absoluteValue > settingsPreferences.takeOffAltDiff) {
               flightState = FlightInteractor.FlightState.FLIGHT
-            } else if (it.speed < 3) { // todo: check duration and distance
+            } else if (it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount < 1) { // todo: check duration and distance
               flightState = FlightInteractor.FlightState.PREPARING
             }
           }
@@ -96,17 +100,18 @@ class FlightInteractorImpl @Inject constructor(
             totalDistance += getDistance(it)
             duration = System.currentTimeMillis() - takeOffTime
             flightData.add(flightModel.copy(dist = totalDistance, duration = duration))
-            if (it.speed < 3f) { // todo: take from settings
+            updateLocationChannel.send(flightModel.copy(duration = duration, dist = totalDistance))
+
+            if (it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount < 1f) { // todo: take from settings
               flightState = FlightInteractor.FlightState.LANDED
             }
           }
 
           FlightInteractor.FlightState.LANDED -> {
-            flightState = FlightInteractor.FlightState.PREPARING
+            // updateLocationChannel.send(flightModel)
+            // flightState = FlightInteractor.FlightState.PREPARING
           }
         }
-
-        updateLocationChannel.send(flightModel)
       }
     }
 
@@ -130,23 +135,29 @@ class FlightInteractorImpl @Inject constructor(
             totalDistance = 0.0
             takeOffTime = System.currentTimeMillis()
 
-            notifyFlightTime(timeNotificationChannel, duration, settingsPreferences.timeNotificationInterval)
+
 
             voiceGuidanceInteractor.speak(resources.getString(R.string.tts_you_are_off_the_ground_and_on_your_own_at_this_point))
-            delay(500)
-            voiceGuidanceInteractor.speak(resources.getString(R.string.tts_climbing_through_x_meters_at_x_kilometers_per_hour))
+
+            // voiceGuidanceInteractor.speak(resources.getString(R.string.tts_climbing_through_x_meters_at_x_kilometers_per_hour, ))
+
+            // notifyFlightTime(timeNotificationChannel, duration, 20_2000)
           }
+
+
           FlightInteractor.FlightState.LANDED -> {
             // todo: save flightData into db
             voiceGuidanceInteractor.speak(resources.getString(R.string.tts_you_have_successfully_reached_the_ground))
-            delay(500)
             voiceGuidanceInteractor.speak(resources.getString(R.string.tts_we_certainly_enjoyed_serving_you_in_flight_today))
-            delay(500)
             voiceGuidanceInteractor.speak(resources.getString(R.string.tts_hope_to_serve_you_soon_again))
 
-            showFlightSummary(totalDistance, duration)
+            withContext(Dispatchers.Main) {
+              showFlightSummary(totalDistance, duration)
+            }
 
             baseAltitudes.clear()
+
+            flightState = FlightInteractor.FlightState.PREPARING
           }
         }
       }
@@ -189,7 +200,7 @@ class FlightInteractorImpl @Inject constructor(
 
   private suspend fun notifyFlightTime(channel: SendChannel<Long>, duration: Long, delay: Long) {
     while (true) {
-      //  if (flightState != FlightInteractor.FlightState.FLIGHT) break
+      if (flightState != FlightInteractor.FlightState.FLIGHT) break
       delay(delay)
       val minutes = duration / DateUtils.MINUTE_IN_MILLIS % 60
       val hours = duration / DateUtils.HOUR_IN_MILLIS

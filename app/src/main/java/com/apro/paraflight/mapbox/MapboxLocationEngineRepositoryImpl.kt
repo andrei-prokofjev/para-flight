@@ -15,11 +15,14 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class MapboxLocationEngineRepositoryImpl(private val context: Context) : MapboxLocationEngineRepository {
+class MapboxLocationEngineRepositoryImpl(
+  private val context: Context
+) : MapboxLocationEngineRepository {
 
   var locationEngine = LocationEngineProvider.getBestLocationEngine(context)
 
-  private val locationChannel = ConflatedBroadcastChannel<Location>()
+
+  val locationChannel = ConflatedBroadcastChannel<Location>()
   override fun updateLocationFlow() = locationChannel.asFlow()
 
   private val lastLocationChannel = ConflatedBroadcastChannel<Location>()

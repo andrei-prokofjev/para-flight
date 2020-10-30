@@ -1,12 +1,19 @@
 package com.apro.paraflight
 
-import androidx.test.platform.app.InstrumentationRegistry
+import android.location.Location
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
+import androidx.test.platform.app.InstrumentationRegistry
+import com.apro.paraflight.di.AppComponent
+import com.apro.paraflight.ui.flight.FlightScreenComponent
+import com.apro.paraflight.ui.flight.FlightScreenViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
+import timber.log.Timber
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -15,10 +22,57 @@ import org.junit.Assert.*
  */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
-    @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.apro.paraflight", appContext.packageName)
+
+
+  @Test
+  fun useAppContext() {
+    // Context of the app under test.
+    val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+    assertEquals("com.apro.paraflight", appContext.packageName)
+
+
+//    scope.launch {
+//      appComponent.flightRepository().locationChannel.send(location)
+//    }
+  }
+
+  @Test
+  fun flightInteractor() {
+
+
+    val location = Location("test")
+    location.speed = 5f
+    location.altitude = 3.0
+
+    val scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
+
+    val c = FlightScreenComponent.create()
+    val mViewModel: FlightScreenViewModel by lazy { c.viewModelFactory().create(FlightScreenViewModel::class.java) }
+
+
+    val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+
+
+    val appComponent = AppComponent.create(appContext)
+
+    mViewModel.flightInteractor
+
+    scope.launch {
+      delay(3000)
+      println(">>> send")
+      appComponent.flightRepository().locationChannel.send(location)
+
     }
+
+    println(">>>>>>>>>")
+
+    while (true) {
+
+      //println(">>>bbbbbb")
+    }
+
+
+  }
+
+
 }
