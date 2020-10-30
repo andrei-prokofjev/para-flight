@@ -47,7 +47,7 @@ class SettingsPreferencesImpl @Inject constructor(
 
     const val VOICE_GUIDANCE = "voice_guidance"
 
-    const val DEFAULT_TIME_NOTIFICATION_INTERVAL = 5L
+    const val DEFAULT_TIME_NOTIFICATION_INTERVAL = 1000 * 60 * 5L
     const val TIME_NOTIFICATION_INTERVAL = "time_notification_interval"
   }
 }
