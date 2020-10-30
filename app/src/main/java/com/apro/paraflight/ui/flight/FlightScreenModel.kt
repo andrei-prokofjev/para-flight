@@ -1,6 +1,8 @@
 package com.apro.paraflight.ui.flight
 
 import android.text.format.DateUtils
+import com.apro.core.util.Speed
+import com.apro.core.util.metersPerSecond
 import kotlin.math.roundToInt
 
 data class FlightScreenModel(
@@ -14,7 +16,7 @@ fun FlightModel.toFlightScreenModel(): FlightScreenModel {
   return with(this) {
     FlightScreenModel(
       alt = alt.roundToInt().toString(),
-      speed = speed.roundToInt().toString(),
+      speed = speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount.roundToInt().toString(),
       dist = dist.roundToInt().toString(),
       duration = duration.toSimpleFormat()
     )

@@ -30,6 +30,7 @@ interface AppComponent {
 
   fun voiceGuidance(): VoiceGuidanceImpl
 
+
   companion object {
     fun create(app: App): AppComponent =
       DaggerAppComponent.builder()

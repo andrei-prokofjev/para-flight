@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import com.apro.core.navigation.AppNavigator
+import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.toast
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         mapboxLayout.addView(this)
         getMapAsync {
           mapboxMap = it
-          it.setStyle(viewModel.getStyle(DI.preferencesApi.mapbox().mapStyle)) { style ->
+          it.setStyle(DI.preferencesApi.mapbox().mapStyle.toStyle()) { style ->
             mapboxLayout.findViewWithTag<ImageView>("logoView")?.isVisible = false
             mapboxLayout.findViewWithTag<ImageView>("attrView")?.isVisible = false
             mapboxLayout.findViewWithTag<ImageView>("compassView")?.isVisible = false
@@ -210,6 +211,15 @@ class MainActivity : AppCompatActivity() {
 
   private inline fun <T> LiveData<T>.observe(crossinline observer: (T) -> Unit) {
     observe(this@MainActivity, { observer.invoke(it) })
+  }
+
+  // todo: remove
+  private fun MapboxPreferences.MapStyle.toStyle(): String {
+    return when (this) {
+      MapboxPreferences.MapStyle.SATELLITE -> Style.SATELLITE
+      MapboxPreferences.MapStyle.MAPBOX_STREETS -> Style.MAPBOX_STREETS
+      MapboxPreferences.MapStyle.LIGHT -> Style.LIGHT
+    }
   }
 
   companion object {

@@ -12,5 +12,5 @@ interface MapboxPreferences {
     SATELLITE
   }
 
-  fun styleFlow(): Flow<MapStyle>
+  fun mapStyleFlow(): Flow<MapStyle>
 }

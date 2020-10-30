@@ -16,8 +16,13 @@
   <string name="voice_guidance">Voice Guidance</string>
   <string name="flight_time">Flight Time</string>
 
-  <string name="tts_flight_off_detected">Take Off detected</string>
-  <string name="tts_have_a_nice_flight">Have a nice flight!</string>
-  <string name="tts_Landed">Landed</string>
+  <string name="tts_you_are_off_the_ground_and_on_your_own_at_this_point">You are off the ground, and on your own at this point</string>
+  <string name="tts_climbing_through_x_meters_at_x_kilometers_per_hour">Climbing through %d meters at %d kilometers per hour</string>
+  <string name="tts_you_have_successfully_reached_the_ground">You have successfully reached the ground</string>
+  <string name="tts_we_certainly_enjoyed_serving_you_in_flight_today">We certainly enjoyed serving you in-flight today</string>
+  <string name="tts_hope_to_serve_you_soon_again">Hope to serve you soon again</string>
+  <string name="tts_flight_time_x_minutes">Flight time %d minutes</string>
+  <string name="tts_flight_time_x_hours_x_minutes">Flight time %d hours %d minutes</string>
+
 
 </resources>

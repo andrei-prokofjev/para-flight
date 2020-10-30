@@ -8,6 +8,8 @@ interface SettingsPreferences {
 
   var voiceGuidance: Boolean
 
+  var timeNotificationInterval: Long
+
   companion object {
     const val MIN_TAKE_OFF_SPEED = 5
     const val MAX_TAKE_OFF_SPEED = 25

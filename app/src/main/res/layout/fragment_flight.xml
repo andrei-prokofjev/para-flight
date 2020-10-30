@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true">
@@ -21,8 +22,8 @@
       android:layout_height="wrap_content"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:mv_title="@string/flight_time"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="parent"
+      app:mv_title="@string/flight_time" />
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/altitudeMeterView"
@@ -33,13 +34,31 @@
       app:mv_name="@string/asl"
       app:mv_unit="@string/m" />
 
+
+  <ImageView
+      android:id="@+id/layerImageView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      android:background="@drawable/bg_button"
+      android:elevation="@dimen/shadow_elevation"
+      android:foreground="@drawable/selector_button_dark"
+      android:padding="8dp"
+      android:src="@drawable/ic_layers"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:ignore="ContentDescription" />
+
+
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/distMeterView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:mv_name="DST" />
+      app:mv_name="DST"
+      app:mv_unit="@string/m" />
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/mv1"
@@ -58,3 +77,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

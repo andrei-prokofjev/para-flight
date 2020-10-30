@@ -1,4 +1,4 @@
-package com.apro.paraflight.interactors
+package com.apro.paraflight.voiceguidance
 
 import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.voiceguidance.api.VoiceGuidance

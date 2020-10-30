@@ -12,30 +12,6 @@ open class Quantity<T : Unit>(val amount: Double, private val unit: T) {
     val baseUnit = this.unit.convertToBaseUnit(amount)
     return Quantity(unit.convertFromBaseUnit(baseUnit), unit)
   }
-
-  operator fun plus(quantity: Quantity<T>): Quantity<T> {
-    val converted = quantity.convertTo(this.unit).amount
-    val amount = this.amount + converted
-    return Quantity(amount, this.unit)
-  }
-
-  operator fun minus(quantity: Quantity<T>): Quantity<T> {
-    val converted = quantity.convertTo(this.unit).amount
-    val amount = this.amount - converted
-    return Quantity(amount, this.unit)
-  }
-
-  operator fun times(quantity: Quantity<T>): Quantity<T> {
-    val converted = quantity.convertTo(this.unit).amount
-    val amount = this.amount * converted
-    return Quantity(amount, this.unit)
-  }
-
-  operator fun div(quantity: Quantity<T>): Quantity<T> {
-    val converted = quantity.convertTo(this.unit).amount
-    val amount = this.amount / converted
-    return Quantity(amount, this.unit)
-  }
 }
 
 class Distance(name: String, ratio: Double) : Unit(name, ratio) {

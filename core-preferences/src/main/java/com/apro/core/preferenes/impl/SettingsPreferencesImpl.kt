@@ -30,6 +30,12 @@ class SettingsPreferencesImpl @Inject constructor(
       prefs.edit().putBoolean(VOICE_GUIDANCE, value).apply()
     }
 
+  override var timeNotificationInterval: Long
+    get() = prefs.getLong(TIME_NOTIFICATION_INTERVAL, DEFAULT_TIME_NOTIFICATION_INTERVAL)
+    set(value) {
+      prefs.edit().putLong(TIME_NOTIFICATION_INTERVAL, value).apply()
+    }
+
   private companion object {
     const val PREFS = "settings_preferences"
 
@@ -40,5 +46,8 @@ class SettingsPreferencesImpl @Inject constructor(
     const val TAKE_OFF_ALT_DIFF = "take_off_alt_diff"
 
     const val VOICE_GUIDANCE = "voice_guidance"
+
+    const val DEFAULT_TIME_NOTIFICATION_INTERVAL = 5L
+    const val TIME_NOTIFICATION_INTERVAL = "time_notification_interval"
   }
 }

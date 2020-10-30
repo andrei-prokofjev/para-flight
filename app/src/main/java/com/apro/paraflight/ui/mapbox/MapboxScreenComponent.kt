@@ -8,11 +8,7 @@ import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
-import com.apro.paraflight.interactors.VoiceGuidanceInteractor
-import com.apro.paraflight.interactors.VoiceGuidanceInteractorImpl
 import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
-import com.apro.paraflight.ui.flight.FlightInteractor
-import com.apro.paraflight.ui.flight.FlightInteractorImpl
 import com.apro.paraflight.util.ResourceProvider
 import dagger.Binds
 import dagger.BindsInstance
@@ -74,8 +70,5 @@ abstract class MapboxScreenModule {
   abstract fun mainScreenViewModel(viewModel: MapboxViewModel): ViewModel
 
   @Binds
-  abstract fun flightInteractor(interactor: FlightInteractorImpl): FlightInteractor
-
-  @Binds
-  abstract fun voiceGuidanceInteractor(interactor: VoiceGuidanceInteractorImpl): VoiceGuidanceInteractor
+  abstract fun mapboxInteractor(interactor: MapboxInteractorImpl): MapboxInteractor
 }

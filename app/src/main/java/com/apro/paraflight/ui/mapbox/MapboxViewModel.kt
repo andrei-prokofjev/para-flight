@@ -4,23 +4,16 @@ import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.BaseViewModel
-import com.apro.core.util.event.EventBus
-import com.apro.paraflight.events.MyLocationEvent
-import com.apro.paraflight.ui.flight.FlightInteractor
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.camera.CameraUpdate
-import com.mapbox.mapboxsdk.maps.Style
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MapboxViewModel @Inject constructor(
-  private val mapboxPreferences: MapboxPreferences,
-  private val flightInteractor: FlightInteractor
+  private val mapboxInteractor: MapboxInteractor
 ) : BaseViewModel() {
-
 
   private val _style = MutableLiveData<String>()
   val style: LiveData<String> = _style
@@ -37,17 +30,22 @@ class MapboxViewModel @Inject constructor(
 
   init {
     viewModelScope.launch {
-      mapboxPreferences.styleFlow().collect {
-        _style.postValue(getStyle(it)
-        )
-      }
+      mapboxInteractor.mapStyleFlow.collect { _style.postValue(it) }
     }
-    // update camera position with current location
+
     viewModelScope.launch {
-      EventBus.observeChannel(MyLocationEvent::class).collect {
-        _cameraPosition.postValue(it.cameraUpdate to it.duration)
-      }
+      println(">>> nav$")
+      mapboxInteractor.cameraPositionFlow.collect { _cameraPosition.postValue(it to 10) }
     }
+
+
+    // update camera position with current location
+//    viewModelScope.launch {
+//      //todo:
+////      EventBus.observeChannel(MyLocationEvent::class).collect {
+////        _cameraPosition.postValue(it.cameraUpdate to it.duration)
+////      }
+//    }
 //    // update map
 //    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
 //      locationEngine.updateLocationFlow().collect {
@@ -83,10 +81,5 @@ class MapboxViewModel @Inject constructor(
 //    }
   }
 
-  fun getStyle(mapStyle: MapboxPreferences.MapStyle) =
-    when (mapStyle) {
-      MapboxPreferences.MapStyle.SATELLITE -> Style.SATELLITE
-      MapboxPreferences.MapStyle.MAPBOX_STREETS -> Style.MAPBOX_STREETS
-      MapboxPreferences.MapStyle.LIGHT -> Style.LIGHT
-    }
+
 }

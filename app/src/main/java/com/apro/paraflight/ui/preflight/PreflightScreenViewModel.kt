@@ -3,7 +3,6 @@ package com.apro.paraflight.ui.preflight
 import com.apro.core.navigation.AppRouter
 import com.apro.core.ui.BaseViewModel
 import com.apro.core.util.event.EventBus
-import com.apro.paraflight.events.StartFlightEvent
 import com.apro.paraflight.ui.Screens
 import javax.inject.Inject
 
@@ -14,6 +13,5 @@ class PreflightScreenViewModel @Inject constructor(
 
   fun onFlightClick() {
     appRouter.navigateTo(Screens.flight())
-    eventBus.send(StartFlightEvent())
   }
 }

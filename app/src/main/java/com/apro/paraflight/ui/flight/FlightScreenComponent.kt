@@ -2,16 +2,19 @@ package com.apro.paraflight.ui.flight
 
 import androidx.lifecycle.ViewModel
 import com.apro.core.navigation.AppRouter
+import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.util.event.EventBus
 import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
-import com.apro.paraflight.interactors.VoiceGuidanceInteractor
-import com.apro.paraflight.interactors.VoiceGuidanceInteractorImpl
 import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
+import com.apro.paraflight.ui.mapbox.MapboxInteractor
+import com.apro.paraflight.ui.mapbox.MapboxInteractorImpl
 import com.apro.paraflight.util.ResourceProvider
+import com.apro.paraflight.voiceguidance.VoiceGuidanceInteractor
+import com.apro.paraflight.voiceguidance.VoiceGuidanceInteractorImpl
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -39,6 +42,9 @@ interface FlightScreenComponent {
     fun flightRepository(repository: MapboxLocationEngineRepository): Builder
 
     @BindsInstance
+    fun mapboxPreferences(mapboxPreferences: MapboxPreferences): Builder
+
+    @BindsInstance
     fun settingsPreferences(preferences: SettingsPreferences): Builder
 
     @BindsInstance
@@ -51,6 +57,7 @@ interface FlightScreenComponent {
     fun create() = with(DI.appComponent) {
       DaggerFlightScreenComponent.builder()
         .resources(resources())
+        .mapboxPreferences(DI.preferencesApi.mapbox())
         .appRouter(appRouter())
         .eventBus(eventBus())
         .flightRepository(flightRepository())
@@ -73,4 +80,7 @@ abstract class FlightScreenModule {
 
   @Binds
   abstract fun voiceGuidanceInteractor(interactor: VoiceGuidanceInteractorImpl): VoiceGuidanceInteractor
+
+  @Binds
+  abstract fun mapboxInteractor(interactor: MapboxInteractorImpl): MapboxInteractor
 }

@@ -29,7 +29,7 @@ class MapboxPreferencesImpl @Inject constructor(
       GlobalScope.launch(Dispatchers.IO) { mapStyleChannel.send(value) }
     }
 
-  override fun styleFlow() = mapStyleChannel.asFlow()
+  override fun mapStyleFlow() = mapStyleChannel.asFlow()
 
 
   private companion object {
