@@ -27,7 +27,7 @@ object Libs {
   const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
   const val ktx = "androidx.core:core-ktx:1.3.2"
   const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.2"
-  const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8"
+  const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0"
 
   const val material = "com.google.android.material:material:1.1.0"
   const val fragment = "androidx.fragment:fragment-ktx:1.2.5"

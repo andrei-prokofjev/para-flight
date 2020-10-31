@@ -30,6 +30,8 @@ android {
 
 dependencies {
 
+  implementation(project(":core-util"))
+
   implementation(Libs.kotlin)
   implementation(Libs.ktx)
   implementation(Libs.appCompat)

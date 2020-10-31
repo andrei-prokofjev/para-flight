@@ -16,9 +16,11 @@ import com.mapbox.turf.TurfConstants
 import com.mapbox.turf.TurfMeasurement
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.channels.SendChannel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.consumeAsFlow
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.absoluteValue
@@ -37,8 +39,6 @@ class FlightInteractorImpl @Inject constructor(
   private val updateLocationChannel = ConflatedBroadcastChannel<FlightModel>()
   private val flightStateChannel = ConflatedBroadcastChannel<FlightInteractor.FlightState>()
 
-  private val timeNotificationChannel = ConflatedBroadcastChannel<Long>()
-
   private val testChannel = ConflatedBroadcastChannel<String>()
   override val testFlow = testChannel.asFlow()
 
@@ -55,6 +55,8 @@ class FlightInteractorImpl @Inject constructor(
   private val flightData = mutableListOf<FlightModel>()
 
   private val baseAltitudes = mutableListOf<Double>() // calculate average base altitudes
+
+  private var timeNotificationTicker: ReceiveChannel<Unit>? = null
 
 
   init {
@@ -91,7 +93,7 @@ class FlightInteractorImpl @Inject constructor(
             flightData.add(flightModel)
             if ((baseAltitude - it.altitude).absoluteValue > settingsPreferences.takeOffAltDiff) {
               flightState = FlightInteractor.FlightState.FLIGHT
-            } else if (it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount < 1) { // todo: check duration and distance
+            } else if (it.speed < settingsPreferences.minFlightSpeed) {
               flightState = FlightInteractor.FlightState.PREPARING
             }
           }
@@ -102,7 +104,7 @@ class FlightInteractorImpl @Inject constructor(
             flightData.add(flightModel.copy(dist = totalDistance, duration = duration))
             updateLocationChannel.send(flightModel.copy(duration = duration, dist = totalDistance))
 
-            if (it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount < 1f) { // todo: take from settings
+            if (it.speed < settingsPreferences.minFlightSpeed) {
               flightState = FlightInteractor.FlightState.LANDED
             }
           }
@@ -135,15 +137,11 @@ class FlightInteractorImpl @Inject constructor(
             totalDistance = 0.0
             takeOffTime = System.currentTimeMillis()
 
-
-
             voiceGuidanceInteractor.speak(resources.getString(R.string.tts_you_are_off_the_ground_and_on_your_own_at_this_point))
 
-            // voiceGuidanceInteractor.speak(resources.getString(R.string.tts_climbing_through_x_meters_at_x_kilometers_per_hour, ))
-
-            // notifyFlightTime(timeNotificationChannel, duration, 20_2000)
+            voiceGuidanceInteractor.speak(resources.getString(R.string.tts_climbing_through_x_meters_at_x_kilometers_per_hour))
+            timeNotificationTicker = ticker(settingsPreferences.timeNotificationInterval, settingsPreferences.timeNotificationInterval)
           }
-
 
           FlightInteractor.FlightState.LANDED -> {
             // todo: save flightData into db
@@ -156,15 +154,28 @@ class FlightInteractorImpl @Inject constructor(
             }
 
             baseAltitudes.clear()
+            timeNotificationTicker?.cancel()
 
             flightState = FlightInteractor.FlightState.PREPARING
           }
         }
       }
     }
+
+    scope?.launch {
+      timeNotificationTicker?.consumeAsFlow()?.collect {
+        val minutes = duration / DateUtils.MINUTE_IN_MILLIS % 60
+        val hours = duration / DateUtils.HOUR_IN_MILLIS
+
+        val tts = if (hours > 0) resources.getString(R.string.tts_flight_time_x_hours_x_minutes, hours, minutes)
+        else resources.getString(R.string.tts_flight_time_x_minutes, minutes)
+
+        voiceGuidanceInteractor.speak(tts)
+      }
+    }
   }
 
-  // todo: refactor
+  // todo: redesign
   private fun showFlightSummary(totalDistance: Double, duration: Long) {
     var sum = 0f
     flightData.forEach { sum += it.speed }
@@ -198,26 +209,8 @@ class FlightInteractorImpl @Inject constructor(
     return sum / baseAltitudes.size.toFloat()
   }
 
-  private suspend fun notifyFlightTime(channel: SendChannel<Long>, duration: Long, delay: Long) {
-    while (true) {
-      if (flightState != FlightInteractor.FlightState.FLIGHT) break
-      delay(delay)
-      val minutes = duration / DateUtils.MINUTE_IN_MILLIS % 60
-      val hours = duration / DateUtils.HOUR_IN_MILLIS
-
-      val tts = if (hours > 0) resources.getString(R.string.tts_flight_time_x_hours_x_minutes, hours, minutes)
-      else resources.getString(R.string.tts_flight_time_x_minutes, minutes)
-
-      voiceGuidanceInteractor.speak(tts)
-      withContext(Dispatchers.Main) {
-        showFlightSummary(3452.0, 60_000 * 78)
-      }
-
-      channel.send(duration)
-    }
-  }
-
   override fun clear() {
+    timeNotificationTicker?.cancel()
     scope?.coroutineContext?.cancelChildren()
     scope?.launch { cancel() }
     mapboxRepository.removeLocationUpdates()

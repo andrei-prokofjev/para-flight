@@ -2,13 +2,21 @@ package com.apro.core.preferenes.api
 
 interface SettingsPreferences {
 
-  var takeOffSpeed: Int
+  enum class Units {
+    METRIC,
+    IMPERIAL
+  }
 
+  var takeOffSpeed: Int
   var takeOffAltDiff: Int
 
   var voiceGuidance: Boolean
 
   var timeNotificationInterval: Long
+
+  var minFlightSpeed: Int
+
+  var units: Units
 
   companion object {
     const val MIN_TAKE_OFF_SPEED = 5
@@ -16,5 +24,8 @@ interface SettingsPreferences {
 
     const val MIN_TAKE_OFF_ALT_DIFF = 0
     const val MAX_TAKE_OFF_ALT_DIFF = 15
+
+    const val MIN_MIN_FLIGHT_SPEED = 0
+    const val MAX_MIN_FLIGHT_SPEED = 7
   }
 }

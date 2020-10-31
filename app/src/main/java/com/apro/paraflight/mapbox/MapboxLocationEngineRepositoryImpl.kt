@@ -1,18 +1,19 @@
 package com.apro.paraflight.mapbox
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Location
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.mapbox.android.core.location.LocationEngineCallback
 import com.mapbox.android.core.location.LocationEngineProvider
 import com.mapbox.android.core.location.LocationEngineRequest
 import com.mapbox.android.core.location.LocationEngineResult
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class MapboxLocationEngineRepositoryImpl(
@@ -51,14 +52,16 @@ class MapboxLocationEngineRepositoryImpl(
 
   @SuppressLint("MissingPermission")
   override fun requestLocationUpdates() {
+    if (isLocationPermissionsDenied()) return
+
     Timber.d(">>> requestLocationUpdates")
     val request = LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
       .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
       .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
       .build()
-
     locationEngine.requestLocationUpdates(request, locationUpdateCallback, context.mainLooper)
   }
+
 
   override fun removeLocationUpdates() {
     Timber.d(">>> removeLocationUpdates")
@@ -67,6 +70,8 @@ class MapboxLocationEngineRepositoryImpl(
 
   @SuppressLint("MissingPermission")
   override fun getLastLocation() {
+    if (isLocationPermissionsDenied()) return
+
     locationEngine.getLastLocation(object : LocationEngineCallback<LocationEngineResult> {
       override fun onSuccess(result: LocationEngineResult) {
         result.lastLocation?.let {
@@ -79,12 +84,28 @@ class MapboxLocationEngineRepositoryImpl(
     })
   }
 
+  private fun isLocationPermissionsDenied(): Boolean {
+    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+      && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+      scope?.launch(Dispatchers.Main) {
+        Toast.makeText(context, "LOCATION PERMISSIONS REQUIRED", Toast.LENGTH_LONG)
+          .apply {
+            setGravity(gravity, 0, 0)
+            show()
+          }
+      }
+      return true
+    }
+    return false
+  }
+
   override fun clear() {
     scope?.launch { cancel() }
   }
 
   companion object {
-    private const val DEFAULT_INTERVAL_IN_MILLISECONDS = 2000L
+    private const val DEFAULT_INTERVAL_IN_MILLISECONDS = 500L
     private const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
   }
 }

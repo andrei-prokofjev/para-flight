@@ -71,7 +71,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="2dp"
         android:text="@string/km_h"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@id/takeOffSpeedPicker"
@@ -96,23 +96,56 @@
         android:layout_marginTop="16dp"
         android:theme="@style/MyStyle.NumberPicker"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/minFlightSpeedPicker"
         app:layout_constraintStart_toEndOf="@id/takeOffSpeedPicker"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="2dp"
         android:text="@string/m"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@id/takeOffAltDiffPicker"
         app:layout_constraintStart_toEndOf="@id/takeOffAltDiffPicker"
         app:layout_constraintTop_toTopOf="@id/takeOffAltDiffPicker" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/min_speed"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/minFlightSpeedPicker"
+        app:layout_constraintEnd_toEndOf="@id/minFlightSpeedPicker"
+        app:layout_constraintStart_toStartOf="@id/minFlightSpeedPicker" />
+
+    <NumberPicker
+        android:id="@+id/minFlightSpeedPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:theme="@style/MyStyle.NumberPicker"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/takeOffAltDiffPicker"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="@string/km_h"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/minFlightSpeedPicker"
+        app:layout_constraintStart_toEndOf="@id/minFlightSpeedPicker"
+        app:layout_constraintTop_toTopOf="@id/minFlightSpeedPicker" />
+
   </androidx.constraintlayout.widget.ConstraintLayout>
 
   <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/voiceGuidanceLayout"
       android:layout_width="match_parent"
       android:layout_height="60dp"
       android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -142,6 +175,62 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/unitsLayout"
+      android:layout_width="match_parent"
+      android:layout_height="60dp"
+      android:layout_marginStart="@dimen/activity_horizontal_margin"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      android:background="@drawable/bg_construction_module"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/voiceGuidanceLayout">
+
+    <RadioGroup
+        android:id="@+id/unitsRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+      <RadioButton
+          android:id="@+id/metricRadioButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="16dp"
+          android:text="@string/metric"
+          android:textColor="@color/black"
+          android:textSize="20dp" />
+
+      <RadioButton
+          android:id="@+id/imperialRadioButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:text="@string/imperial"
+          android:textColor="@color/black"
+          android:textSize="20dp" />
+    </RadioGroup>
+
+
+    <!--    <TextView-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="@dimen/activity_horizontal_margin"-->
+    <!--        android:text="@string/metric"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        android:textSize="20dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 
   </androidx.constraintlayout.widget.ConstraintLayout>

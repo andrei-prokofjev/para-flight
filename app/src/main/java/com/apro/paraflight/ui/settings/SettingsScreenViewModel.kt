@@ -20,13 +20,22 @@ class SettingsScreenViewModel @Inject constructor(
   private val _takeOffAltDiffData = MutableLiveData(settingsPreferences.takeOffAltDiff)
   val takeOffAltDiffData: LiveData<Int> = _takeOffAltDiffData
 
+  private val _minFlightSpeedData = MutableLiveData(settingsPreferences.minFlightSpeed)
+  val minFlightSpeedData: LiveData<Int> = _minFlightSpeedData
+
+
   private val _voiceGuidanceData = MutableLiveData(settingsPreferences.voiceGuidance)
   val voiceGuidanceData: LiveData<Boolean> = _voiceGuidanceData
 
+  private val _unitsData = MutableLiveData(settingsPreferences.units)
+  val unitsData: LiveData<SettingsPreferences.Units> = _unitsData
+
   init {
-    _voiceGuidanceData.postValue(settingsPreferences.voiceGuidance)
     _takeOffSpeedData.postValue(settingsPreferences.takeOffSpeed)
     _takeOffAltDiffData.postValue(settingsPreferences.takeOffAltDiff)
+    _minFlightSpeedData.postValue(settingsPreferences.minFlightSpeed)
+    _voiceGuidanceData.postValue(settingsPreferences.voiceGuidance)
+    _unitsData.postValue(settingsPreferences.units)
   }
 
   fun saveVoiceGuidance(on: Boolean) {
@@ -41,7 +50,17 @@ class SettingsScreenViewModel @Inject constructor(
     settingsPreferences.takeOffAltDiff = value
   }
 
+  fun saveMinFlightSpeed(value: Int) {
+    settingsPreferences.minFlightSpeed = value
+  }
+
+  fun saveUnits(value: SettingsPreferences.Units) {
+    settingsPreferences.units = value
+  }
+
   fun onBackClicked() {
     appRouter.exit()
   }
+
+
 }

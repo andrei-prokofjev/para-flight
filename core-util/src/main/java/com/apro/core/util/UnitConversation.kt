@@ -58,12 +58,14 @@ val Number.milliseconds: Quantity<Time> get() = Quantity(toDouble(), Time.Millis
 enum class SpeedUnit(val n: String, val ratio: Double) {
   METER_PER_SECOND("m/s", 1.0),
   KM_PER_HOUR("km/h", 1000 / TimeUnit.HOURS.toSeconds(1L).toDouble()),
+  MILE_PER_HOUR("mph", 1.60934 * 1000 / TimeUnit.HOURS.toSeconds(1L).toDouble()),
 }
 
 class Speed(unit: SpeedUnit) : Unit(unit.n, unit.ratio) {
   companion object Factory {
     val MetersPerSecond = Speed(SpeedUnit.METER_PER_SECOND)
     val KilometerPerHour = Speed(SpeedUnit.KM_PER_HOUR)
+    val MilePerHour = Speed(SpeedUnit.MILE_PER_HOUR)
   }
 }
 

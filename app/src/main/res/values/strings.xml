@@ -23,6 +23,9 @@
   <string name="tts_hope_to_serve_you_soon_again">Hope to serve you soon again</string>
   <string name="tts_flight_time_x_minutes">Flight time %d minutes</string>
   <string name="tts_flight_time_x_hours_x_minutes">Flight time %d hours %d minutes</string>
+  <string name="min_speed">Min Speed</string>
+  <string name="metric">Metric</string>
+  <string name="imperial">Imperial</string>
 
 
 </resources>
