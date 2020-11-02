@@ -1,6 +1,7 @@
 package com.apro.paraflight.mapbox
 
 import android.location.Location
+import com.apro.paraflight.ui.flight.FlightModel
 import kotlinx.coroutines.flow.Flow
 
 interface MapboxLocationEngineRepository {
@@ -15,4 +16,7 @@ interface MapboxLocationEngineRepository {
   fun clear()
 
   fun getLastLocation()
+  fun updateRoute(map: List<FlightModel>)
+
+  fun routeFlow(): Flow<List<FlightModel>>
 }

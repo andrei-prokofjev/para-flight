@@ -9,15 +9,15 @@ import com.apro.core.util.metersPerSecond
 import com.apro.core.util.roundTo
 import com.apro.paraflight.R
 import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
+import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.util.ResourceProvider
-import com.apro.paraflight.voiceguidance.VoiceGuidanceInteractor
+import com.apro.paraflight.voice.VoiceGuidanceInteractor
 import com.mapbox.geojson.Point
 import com.mapbox.turf.TurfConstants
 import com.mapbox.turf.TurfMeasurement
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -30,6 +30,7 @@ class FlightInteractorImpl @Inject constructor(
   val appRouter: AppRouter,
   val resources: ResourceProvider,
   private val mapboxRepository: MapboxLocationEngineRepository,
+  private val mapboxInteractor: MapboxInteractor,
   private val settingsPreferences: SettingsPreferences,
   private val voiceGuidanceInteractor: VoiceGuidanceInteractor
 ) : FlightInteractor {
@@ -46,13 +47,13 @@ class FlightInteractorImpl @Inject constructor(
 
   override fun flightStateFlow() = flightStateChannel.asFlow()
 
-  private var flightState: FlightInteractor.FlightState = FlightInteractor.FlightState.PREPARING
+  override var flightState: FlightInteractor.FlightState = FlightInteractor.FlightState.PREPARING
     set(value) {
       field = value
       scope?.launch { flightStateChannel.send(value) }
     }
 
-  private val flightData = mutableListOf<FlightModel>()
+  override val flightData = mutableListOf<FlightModel>()
 
   private val baseAltitudes = mutableListOf<Double>() // calculate average base altitudes
 
@@ -72,9 +73,9 @@ class FlightInteractorImpl @Inject constructor(
     flightState = FlightInteractor.FlightState.PREPARING
 
     scope?.launch {
-      mapboxRepository.updateLocationFlow().collect {
+      mapboxInteractor.updateLocationFlow().collect {
 
-        val flightModel = FlightModel(lon = it.longitude, lat = it.latitude, alt = it.altitude, speed = it.speed)
+        val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, speed = it.speed)
 
         when (flightState) {
 
@@ -89,29 +90,28 @@ class FlightInteractorImpl @Inject constructor(
           FlightInteractor.FlightState.TAKE_OFF -> {
             updateLocationChannel.send(flightModel)
             totalDistance += getDistance(it)
-            duration = System.currentTimeMillis() - takeOffTime
             flightData.add(flightModel)
             if ((baseAltitude - it.altitude).absoluteValue > settingsPreferences.takeOffAltDiff) {
               flightState = FlightInteractor.FlightState.FLIGHT
-            } else if (it.speed < settingsPreferences.minFlightSpeed) {
-              flightState = FlightInteractor.FlightState.PREPARING
             }
           }
 
           FlightInteractor.FlightState.FLIGHT -> {
+            mapboxRepository.updateRoute(flightData)
+
             totalDistance += getDistance(it)
             duration = System.currentTimeMillis() - takeOffTime
-            flightData.add(flightModel.copy(dist = totalDistance, duration = duration))
-            updateLocationChannel.send(flightModel.copy(duration = duration, dist = totalDistance))
+            val model = flightModel.copy(dist = totalDistance, duration = duration)
+            flightData.add(model)
+            updateLocationChannel.send(model)
 
-            if (it.speed < settingsPreferences.minFlightSpeed) {
+            if (it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount <= settingsPreferences.minFlightSpeed) {
               flightState = FlightInteractor.FlightState.LANDED
             }
           }
 
           FlightInteractor.FlightState.LANDED -> {
-            // updateLocationChannel.send(flightModel)
-            // flightState = FlightInteractor.FlightState.PREPARING
+
           }
         }
       }
@@ -140,7 +140,7 @@ class FlightInteractorImpl @Inject constructor(
             voiceGuidanceInteractor.speak(resources.getString(R.string.tts_you_are_off_the_ground_and_on_your_own_at_this_point))
 
             voiceGuidanceInteractor.speak(resources.getString(R.string.tts_climbing_through_x_meters_at_x_kilometers_per_hour))
-            timeNotificationTicker = ticker(settingsPreferences.timeNotificationInterval, settingsPreferences.timeNotificationInterval)
+            //  timeNotificationTicker = ticker(settingsPreferences.timeNotificationInterval, settingsPreferences.timeNotificationInterval)
           }
 
           FlightInteractor.FlightState.LANDED -> {
@@ -156,7 +156,7 @@ class FlightInteractorImpl @Inject constructor(
             baseAltitudes.clear()
             timeNotificationTicker?.cancel()
 
-            flightState = FlightInteractor.FlightState.PREPARING
+            //flightState = FlightInteractor.FlightState.PREPARING
           }
         }
       }
@@ -181,7 +181,10 @@ class FlightInteractorImpl @Inject constructor(
     flightData.forEach { sum += it.speed }
     val averageSpeed = sum / flightData.size
 
-    appRouter.openModalBottomSheet(FlightSummaryBottomSheetDialogFragment.create(totalDistance.toInt(), duration, averageSpeed.roundTo(1)))
+    appRouter.openModalBottomSheet(FlightSummaryBottomSheetDialogFragment.create(
+      totalDistance.toInt(),
+      duration,
+      averageSpeed.roundTo(1)))
   }
 
 
@@ -189,7 +192,7 @@ class FlightInteractorImpl @Inject constructor(
     if (flightData.isEmpty()) return 0.0
     return TurfMeasurement.distance(
       Point.fromLngLat(it.longitude, it.latitude), // current point
-      Point.fromLngLat(flightData.last().lon, flightData.last().lat), // previous point
+      Point.fromLngLat(flightData.last().lng, flightData.last().lat), // previous point
       TurfConstants.UNIT_METERS
     )
   }

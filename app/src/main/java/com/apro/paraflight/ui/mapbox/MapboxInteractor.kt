@@ -1,17 +1,18 @@
 package com.apro.paraflight.ui.mapbox
 
-import com.mapbox.mapboxsdk.camera.CameraUpdate
+import android.location.Location
+import com.apro.core.preferenes.api.MapboxPreferences
+import com.mapbox.geojson.Point
 import kotlinx.coroutines.flow.Flow
 
 interface MapboxInteractor {
-  val cameraPositionFlow: Flow<CameraUpdate>
+  fun mapStyleFlow(): Flow<MapboxPreferences.MapStyle>
 
-  val mapStyleFlow: Flow<String>
+  fun updateLocationFlow(): Flow<Location>
 
   fun changeMapStyle()
 
   fun navigateToCurrentPosition()
-
   fun clear()
-
+  fun routeLocationFlow(): Flow<List<Point>>
 }

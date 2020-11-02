@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.apro.paraflight.ui.flight.FlightModel
 import com.mapbox.android.core.location.LocationEngineCallback
 import com.mapbox.android.core.location.LocationEngineProvider
 import com.mapbox.android.core.location.LocationEngineRequest
@@ -15,6 +16,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
 import timber.log.Timber
+
 
 class MapboxLocationEngineRepositoryImpl(
   private val context: Context
@@ -28,6 +30,9 @@ class MapboxLocationEngineRepositoryImpl(
 
   private val lastLocationChannel = ConflatedBroadcastChannel<Location>()
   override fun lastLocationFlow() = lastLocationChannel.asFlow()
+
+  private val routeChannel = ConflatedBroadcastChannel<List<FlightModel>>()
+  override fun routeFlow() = routeChannel.asFlow()
 
   var scope: CoroutineScope? = null
 
@@ -46,6 +51,12 @@ class MapboxLocationEngineRepositoryImpl(
 
     override fun onFailure(exception: Exception) {
       Timber.e(">>> !!! location update error: $exception")
+    }
+  }
+
+  override fun updateRoute(map: List<FlightModel>) {
+    scope?.launch {
+      routeChannel.send(map)
     }
   }
 

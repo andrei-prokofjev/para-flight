@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import com.apro.core.navigation.AppNavigator
-import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.toast
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
@@ -79,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         mapboxLayout.addView(this)
         getMapAsync {
           mapboxMap = it
-          it.setStyle(DI.preferencesApi.mapbox().mapStyle.toStyle()) { style ->
+          it.setStyle(DI.preferencesApi.mapbox().mapStyle.style) { style ->
             mapboxLayout.findViewWithTag<ImageView>("logoView")?.isVisible = false
             mapboxLayout.findViewWithTag<ImageView>("attrView")?.isVisible = false
             mapboxLayout.findViewWithTag<ImageView>("compassView")?.isVisible = false
@@ -96,12 +95,14 @@ class MainActivity : AppCompatActivity() {
     // set map style
     viewModel.style.observe { mapboxMap.setStyle(it) }
 
-    // animate camera position
-    viewModel.cameraPosition.observe { mapboxMap.animateCamera(it.first, it.second) }
+    // my current position
+    viewModel.myCurrentPosition.observe { mapboxMap.animateCamera(it.first, it.second) }
 
     // update location
     viewModel.locationData.observe {
-      mapboxMap.locationComponent.forceLocationUpdate(it)
+      //mapboxMap.locationComponent.forceLocationUpdate(it)
+
+
       mapboxMap.cameraPosition = CameraPosition.Builder().target(LatLng(it)).build()
     }
     // draw route
@@ -211,15 +212,6 @@ class MainActivity : AppCompatActivity() {
 
   private inline fun <T> LiveData<T>.observe(crossinline observer: (T) -> Unit) {
     observe(this@MainActivity, { observer.invoke(it) })
-  }
-
-  // todo: remove
-  private fun MapboxPreferences.MapStyle.toStyle(): String {
-    return when (this) {
-      MapboxPreferences.MapStyle.SATELLITE -> Style.SATELLITE
-      MapboxPreferences.MapStyle.MAPBOX_STREETS -> Style.MAPBOX_STREETS
-      MapboxPreferences.MapStyle.LIGHT -> Style.LIGHT
-    }
   }
 
   companion object {

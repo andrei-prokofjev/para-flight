@@ -9,11 +9,13 @@ import com.apro.paraflight.ui.flight.FlightScreenViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import timber.log.Timber
+import java.util.concurrent.CountDownLatch
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -39,6 +41,8 @@ class ExampleInstrumentedTest {
   @Test
   fun flightInteractor() {
 
+    val signal = CountDownLatch(1)
+
 
     val location = Location("test")
     location.speed = 5f
@@ -55,7 +59,7 @@ class ExampleInstrumentedTest {
 
     val appComponent = AppComponent.create(appContext)
 
-    mViewModel.flightInteractor
+    // mViewModel.flightInteractor
 
     scope.launch {
       delay(3000)
@@ -64,12 +68,16 @@ class ExampleInstrumentedTest {
 
     }
 
-    println(">>>>>>>>>")
+    var count = 0
 
-    while (true) {
-
-      //println(">>>bbbbbb")
+    scope.launch {
+      mViewModel.flightInteractor.updateLocationFlow().collect {
+        println(">>> it: $it")
+        if (count++ == 10)
+          signal.countDown()
+      }
     }
+    signal.await()
 
 
   }

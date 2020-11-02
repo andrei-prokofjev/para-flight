@@ -1,11 +1,11 @@
 package com.apro.paraflight.ui.flight
 
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.apro.core.ui.BaseBottomSheetDialogFragment
+import com.apro.core.util.toTimeFormat
 import com.apro.paraflight.databinding.FragmentFlightSummaryBinding
 
 class FlightSummaryBottomSheetDialogFragment : BaseBottomSheetDialogFragment() {
@@ -28,9 +28,8 @@ class FlightSummaryBottomSheetDialogFragment : BaseBottomSheetDialogFragment() {
 
     with(binding) {
       totalDistanceTextView.text = "Total distance: $dist m"
-      durationTextView.text = "Flight duration: ${duration.toSimpleFormat()} "
+      durationTextView.text = "Flight duration: ${duration.toTimeFormat()} "
       averageSpeedTextView.text = "Average flight speed: $averageSpeed m/s"
-
     }
   }
 
@@ -42,9 +41,5 @@ class FlightSummaryBottomSheetDialogFragment : BaseBottomSheetDialogFragment() {
     }
   }
 
-  private fun Long.toSimpleFormat(): String {
-    val minutes = this / DateUtils.MINUTE_IN_MILLIS % 60
-    val hours = this / DateUtils.HOUR_IN_MILLIS
-    return String.format("%s:%s", hours, if (minutes < 10) "0$minutes" else minutes)
-  }
+
 }

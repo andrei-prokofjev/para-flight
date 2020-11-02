@@ -1,6 +1,7 @@
 package com.apro.paraflight.ui.mapbox
 
 import androidx.lifecycle.ViewModel
+import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.util.event.EventBus
@@ -9,7 +10,11 @@ import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
 import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
+import com.apro.paraflight.ui.flight.FlightInteractor
+import com.apro.paraflight.ui.flight.FlightInteractorImpl
 import com.apro.paraflight.util.ResourceProvider
+import com.apro.paraflight.voice.VoiceGuidanceInteractor
+import com.apro.paraflight.voice.VoiceGuidanceInteractorImpl
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -25,6 +30,9 @@ interface MapboxScreenComponent {
 
   @Component.Builder
   interface Builder {
+
+    @BindsInstance
+    fun appRouter(appRouter: AppRouter): Builder
 
     @BindsInstance
     fun resources(resourceProvider: ResourceProvider): Builder
@@ -50,6 +58,7 @@ interface MapboxScreenComponent {
   companion object {
     fun create() = with(DI.appComponent) {
       DaggerMapboxScreenComponent.builder()
+        .appRouter(appRouter())
         .resources(resources())
         .mapboxPreferences(DI.preferencesApi.mapbox())
         .eventBus(eventBus())
@@ -61,6 +70,7 @@ interface MapboxScreenComponent {
   }
 }
 
+
 @Module
 abstract class MapboxScreenModule {
 
@@ -71,4 +81,10 @@ abstract class MapboxScreenModule {
 
   @Binds
   abstract fun mapboxInteractor(interactor: MapboxInteractorImpl): MapboxInteractor
+
+  @Binds
+  abstract fun voiceGuidanceInteractor(interactor: VoiceGuidanceInteractorImpl): VoiceGuidanceInteractor
+
+  @Binds
+  abstract fun flightInteractor(interactor: FlightInteractorImpl): FlightInteractor
 }

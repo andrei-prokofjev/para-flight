@@ -72,7 +72,7 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:mv_name="DST"
-      app:mv_unit="@string/m" />
+      app:mv_unit="@string/km" />
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/mv1"

@@ -16,4 +16,6 @@ interface FlightInteractor {
   fun updateLocationFlow(): Flow<FlightModel>
   fun clear()
   val testFlow: Flow<String>
+  var flightState: FlightState
+  val flightData: MutableList<FlightModel>
 }

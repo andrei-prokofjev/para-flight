@@ -9,6 +9,8 @@ import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
 import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
+import com.apro.paraflight.ui.flight.FlightInteractor
+import com.apro.paraflight.ui.flight.FlightInteractorImpl
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.ui.mapbox.MapboxInteractorImpl
 import dagger.Binds
@@ -64,4 +66,7 @@ abstract class MainScreenModule {
 
   @Binds
   abstract fun mapboxInteractor(interactor: MapboxInteractorImpl): MapboxInteractor
+
+  @Binds
+  abstract fun flightInteractor(interactor: FlightInteractorImpl): FlightInteractor
 }

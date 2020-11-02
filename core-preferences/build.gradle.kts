@@ -38,6 +38,8 @@ dependencies {
 
   implementation(Libs.coroutines)
 
+  implementation(Libs.mapbox)
+
   implementation(Libs.timber)
 
   implementation(Libs.dagger)

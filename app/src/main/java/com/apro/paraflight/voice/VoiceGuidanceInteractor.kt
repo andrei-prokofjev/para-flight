@@ -1,4 +1,4 @@
-package com.apro.paraflight.voiceguidance
+package com.apro.paraflight.voice
 
 interface VoiceGuidanceInteractor {
 

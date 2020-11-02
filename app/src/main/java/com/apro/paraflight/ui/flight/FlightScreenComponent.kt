@@ -13,8 +13,8 @@ import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.ui.mapbox.MapboxInteractorImpl
 import com.apro.paraflight.util.ResourceProvider
-import com.apro.paraflight.voiceguidance.VoiceGuidanceInteractor
-import com.apro.paraflight.voiceguidance.VoiceGuidanceInteractorImpl
+import com.apro.paraflight.voice.VoiceGuidanceInteractor
+import com.apro.paraflight.voice.VoiceGuidanceInteractorImpl
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component

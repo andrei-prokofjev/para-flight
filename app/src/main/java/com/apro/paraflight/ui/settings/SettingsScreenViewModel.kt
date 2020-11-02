@@ -23,7 +23,6 @@ class SettingsScreenViewModel @Inject constructor(
   private val _minFlightSpeedData = MutableLiveData(settingsPreferences.minFlightSpeed)
   val minFlightSpeedData: LiveData<Int> = _minFlightSpeedData
 
-
   private val _voiceGuidanceData = MutableLiveData(settingsPreferences.voiceGuidance)
   val voiceGuidanceData: LiveData<Boolean> = _voiceGuidanceData
 
