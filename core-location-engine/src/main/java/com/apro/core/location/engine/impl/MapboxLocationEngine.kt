@@ -1,4 +1,4 @@
-package com.apro.paraflight.mapbox
+package com.apro.core.location.engine.impl
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -7,36 +7,30 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import com.apro.paraflight.ui.flight.FlightModel
+import com.apro.core.location.engine.api.LocationEngine
+import com.apro.core.location.engine.api.LocationEngine.Companion.DEFAULT_INTERVAL_IN_MILLISECONDS
+import com.apro.core.location.engine.api.LocationEngine.Companion.DEFAULT_MAX_WAIT_TIME
 import com.mapbox.android.core.location.LocationEngineCallback
 import com.mapbox.android.core.location.LocationEngineProvider
 import com.mapbox.android.core.location.LocationEngineRequest
 import com.mapbox.android.core.location.LocationEngineResult
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.asFlow
 import timber.log.Timber
 
+class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
-class MapboxLocationEngineRepositoryImpl(
-  private val context: Context
-) : MapboxLocationEngineRepository {
+  private var locationEngine = LocationEngineProvider.getBestLocationEngine(context)
 
-  var locationEngine = LocationEngineProvider.getBestLocationEngine(context)
+  override val updateLocationChannel = ConflatedBroadcastChannel<Location>()
 
+  override val lastLocationChannel = ConflatedBroadcastChannel<Location>()
 
-  val locationChannel = ConflatedBroadcastChannel<Location>()
-  override fun updateLocationFlow() = locationChannel.asFlow()
-
-  private val lastLocationChannel = ConflatedBroadcastChannel<Location>()
-  override fun lastLocationFlow() = lastLocationChannel.asFlow()
-
-  private val routeChannel = ConflatedBroadcastChannel<List<FlightModel>>()
-  override fun routeFlow() = routeChannel.asFlow()
 
   var scope: CoroutineScope? = null
 
   init {
+    println(">>> mapbox$")
     clear()
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
   }
@@ -45,18 +39,12 @@ class MapboxLocationEngineRepositoryImpl(
     override fun onSuccess(result: LocationEngineResult) {
       // Timber.d("location update: %s", result.lastLocation)
       result.lastLocation?.let {
-        scope?.launch { locationChannel.send(it) }
+        scope?.launch { updateLocationChannel.send(it) }
       }
     }
 
     override fun onFailure(exception: Exception) {
       Timber.e(">>> !!! location update error: $exception")
-    }
-  }
-
-  override fun updateRoute(map: List<FlightModel>) {
-    scope?.launch {
-      routeChannel.send(map)
     }
   }
 
@@ -115,8 +103,5 @@ class MapboxLocationEngineRepositoryImpl(
     scope?.launch { cancel() }
   }
 
-  companion object {
-    private const val DEFAULT_INTERVAL_IN_MILLISECONDS = 500L
-    private const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
-  }
+
 }

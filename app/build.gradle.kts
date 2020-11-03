@@ -74,6 +74,8 @@ dependencies {
   implementation(project(":core-db"))
   implementation(project(":core-navigation"))
   implementation(project(":core-voice-guidance"))
+  implementation(project(":core-location-engine"))
+  androidTestImplementation(project(":core-location-engine-mock"))
 
   implementation(Libs.kotlin)
   implementation(Libs.ktx)

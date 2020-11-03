@@ -1,6 +1,7 @@
 package com.apro.paraflight.ui.main
 
 import androidx.lifecycle.ViewModel
+import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.util.event.EventBus
@@ -8,7 +9,6 @@ import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
-import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
 import com.apro.paraflight.ui.flight.FlightInteractor
 import com.apro.paraflight.ui.flight.FlightInteractorImpl
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
@@ -36,7 +36,7 @@ interface MainScreenComponent {
     fun mapboxPreferences(mapboxPreferences: MapboxPreferences): Builder
 
     @BindsInstance
-    fun flightLocationEngine(repository: MapboxLocationEngineRepository): Builder
+    fun locationEngine(repository: LocationEngine): Builder
 
     @BindsInstance
     fun voiceGuidance(voiceGuidance: VoiceGuidance): Builder
@@ -50,7 +50,7 @@ interface MainScreenComponent {
         .appRouter(appRouter())
         .eventBus(eventBus())
         .mapboxPreferences(DI.preferencesApi.mapbox())
-        .flightLocationEngine(flightRepository())
+        .locationEngine(locationEngine())
         .voiceGuidance(voiceGuidance())
         .build()
     }

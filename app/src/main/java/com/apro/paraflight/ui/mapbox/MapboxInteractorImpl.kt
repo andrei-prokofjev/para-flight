@@ -1,8 +1,8 @@
 package com.apro.paraflight.ui.mapbox
 
 import android.location.Location
+import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.preferenes.api.MapboxPreferences
-import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class MapboxInteractorImpl @Inject constructor(
   private val mapboxPreferences: MapboxPreferences,
-  private val mapboxRepository: MapboxLocationEngineRepository
+  private val locationEngine: LocationEngine
 ) : MapboxInteractor {
 
   private var scope: CoroutineScope? = null
@@ -39,20 +39,20 @@ class MapboxInteractorImpl @Inject constructor(
     }
 
     scope?.launch {
-      mapboxRepository.lastLocationFlow().collect {
+      locationEngine.lastLocationFlow().collect {
         updateLocationChannel.send(it)
       }
     }
 
-    scope?.launch {
-      mapboxRepository.routeFlow().collect {
-        routeLocationChannel.send(it.map { Point.fromLngLat(it.lng, it.lat) })
-      }
-    }
+//    scope?.launch {
+//      locationEngine.routeFlow().collect {
+//        routeLocationChannel.send(it.map { Point.fromLngLat(it.lng, it.lat) })
+//      }
+//    }
 
     scope?.launch {
-      mapboxRepository.updateLocationFlow().collect {
-        updateLocationChannel.send(it)
+      locationEngine.updateLocationFlow().collect {
+        //  updateLocationChannel.send(it)
       }
     }
   }
@@ -64,13 +64,13 @@ class MapboxInteractorImpl @Inject constructor(
   }
 
   override fun navigateToCurrentPosition() {
-    mapboxRepository.getLastLocation()
+    locationEngine.getLastLocation()
   }
 
   override fun clear() {
     scope?.coroutineContext?.cancelChildren()
     scope?.launch { cancel() }
-    mapboxRepository.removeLocationUpdates()
-    mapboxRepository.clear()
+    locationEngine.removeLocationUpdates()
+    locationEngine.clear()
   }
 }

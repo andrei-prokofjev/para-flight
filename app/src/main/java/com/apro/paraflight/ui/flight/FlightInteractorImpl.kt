@@ -2,13 +2,13 @@ package com.apro.paraflight.ui.flight
 
 import android.location.Location
 import android.text.format.DateUtils
+import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.util.Speed
 import com.apro.core.util.metersPerSecond
 import com.apro.core.util.roundTo
 import com.apro.paraflight.R
-import com.apro.paraflight.mapbox.MapboxLocationEngineRepository
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.util.ResourceProvider
 import com.apro.paraflight.voice.VoiceGuidanceInteractor
@@ -29,7 +29,7 @@ import kotlin.math.roundToInt
 class FlightInteractorImpl @Inject constructor(
   val appRouter: AppRouter,
   val resources: ResourceProvider,
-  private val mapboxRepository: MapboxLocationEngineRepository,
+  private val locationEngine: LocationEngine,
   private val mapboxInteractor: MapboxInteractor,
   private val settingsPreferences: SettingsPreferences,
   private val voiceGuidanceInteractor: VoiceGuidanceInteractor
@@ -63,7 +63,7 @@ class FlightInteractorImpl @Inject constructor(
   init {
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
 
-    mapboxRepository.requestLocationUpdates()
+    locationEngine.requestLocationUpdates()
 
     var takeOffTime = 0L
     var duration = 0L
@@ -97,7 +97,7 @@ class FlightInteractorImpl @Inject constructor(
           }
 
           FlightInteractor.FlightState.FLIGHT -> {
-            mapboxRepository.updateRoute(flightData)
+            // locationEngine.updateRoute(flightData)
 
             totalDistance += getDistance(it)
             duration = System.currentTimeMillis() - takeOffTime
@@ -216,7 +216,7 @@ class FlightInteractorImpl @Inject constructor(
     timeNotificationTicker?.cancel()
     scope?.coroutineContext?.cancelChildren()
     scope?.launch { cancel() }
-    mapboxRepository.removeLocationUpdates()
-    mapboxRepository.clear()
+    locationEngine.removeLocationUpdates()
+    locationEngine.clear()
   }
 }
