@@ -64,6 +64,7 @@ android {
     viewBinding = true
   }
   flavorDimensions("default")
+
 }
 
 dependencies {

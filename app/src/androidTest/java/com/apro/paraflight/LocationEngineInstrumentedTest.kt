@@ -1,9 +1,11 @@
 package com.apro.paraflight
 
+import android.location.Location
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.apro.core.location.engine.api.LocationEngine.Companion.DEFAULT_MAX_WAIT_TIME
 import com.apro.paraflight.di.AppComponent
+import com.apro.paraflight.ui.flight.FlightInteractor
 import com.apro.paraflight.ui.flight.FlightScreenComponent
 import com.apro.paraflight.ui.flight.FlightScreenViewModel
 import kotlinx.coroutines.*
@@ -15,6 +17,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import timber.log.Timber
+import java.io.IOException
+import java.io.InputStreamReader
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -68,14 +72,32 @@ class LocationEngineInstrumentedTest {
     val viewModel: FlightScreenViewModel by lazy { c.viewModelFactory().create(FlightScreenViewModel::class.java) }
 
 
+    val takeOffSpeed = DI.preferencesApi.settings().takeOffSpeed
+    val takeOffAltDiff = DI.preferencesApi.settings().takeOffAltDiff
 
 
-    scope?.launch(Dispatchers.IO) {
+    println(">>> takeoff speed: $takeOffSpeed")
+    println(">>> takeoff alt diff: $takeOffAltDiff")
+
+    scope?.launch {
       viewModel.flightInteractor.updateLocationFlow().collect {
-        println(">>> $it")
+
+
+        if (it.speed > takeOffSpeed && it.alt < takeOffAltDiff) {
+
+        }
+
+
+
+
+        println(">>> speed $ " + it + "  " + viewModel.flightInteractor.flightState)
+
 
       }
     }
+
+
+
 
     signal.await()
   }
@@ -85,5 +107,31 @@ class LocationEngineInstrumentedTest {
     scope?.cancel()
   }
 
+  private fun readCsv(path: String): List<TestFlightModel> {
 
+    val assets = appContext.assets
+
+    val flight = mutableListOf<TestFlightModel>()
+
+    try {
+      val csvStream = assets.open(path)
+      val csvStreamReader = InputStreamReader(csvStream)
+      val lines = csvStreamReader.readLines()
+      lines.subList(1, lines.size).forEach {
+        val data = it.split(",")
+        val location = Location("mock")
+        location.speed = data[1].toFloat()
+        location.altitude = data[2].toDouble()
+        flight.add(TestFlightModel(location, FlightInteractor.FlightState.valueOf(data[3])))
+      }
+
+    } catch (e: IOException) {
+      println(">>> !!! $e")
+    }
+
+    val list = emptyList<Location>()
+    return flight
+  }
 }
+
+data class TestFlightModel(val location: Location, val state: FlightInteractor.FlightState)

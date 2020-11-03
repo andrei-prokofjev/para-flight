@@ -52,7 +52,7 @@ class MapboxInteractorImpl @Inject constructor(
 
     scope?.launch {
       locationEngine.updateLocationFlow().collect {
-        //  updateLocationChannel.send(it)
+          updateLocationChannel.send(it)
       }
     }
   }

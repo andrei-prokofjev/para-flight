@@ -2,6 +2,7 @@ package com.apro.paraflight.ui.flight
 
 import android.location.Location
 import android.text.format.DateUtils
+import androidx.annotation.VisibleForTesting
 import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.SettingsPreferences
@@ -31,7 +32,7 @@ class FlightInteractorImpl @Inject constructor(
   val resources: ResourceProvider,
   private val locationEngine: LocationEngine,
   private val mapboxInteractor: MapboxInteractor,
-  private val settingsPreferences: SettingsPreferences,
+  @VisibleForTesting private val settingsPreferences: SettingsPreferences,
   private val voiceGuidanceInteractor: VoiceGuidanceInteractor
 ) : FlightInteractor {
 

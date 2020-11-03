@@ -54,7 +54,6 @@ class MapboxViewModel @Inject constructor(
 
     viewModelScope.launch {
       mapboxInteractor.routeLocationFlow().collect {
-        println(">>> route data: " + it.size)
         _routeData.postValue(it)
       }
     }

@@ -1,20 +1,16 @@
 package com.apro.core.location.engine.api
 
 import android.location.Location
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.Flow
 
 interface LocationEngine {
   fun requestLocationUpdates()
   fun removeLocationUpdates()
 
   fun getLastLocation()
-  val lastLocationChannel: ConflatedBroadcastChannel<Location>
-  fun lastLocationFlow() = lastLocationChannel.asFlow()
+  fun lastLocationFlow(): Flow<Location>
 
-
-  val updateLocationChannel: ConflatedBroadcastChannel<Location>
-  fun updateLocationFlow() = updateLocationChannel.asFlow()
+  fun updateLocationFlow(): Flow<Location>
 
   fun clear()
 

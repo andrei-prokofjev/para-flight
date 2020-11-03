@@ -16,21 +16,23 @@ import com.mapbox.android.core.location.LocationEngineRequest
 import com.mapbox.android.core.location.LocationEngineResult
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.asFlow
 import timber.log.Timber
 
 class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
   private var locationEngine = LocationEngineProvider.getBestLocationEngine(context)
 
-  override val updateLocationChannel = ConflatedBroadcastChannel<Location>()
+  private val updateLocationChannel = ConflatedBroadcastChannel<Location>()
+  override fun updateLocationFlow() = updateLocationChannel.asFlow()
 
-  override val lastLocationChannel = ConflatedBroadcastChannel<Location>()
+  private val lastLocationChannel = ConflatedBroadcastChannel<Location>()
+  override fun lastLocationFlow() = lastLocationChannel.asFlow()
 
 
   var scope: CoroutineScope? = null
 
   init {
-    println(">>> mapbox$")
     clear()
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
   }
