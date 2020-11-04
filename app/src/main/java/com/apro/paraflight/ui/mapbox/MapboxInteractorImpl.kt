@@ -44,15 +44,15 @@ class MapboxInteractorImpl @Inject constructor(
       }
     }
 
-//    scope?.launch {
-//      locationEngine.routeFlow().collect {
-//        routeLocationChannel.send(it.map { Point.fromLngLat(it.lng, it.lat) })
-//      }
-//    }
+    scope?.launch {
+      locationEngine.routeFlow().collect {
+        routeLocationChannel.send(it.map { Point.fromLngLat(it.lng, it.lat) })
+      }
+    }
 
     scope?.launch {
       locationEngine.updateLocationFlow().collect {
-          updateLocationChannel.send(it)
+        updateLocationChannel.send(it)
       }
     }
   }

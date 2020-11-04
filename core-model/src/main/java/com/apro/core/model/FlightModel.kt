@@ -1,4 +1,4 @@
-package com.apro.paraflight.ui.flight
+package com.apro.core.model
 
 data class FlightModel(
   val lng: Double,

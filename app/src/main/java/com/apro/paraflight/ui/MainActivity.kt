@@ -100,13 +100,12 @@ class MainActivity : AppCompatActivity() {
 
     // update location
     viewModel.locationData.observe {
-      //mapboxMap.locationComponent.forceLocationUpdate(it)
-
-
+      mapboxMap.locationComponent.forceLocationUpdate(it)
       mapboxMap.cameraPosition = CameraPosition.Builder().target(LatLng(it)).build()
     }
     // draw route
     viewModel.routeData.observe {
+      println(">>> size: " + it.size)
       mapboxMap.style?.let { style ->
         val source = style.getSourceAs<GeoJsonSource>(ROUTE_SOURCE_ID)
         source?.setGeoJson(FeatureCollection.fromFeatures(arrayOf(Feature.fromGeometry(LineString.fromLngLats(it)))))

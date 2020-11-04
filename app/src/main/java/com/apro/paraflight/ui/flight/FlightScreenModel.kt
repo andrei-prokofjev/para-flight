@@ -1,5 +1,6 @@
 package com.apro.paraflight.ui.flight
 
+import com.apro.core.model.FlightModel
 import com.apro.core.util.Speed
 import com.apro.core.util.metersPerSecond
 import com.apro.core.util.roundTo

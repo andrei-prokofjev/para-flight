@@ -46,9 +46,6 @@ class MapboxViewModel @Inject constructor(
 
         _myCurrentPosition.postValue(CameraUpdateFactory.newCameraPosition(position) to 500)
 
-//        if (flightInteractor.flightState == FlightInteractor.FlightState.FLIGHT) {
-//          _routeData.postValue(flightInteractor.flightData.map { Point.fromLngLat(it.lng, it.lat) })
-//        }
       }
     }
 

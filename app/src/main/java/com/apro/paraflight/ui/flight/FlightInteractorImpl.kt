@@ -4,6 +4,7 @@ import android.location.Location
 import android.text.format.DateUtils
 import androidx.annotation.VisibleForTesting
 import com.apro.core.location.engine.api.LocationEngine
+import com.apro.core.model.FlightModel
 import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.util.Speed
@@ -98,7 +99,7 @@ class FlightInteractorImpl @Inject constructor(
           }
 
           FlightInteractor.FlightState.FLIGHT -> {
-            // locationEngine.updateRoute(flightData)
+            locationEngine.updateRoute(flightData)
 
             totalDistance += getDistance(it)
             duration = System.currentTimeMillis() - takeOffTime

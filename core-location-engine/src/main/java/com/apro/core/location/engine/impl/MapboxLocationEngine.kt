@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat
 import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.location.engine.api.LocationEngine.Companion.DEFAULT_INTERVAL_IN_MILLISECONDS
 import com.apro.core.location.engine.api.LocationEngine.Companion.DEFAULT_MAX_WAIT_TIME
+import com.apro.core.model.FlightModel
 import com.mapbox.android.core.location.LocationEngineCallback
 import com.mapbox.android.core.location.LocationEngineProvider
 import com.mapbox.android.core.location.LocationEngineRequest
@@ -28,6 +29,9 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
   private val lastLocationChannel = ConflatedBroadcastChannel<Location>()
   override fun lastLocationFlow() = lastLocationChannel.asFlow()
+
+  private val routeChannel = ConflatedBroadcastChannel<List<FlightModel>>()
+  override fun routeFlow() = routeChannel.asFlow()
 
 
   var scope: CoroutineScope? = null
@@ -103,6 +107,10 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
   override fun clear() {
     scope?.launch { cancel() }
+  }
+
+  override fun updateRoute(flightData: List<FlightModel>) {
+    scope?.launch { routeChannel.send(flightData) }
   }
 
 

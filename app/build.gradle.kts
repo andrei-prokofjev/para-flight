@@ -69,6 +69,7 @@ android {
 
 dependencies {
   implementation(project(":core-ui"))
+  implementation(project(":core-model"))
   implementation(project(":core-util"))
   implementation(project(":core-network"))
   implementation(project(":core-preferences"))
