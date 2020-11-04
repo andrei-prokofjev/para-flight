@@ -99,7 +99,6 @@ class FlightInteractorImpl @Inject constructor(
           }
 
           FlightInteractor.FlightState.FLIGHT -> {
-            locationEngine.updateRoute(flightData)
 
             totalDistance += getDistance(it)
             duration = System.currentTimeMillis() - takeOffTime
