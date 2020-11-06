@@ -1,5 +1,6 @@
 package com.apro.paraflight.ui.main
 
+import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.navigation.AppRouter
 import com.apro.core.ui.BaseViewModel
 import com.apro.paraflight.ui.Screens
@@ -20,9 +21,9 @@ class MainScreenViewModel @Inject constructor(
     appRouter.navigateTo(Screens.logbook())
   }
 
-  fun onPreflightClick() {
+  fun onPreflightClick(locationEngine: LocationEngine) {
     //appRouter.navigateTo(Screens.preflight())
-    appRouter.navigateTo(Screens.flight())
+    appRouter.navigateTo(Screens.flight(locationEngine))
   }
 
   fun onLayerClick() {

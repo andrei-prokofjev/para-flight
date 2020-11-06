@@ -54,13 +54,13 @@ interface FlightScreenComponent {
   }
 
   companion object {
-    fun create() = with(DI.appComponent) {
+    fun create(engine: LocationEngine) = with(DI.appComponent) {
       DaggerFlightScreenComponent.builder()
         .resources(resources())
         .mapboxPreferences(DI.preferencesApi.mapbox())
         .appRouter(appRouter())
         .eventBus(eventBus())
-        .locationEngine(locationEngine())
+        .locationEngine(engine)
         .voiceGuidance(voiceGuidance())
         .settingsPreferences(DI.preferencesApi.settings())
         .build()

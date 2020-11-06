@@ -56,13 +56,13 @@ interface MapboxScreenComponent {
   }
 
   companion object {
-    fun create() = with(DI.appComponent) {
+    fun create(locationEngine: LocationEngine) = with(DI.appComponent) {
       DaggerMapboxScreenComponent.builder()
         .appRouter(appRouter())
         .resources(resources())
         .mapboxPreferences(DI.preferencesApi.mapbox())
         .eventBus(eventBus())
-        .locationEngine(locationEngine())
+        .locationEngine(locationEngine)
         .settingsPreferences(DI.preferencesApi.settings())
         .voiceGuidance(voiceGuidance())
         .build()

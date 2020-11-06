@@ -61,7 +61,6 @@ class FlightInteractorImpl @Inject constructor(
 
   private var timeNotificationTicker: ReceiveChannel<Unit>? = null
 
-
   init {
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
 
@@ -72,17 +71,17 @@ class FlightInteractorImpl @Inject constructor(
     var totalDistance = 0.0
     var baseAltitude = 0f
 
-    flightState = FlightInteractor.FlightState.PREPARING
+    flightState = FlightInteractor.FlightState.FLIGHT
 
     scope?.launch {
       mapboxInteractor.updateLocationFlow().collect {
 
         val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, speed = it.speed)
+        updateLocationChannel.send(flightModel)
 
         when (flightState) {
 
           FlightInteractor.FlightState.PREPARING -> {
-            updateLocationChannel.send(flightModel)
             baseAltitude = getBaseAltitude(it)
             if (it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount > settingsPreferences.takeOffSpeed) {
               flightState = FlightInteractor.FlightState.TAKE_OFF
@@ -99,15 +98,12 @@ class FlightInteractorImpl @Inject constructor(
           }
 
           FlightInteractor.FlightState.FLIGHT -> {
-
             totalDistance += getDistance(it)
             duration = System.currentTimeMillis() - takeOffTime
-            val model = flightModel.copy(dist = totalDistance, duration = duration)
-            flightData.add(model)
-            updateLocationChannel.send(model)
+            flightData.add(flightModel.copy(dist = totalDistance, duration = duration))
 
             if (it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount <= settingsPreferences.minFlightSpeed) {
-              flightState = FlightInteractor.FlightState.LANDED
+              //  flightState = FlightInteractor.FlightState.LANDED
             }
           }
 

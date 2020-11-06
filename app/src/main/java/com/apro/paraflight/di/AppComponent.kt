@@ -1,8 +1,6 @@
 package com.apro.paraflight.di
 
 import android.content.Context
-import com.apro.core.location.engine.api.LocationEngine
-import com.apro.core.location.engine.impl.MapboxLocationEngine
 import com.apro.core.navigation.AppRouter
 import com.apro.core.navigation.di.NavigationModule
 import com.apro.core.util.event.EventBus
@@ -27,10 +25,7 @@ interface AppComponent {
 
   fun navigatorHolder(): NavigatorHolder
 
-  fun locationEngine(): LocationEngine
-
   fun voiceGuidance(): VoiceGuidanceImpl
-
 
   companion object {
     fun create(context: Context): AppComponent =
@@ -49,10 +44,6 @@ class AppModule(private val context: Context) {
   @Provides
   @Singleton
   fun eventBusProvider(): EventBus = EventBus
-
-  @Provides
-  @Singleton
-  fun provideLocationEngine(): LocationEngine = MapboxLocationEngine(context)
 
   @Provides
   @Singleton

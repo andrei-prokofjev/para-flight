@@ -14,7 +14,7 @@ import com.apro.paraflight.ui.common.viewBinding
 
 class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListener {
 
-  private val component by lazy { FlightScreenComponent.create() }
+  private lateinit var component: FlightScreenComponent
   private val binding by viewBinding { FragmentFlightBinding.bind(it) }
   private val viewModel by viewModels<FlightScreenViewModel> { component.viewModelFactory() }
 
@@ -55,6 +55,8 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
   )
 
   companion object {
-    fun create(): FlightFragment = FlightFragment()
+    fun create(component: FlightScreenComponent) = FlightFragment().apply {
+      this.component = component
+    }
   }
 }

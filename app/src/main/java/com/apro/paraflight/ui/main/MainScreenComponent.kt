@@ -45,12 +45,12 @@ interface MainScreenComponent {
   }
 
   companion object {
-    fun create() = with(DI.appComponent) {
+    fun create(engine: LocationEngine) = with(DI.appComponent) {
       DaggerMainScreenComponent.builder()
         .appRouter(appRouter())
         .eventBus(eventBus())
         .mapboxPreferences(DI.preferencesApi.mapbox())
-        .locationEngine(locationEngine())
+        .locationEngine(engine)
         .voiceGuidance(voiceGuidance())
         .build()
     }

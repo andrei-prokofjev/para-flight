@@ -8,7 +8,6 @@ import com.apro.paraflight.di.AppComponent
 
 object DI {
   lateinit var appComponent: AppComponent
-//    internal set
 
   lateinit var networkComponent: NetworkComponent
 

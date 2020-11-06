@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
+import com.apro.core.location.engine.impl.MapboxLocationEngine
 import com.apro.core.navigation.AppNavigator
 import com.apro.core.ui.toast
 import com.apro.paraflight.DI
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
   private val navigator = AppNavigator(this, R.id.mainContainerView, supportFragmentManager, supportFragmentManager.fragmentFactory)
 
-  private val component by lazy { MapboxScreenComponent.create() }
+  private val component by lazy { MapboxScreenComponent.create(MapboxLocationEngine(this)) }
 
   lateinit var binding: ActivityMainBinding
 
@@ -112,7 +113,7 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
-    DI.appComponent.appRouter().newRootScreen(Screens.main())
+    DI.appComponent.appRouter().newRootScreen(Screens.main(MapboxLocationEngine(this)))
   }
 
 
