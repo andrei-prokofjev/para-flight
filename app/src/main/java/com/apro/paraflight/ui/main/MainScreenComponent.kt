@@ -5,12 +5,9 @@ import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.util.event.EventBus
-import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
-import com.apro.paraflight.ui.flight.FlightInteractor
-import com.apro.paraflight.ui.flight.FlightInteractorImpl
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.ui.mapbox.MapboxInteractorImpl
 import dagger.Binds
@@ -38,9 +35,6 @@ interface MainScreenComponent {
     @BindsInstance
     fun locationEngine(repository: LocationEngine): Builder
 
-    @BindsInstance
-    fun voiceGuidance(voiceGuidance: VoiceGuidance): Builder
-
     fun build(): MainScreenComponent
   }
 
@@ -51,7 +45,6 @@ interface MainScreenComponent {
         .eventBus(eventBus())
         .mapboxPreferences(DI.preferencesApi.mapbox())
         .locationEngine(engine)
-        .voiceGuidance(voiceGuidance())
         .build()
     }
   }
@@ -66,7 +59,4 @@ abstract class MainScreenModule {
 
   @Binds
   abstract fun mapboxInteractor(interactor: MapboxInteractorImpl): MapboxInteractor
-
-  @Binds
-  abstract fun flightInteractor(interactor: FlightInteractorImpl): FlightInteractor
 }

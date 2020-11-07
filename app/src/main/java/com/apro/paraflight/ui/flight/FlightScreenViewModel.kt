@@ -25,7 +25,7 @@ class FlightScreenViewModel @Inject constructor(
   init {
 
     viewModelScope.launch {
-      flightInteractor.updateLocationFlow().collect {
+      flightInteractor.flightDataFlow().collect {
         _flightData.postValue(it.toFlightScreenModel())
       }
     }

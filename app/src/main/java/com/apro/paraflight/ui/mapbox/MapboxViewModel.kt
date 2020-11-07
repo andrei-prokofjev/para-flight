@@ -8,7 +8,6 @@ import com.apro.core.ui.BaseViewModel
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdate
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -44,7 +43,11 @@ class MapboxViewModel @Inject constructor(
 //          .zoom(12.0)
           .build()
 
-        _myCurrentPosition.postValue(CameraUpdateFactory.newCameraPosition(position) to 500)
+        println(">>>  aaaa: $it")
+
+
+        _liveLocationData.postValue(it)
+        //_myCurrentPosition.postValue(CameraUpdateFactory.newCameraPosition(position) to 500)
 
       }
     }

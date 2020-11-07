@@ -3,7 +3,6 @@ package com.apro.core.preferenes.impl
 import android.app.Application
 import android.content.Context
 import com.apro.core.preferenes.api.MapboxPreferences
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
@@ -26,7 +25,7 @@ class MapboxPreferencesImpl @Inject constructor(
     }
     set(value) {
       prefs.edit().putInt(MAP_STYLE, value.ordinal).apply()
-      GlobalScope.launch(Dispatchers.IO) { mapStyleChannel.send(value) }
+      GlobalScope.launch { mapStyleChannel.send(value) }
     }
 
   override fun mapStyleFlow() = mapStyleChannel.asFlow()

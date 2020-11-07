@@ -1,8 +1,9 @@
 package com.apro.paraflight.ui.mapbox
 
-import android.location.Location
 import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.preferenes.api.MapboxPreferences
+import com.apro.core.util.event.EventBus
+import com.apro.paraflight.events.UpdateLocationEvent
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 class MapboxInteractorImpl @Inject constructor(
   private val mapboxPreferences: MapboxPreferences,
-  private val locationEngine: LocationEngine
+  private val locationEngine: LocationEngine,
+  private val eventBus: EventBus
 ) : MapboxInteractor {
 
   private var scope: CoroutineScope? = null
@@ -21,9 +23,6 @@ class MapboxInteractorImpl @Inject constructor(
 
   private val mapStyleChannel = ConflatedBroadcastChannel<MapboxPreferences.MapStyle>()
   override fun mapStyleFlow() = mapStyleChannel.asFlow()
-
-  private val updateLocationChannel = ConflatedBroadcastChannel<Location>()
-  override fun updateLocationFlow() = updateLocationChannel.asFlow()
 
   private val routeLocationChannel = ConflatedBroadcastChannel<List<Point>>()
   override fun routeLocationFlow() = routeLocationChannel.asFlow()
@@ -33,27 +32,15 @@ class MapboxInteractorImpl @Inject constructor(
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
 
     scope?.launch {
-      mapboxPreferences.mapStyleFlow().collect {
-        mapStyleChannel.send(it)
-      }
+      locationEngine.updateLocationFlow().collect { eventBus.send(UpdateLocationEvent(it)) }
     }
 
     scope?.launch {
-      locationEngine.lastLocationFlow().collect {
-        updateLocationChannel.send(it)
-      }
+      locationEngine.lastLocationFlow().collect { eventBus.send(UpdateLocationEvent(it)) }
     }
 
     scope?.launch {
-      locationEngine.routeFlow().collect {
-        routeLocationChannel.send(it.map { Point.fromLngLat(it.lng, it.lat) })
-      }
-    }
-
-    scope?.launch {
-      locationEngine.updateLocationFlow().collect {
-        updateLocationChannel.send(it)
-      }
+      mapboxPreferences.mapStyleFlow().collect { mapStyleChannel.send(it) }
     }
   }
 

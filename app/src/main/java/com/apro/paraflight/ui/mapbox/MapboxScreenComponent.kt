@@ -80,11 +80,11 @@ abstract class MapboxScreenModule {
   abstract fun mainScreenViewModel(viewModel: MapboxViewModel): ViewModel
 
   @Binds
-  abstract fun mapboxInteractor(interactor: MapboxInteractorImpl): MapboxInteractor
-
-  @Binds
   abstract fun voiceGuidanceInteractor(interactor: VoiceGuidanceInteractorImpl): VoiceGuidanceInteractor
 
   @Binds
   abstract fun flightInteractor(interactor: FlightInteractorImpl): FlightInteractor
+
+  @Binds
+  abstract fun mapboxInteractor(interactor: MapboxInteractorImpl): MapboxInteractor
 }

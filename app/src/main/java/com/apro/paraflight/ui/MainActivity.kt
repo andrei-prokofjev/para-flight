@@ -7,10 +7,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.LayoutInflater
-import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import com.apro.core.location.engine.impl.MapboxLocationEngine
 import com.apro.core.navigation.AppNavigator
@@ -27,6 +25,7 @@ import com.mapbox.geojson.LineString
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.location.CompassListener
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
@@ -58,6 +57,14 @@ class MainActivity : AppCompatActivity() {
 
   lateinit var mapboxMap: MapboxMap
 
+  private val compassListener = object : CompassListener {
+    override fun onCompassChanged(userHeading: Float) {
+    }
+
+    override fun onCompassAccuracyChange(compassStatus: Int) {
+    }
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     AppCenter.start(application, getString(R.string.app_center_access_token), Analytics::class.java, Crashes::class.java)
@@ -79,11 +86,17 @@ class MainActivity : AppCompatActivity() {
         mapboxLayout.addView(this)
         getMapAsync {
           mapboxMap = it
+
+          with(mapboxMap.uiSettings) {
+            isLogoEnabled = false
+            isAttributionEnabled = false
+            isCompassEnabled = true
+            isCompassEnabled = false
+          }
+
           it.setStyle(DI.preferencesApi.mapbox().mapStyle.style) { style ->
-            mapboxLayout.findViewWithTag<ImageView>("logoView")?.isVisible = false
-            mapboxLayout.findViewWithTag<ImageView>("attrView")?.isVisible = false
-            mapboxLayout.findViewWithTag<ImageView>("compassView")?.isVisible = false
             enableLocationComponentWithPermissionCheck(style)
+            mapboxMap.locationComponent.compassEngine?.addCompassListener(compassListener)
             style.addSource(GeoJsonSource(ROUTE_SOURCE_ID))
             style.addLayer(LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID).withProperties(
               lineWidth(5f),
@@ -94,19 +107,21 @@ class MainActivity : AppCompatActivity() {
       }
     }
     // set map style
-    viewModel.style.observe { mapboxMap.setStyle(it) }
+    viewModel.style.observe {
+      println(">>> style changed: $it")
+      mapboxMap.setStyle(it)
+    }
 
     // my current position
     viewModel.myCurrentPosition.observe { mapboxMap.animateCamera(it.first, it.second) }
 
-    // update location
+//     update location
     viewModel.locationData.observe {
       mapboxMap.locationComponent.forceLocationUpdate(it)
       mapboxMap.cameraPosition = CameraPosition.Builder().target(LatLng(it)).build()
     }
     // draw route
     viewModel.routeData.observe {
-      println(">>> size: " + it.size)
       mapboxMap.style?.let { style ->
         val source = style.getSourceAs<GeoJsonSource>(ROUTE_SOURCE_ID)
         source?.setGeoJson(FeatureCollection.fromFeatures(arrayOf(Feature.fromGeometry(LineString.fromLngLats(it)))))
@@ -135,6 +150,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   override fun onPause() {
+    println(">>> on pause$")
     DI.appComponent.navigatorHolder().removeNavigator()
     mapView.onPause()
     super.onPause()
@@ -146,6 +162,9 @@ class MainActivity : AppCompatActivity() {
   }
 
   override fun onDestroy() {
+    println(">>> on destroy$")
+
+    mapboxMap.locationComponent.compassEngine?.removeCompassListener(compassListener)
     mapView.onDestroy()
     super.onDestroy()
   }
@@ -175,7 +194,7 @@ class MainActivity : AppCompatActivity() {
     locationComponent.let {
       it.activateLocationComponent(locationComponentActivationOptions)
       it.isLocationComponentEnabled = true
-      it.cameraMode = CameraMode.TRACKING
+      it.cameraMode = CameraMode.TRACKING_COMPASS
       it.renderMode = RenderMode.COMPASS
     }
   }
