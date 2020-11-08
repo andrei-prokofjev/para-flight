@@ -38,4 +38,5 @@ class MainScreenViewModel @Inject constructor(
   override fun onCleared() {
     mapboxInteractor.removeLocationUpdate()
   }
+
 }

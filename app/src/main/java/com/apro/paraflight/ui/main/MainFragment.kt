@@ -31,7 +31,6 @@ class MainFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {
     }
   }
 
-
   companion object {
     fun create(component: MainScreenComponent) = MainFragment().apply {
       this.component = component

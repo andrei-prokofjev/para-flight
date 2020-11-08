@@ -127,7 +127,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     viewModel.uiSettingsData.observe {
-
       mapboxMap.uiSettings.isDisableRotateWhenScaling = it.disableRotateWhenScaling
       mapboxMap.uiSettings.isRotateGesturesEnabled = it.rotateGesturesEnabled
       mapboxMap.uiSettings.isTiltGesturesEnabled = it.tiltGesturesEnabled

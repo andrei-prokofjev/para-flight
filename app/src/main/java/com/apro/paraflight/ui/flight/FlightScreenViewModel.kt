@@ -45,6 +45,7 @@ class FlightScreenViewModel @Inject constructor(
   }
 
   override fun onCleared() {
+
     flightInteractor.clear()
     mapboxInteractor.removeLocationUpdate()
   }
