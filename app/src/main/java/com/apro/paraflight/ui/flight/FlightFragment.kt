@@ -22,7 +22,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
     super.onViewCreated(view, savedInstanceState)
 
     with(binding) {
-      viewModel.flight.observe {
+      viewModel.flightData.observe {
         speedMeterView.amount = it.speed
         altitudeMeterView.amount = it.alt
         timeMeterView.amount = it.duration

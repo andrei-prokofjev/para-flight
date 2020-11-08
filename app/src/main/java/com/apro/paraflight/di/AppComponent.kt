@@ -4,7 +4,10 @@ import android.content.Context
 import com.apro.core.navigation.AppRouter
 import com.apro.core.navigation.di.NavigationModule
 import com.apro.core.util.event.EventBus
+import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.core.voiceguidance.impl.VoiceGuidanceImpl
+import com.apro.paraflight.ui.mapbox.MapboxInteractor
+import com.apro.paraflight.ui.mapbox.MapboxInteractorImpl
 import com.apro.paraflight.util.AndroidResourceProvider
 import com.apro.paraflight.util.ResourceProvider
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -17,6 +20,8 @@ import javax.inject.Singleton
 @Singleton
 interface AppComponent {
 
+  fun mapboxInteractor(): MapboxInteractor
+
   fun eventBus(): EventBus
 
   fun resources(): ResourceProvider
@@ -25,7 +30,7 @@ interface AppComponent {
 
   fun navigatorHolder(): NavigatorHolder
 
-  fun voiceGuidance(): VoiceGuidanceImpl
+  fun voiceGuidance(): VoiceGuidance
 
   companion object {
     fun create(context: Context): AppComponent =
@@ -37,6 +42,11 @@ interface AppComponent {
 
 @Module
 class AppModule(private val context: Context) {
+
+  @Provides
+  @Singleton
+  fun provideMapboxInteractor(): MapboxInteractor = MapboxInteractorImpl()
+
   @Provides
   @Singleton
   fun resourceProvider(): ResourceProvider = AndroidResourceProvider(context)
@@ -47,7 +57,7 @@ class AppModule(private val context: Context) {
 
   @Provides
   @Singleton
-  fun provideVoiceGuidance(): VoiceGuidanceImpl = VoiceGuidanceImpl(context)
+  fun provideVoiceGuidance(): VoiceGuidance = VoiceGuidanceImpl(context)
 }
 
 

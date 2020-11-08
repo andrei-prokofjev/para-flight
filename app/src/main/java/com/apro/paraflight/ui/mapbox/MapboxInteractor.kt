@@ -1,18 +1,19 @@
 package com.apro.paraflight.ui.mapbox
 
-import com.apro.core.preferenes.api.MapboxPreferences
-import com.mapbox.geojson.Point
+import android.location.Location
+import com.apro.core.location.engine.api.LocationEngine
 import kotlinx.coroutines.flow.Flow
 
 interface MapboxInteractor {
-  fun mapStyleFlow(): Flow<MapboxPreferences.MapStyle>
+  fun requestLocationUpdates(locationEngine: LocationEngine)
+  fun locationUpdatesFlow(): Flow<Location>
+  fun removeLocationUpdate()
 
-//  fun updateLocationFlow(): Flow<Location>
+  fun requestLastLocation(locationEngine: LocationEngine)
+  fun lastLocationFlow(): Flow<Location>
 
   fun changeMapStyle()
 
-  fun navigateToCurrentPosition()
-  fun clear()
-  fun routeLocationFlow(): Flow<List<Point>>
-
+  fun uiSettingsFlow(): Flow<MapboxSettings>
+  fun setSettings(s: MapboxSettings)
 }

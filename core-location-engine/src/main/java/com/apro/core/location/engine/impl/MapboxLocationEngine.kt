@@ -36,7 +36,7 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
   private val locationUpdateCallback = object : LocationEngineCallback<LocationEngineResult> {
     override fun onSuccess(result: LocationEngineResult) {
-      // Timber.d("location update: %s", result.lastLocation)
+       Timber.d("location update: %s", result.lastLocation)
       result.lastLocation?.let {
         scope?.launch { updateLocationChannel.send(it) }
       }
@@ -67,7 +67,7 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
   }
 
   @SuppressLint("MissingPermission")
-  override fun getLastLocation() {
+  override fun requestLastLocation() {
     if (isLocationPermissionsDenied()) return
 
     locationEngine.getLastLocation(object : LocationEngineCallback<LocationEngineResult> {

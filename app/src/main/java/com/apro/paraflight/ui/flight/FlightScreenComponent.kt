@@ -11,7 +11,6 @@ import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
-import com.apro.paraflight.ui.mapbox.MapboxInteractorImpl
 import com.apro.paraflight.util.ResourceProvider
 import com.apro.paraflight.voice.VoiceGuidanceInteractor
 import com.apro.paraflight.voice.VoiceGuidanceInteractorImpl
@@ -39,6 +38,9 @@ interface FlightScreenComponent {
     fun eventBus(eventBus: EventBus): Builder
 
     @BindsInstance
+    fun mapboxInteractor(mapboxInteractor: MapboxInteractor): Builder
+
+    @BindsInstance
     fun locationEngine(locationEngine: LocationEngine): Builder
 
     @BindsInstance
@@ -60,6 +62,7 @@ interface FlightScreenComponent {
         .mapboxPreferences(DI.preferencesApi.mapbox())
         .appRouter(appRouter())
         .eventBus(eventBus())
+        .mapboxInteractor(mapboxInteractor())
         .locationEngine(engine)
         .voiceGuidance(voiceGuidance())
         .settingsPreferences(DI.preferencesApi.settings())
@@ -81,6 +84,4 @@ abstract class FlightScreenModule {
   @Binds
   abstract fun voiceGuidanceInteractor(interactor: VoiceGuidanceInteractorImpl): VoiceGuidanceInteractor
 
-  @Binds
-  abstract fun mapboxInteractor(interactor: MapboxInteractorImpl): MapboxInteractor
 }

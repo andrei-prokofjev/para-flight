@@ -44,7 +44,7 @@ interface MapboxScreenComponent {
     fun eventBus(eventBus: EventBus): Builder
 
     @BindsInstance
-    fun locationEngine(locationEngine: LocationEngine): Builder
+    fun mapboxInteractor(mapboxInteractor: MapboxInteractor): Builder
 
     @BindsInstance
     fun settingsPreferences(settingsPref: SettingsPreferences): Builder
@@ -62,7 +62,7 @@ interface MapboxScreenComponent {
         .resources(resources())
         .mapboxPreferences(DI.preferencesApi.mapbox())
         .eventBus(eventBus())
-        .locationEngine(locationEngine)
+        .mapboxInteractor(mapboxInteractor())
         .settingsPreferences(DI.preferencesApi.settings())
         .voiceGuidance(voiceGuidance())
         .build()
@@ -85,6 +85,4 @@ abstract class MapboxScreenModule {
   @Binds
   abstract fun flightInteractor(interactor: FlightInteractorImpl): FlightInteractor
 
-  @Binds
-  abstract fun mapboxInteractor(interactor: MapboxInteractorImpl): MapboxInteractor
 }

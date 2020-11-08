@@ -2,15 +2,15 @@ package com.apro.paraflight.ui.flight
 
 import android.location.Location
 import android.text.format.DateUtils
-import androidx.annotation.VisibleForTesting
-import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.model.FlightModel
 import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.SettingsPreferences
-import com.apro.core.util.event.EventBus
+import com.apro.core.util.Speed
+import com.apro.core.util.metersPerSecond
 import com.apro.core.util.roundTo
 import com.apro.paraflight.R
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
+import com.apro.paraflight.ui.mapbox.MapboxSettings
 import com.apro.paraflight.util.ResourceProvider
 import com.apro.paraflight.voice.VoiceGuidanceInteractor
 import com.mapbox.geojson.Point
@@ -24,15 +24,15 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
+
 
 class FlightInteractorImpl @Inject constructor(
   val appRouter: AppRouter,
   val resources: ResourceProvider,
-  private val locationEngine: LocationEngine,
   private val mapboxInteractor: MapboxInteractor,
-  private val eventBus: EventBus,
-  @VisibleForTesting private val settingsPreferences: SettingsPreferences,
+  private val settingsPreferences: SettingsPreferences,
   private val voiceGuidanceInteractor: VoiceGuidanceInteractor
 ) : FlightInteractor {
 
@@ -55,7 +55,7 @@ class FlightInteractorImpl @Inject constructor(
       scope?.launch { flightStateChannel.send(value) }
     }
 
-  val flightData = mutableListOf<FlightModel>()
+  private val flightData = mutableListOf<FlightModel>()
 
   private val baseAltitudes = mutableListOf<Double>() // calculate average base altitudes
 
@@ -64,59 +64,67 @@ class FlightInteractorImpl @Inject constructor(
   init {
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
 
-    locationEngine.requestLocationUpdates()
+    mapboxInteractor.setSettings(MapboxSettings(
+      rotateGesturesEnabled = false,
+      doubleTapGesturesEnabled = false,
+      horizontalScrollGesturesEnabled = false,
+      scrollGesturesEnabled = false,
+      zoomGesturesEnabled = false
+    ))
 
     var takeOffTime = 0L
     var duration = 0L
     var totalDistance = 0.0
     var baseAltitude = 0f
 
-    flightState = FlightInteractor.FlightState.FLIGHT
+    flightState = FlightInteractor.FlightState.PREPARING
 
-//    scope?.launch {
-//      mapboxInteractor.updateLocationFlow().collect {
-//        println(">>> ddd$")
-//
-//        val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, speed = it.speed)
-//        flightDataChannel.send(flightModel)
-//        //eventBus.send(LocationEvent(it))
-//
-//        when (flightState) {
-//
-//          FlightInteractor.FlightState.PREPARING -> {
-//            baseAltitude = getBaseAltitude(it)
-//            if (it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount > settingsPreferences.takeOffSpeed) {
-//              flightState = FlightInteractor.FlightState.TAKE_OFF
-//            }
-//          }
-//
-//          FlightInteractor.FlightState.TAKE_OFF -> {
-//            //     updateLocationChannel.send(flightModel)
-//            totalDistance += getDistance(it)
-//            flightData.add(flightModel)
-//            if ((baseAltitude - it.altitude).absoluteValue > settingsPreferences.takeOffAltDiff) {
-//              flightState = FlightInteractor.FlightState.FLIGHT
-//            }
-//          }
-//
-//          FlightInteractor.FlightState.FLIGHT -> {
-//            totalDistance += getDistance(it)
-//            duration = System.currentTimeMillis() - takeOffTime
-//            flightData.add(flightModel.copy(dist = totalDistance, duration = duration))
-//
-//
-//
-//            if (it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount <= settingsPreferences.minFlightSpeed) {
-//              //  flightState = FlightInteractor.FlightState.LANDED
-//            }
-//          }
-//
-//          FlightInteractor.FlightState.LANDED -> {
-//
-//          }
-//        }
-//      }
-//    }
+    scope?.launch {
+      mapboxInteractor.locationUpdatesFlow().collect {
+
+        val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, speed = it.speed)
+
+        when (flightState) {
+
+          FlightInteractor.FlightState.PREPARING -> {
+            flightDataChannel.send(flightModel)
+
+            baseAltitude = getBaseAltitude(it)
+            if (it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount > settingsPreferences.takeOffSpeed) {
+              flightState = FlightInteractor.FlightState.TAKE_OFF
+            }
+          }
+
+          FlightInteractor.FlightState.TAKE_OFF -> {
+            totalDistance += getDistance(it)
+            val fd = flightModel.copy(dist = totalDistance)
+            flightDataChannel.send(fd)
+            flightData.add(fd)
+
+            if ((baseAltitude - it.altitude).absoluteValue > settingsPreferences.takeOffAltDiff) {
+              flightState = FlightInteractor.FlightState.FLIGHT
+            }
+          }
+
+          FlightInteractor.FlightState.FLIGHT -> {
+            totalDistance += getDistance(it)
+            duration = System.currentTimeMillis() - takeOffTime
+
+            val fd = flightModel.copy(dist = totalDistance, duration = duration)
+            flightDataChannel.send(fd)
+            flightData.add(fd)
+
+            if (it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount <= settingsPreferences.minFlightSpeed) {
+              //  flightState = FlightInteractor.FlightState.LANDED
+            }
+          }
+
+          FlightInteractor.FlightState.LANDED -> {
+
+          }
+        }
+      }
+    }
 
     scope?.launch {
       flightStateFlow().collect {
@@ -217,7 +225,5 @@ class FlightInteractorImpl @Inject constructor(
     timeNotificationTicker?.cancel()
     scope?.coroutineContext?.cancelChildren()
     scope?.launch { cancel() }
-    locationEngine.removeLocationUpdates()
-    locationEngine.clear()
   }
 }

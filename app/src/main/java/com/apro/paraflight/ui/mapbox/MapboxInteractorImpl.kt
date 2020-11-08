@@ -1,63 +1,66 @@
 package com.apro.paraflight.ui.mapbox
 
+import android.location.Location
 import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.preferenes.api.MapboxPreferences
-import com.apro.core.util.event.EventBus
-import com.apro.paraflight.events.UpdateLocationEvent
-import com.mapbox.geojson.Point
-import kotlinx.coroutines.*
+import com.apro.paraflight.DI
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
-import timber.log.Timber
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MapboxInteractorImpl @Inject constructor(
-  private val mapboxPreferences: MapboxPreferences,
-  private val locationEngine: LocationEngine,
-  private val eventBus: EventBus
-) : MapboxInteractor {
+class MapboxInteractorImpl @Inject constructor() : MapboxInteractor {
 
-  private var scope: CoroutineScope? = null
+  private var locationEngine: LocationEngine? = null
 
-
-  private val mapStyleChannel = ConflatedBroadcastChannel<MapboxPreferences.MapStyle>()
-  override fun mapStyleFlow() = mapStyleChannel.asFlow()
-
-  private val routeLocationChannel = ConflatedBroadcastChannel<List<Point>>()
-  override fun routeLocationFlow() = routeLocationChannel.asFlow()
+  private val locationUpdatesChannel = ConflatedBroadcastChannel<Location>()
+  override fun locationUpdatesFlow() = locationUpdatesChannel.asFlow()
 
 
-  init {
-    scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
+  private val lastLocationChannel = ConflatedBroadcastChannel<Location>()
+  override fun lastLocationFlow() = lastLocationChannel.asFlow()
 
-    scope?.launch {
-      locationEngine.updateLocationFlow().collect { eventBus.send(UpdateLocationEvent(it)) }
-    }
+  private val uiSettingsChannel = ConflatedBroadcastChannel<MapboxSettings>()
+  override fun uiSettingsFlow() = uiSettingsChannel.asFlow()
 
-    scope?.launch {
-      locationEngine.lastLocationFlow().collect { eventBus.send(UpdateLocationEvent(it)) }
-    }
+  override fun setSettings(s: MapboxSettings) {
+    GlobalScope.launch { uiSettingsChannel.send(s) }
+  }
 
-    scope?.launch {
-      mapboxPreferences.mapStyleFlow().collect { mapStyleChannel.send(it) }
+  override fun requestLocationUpdates(locationEngine: LocationEngine) {
+    this.locationEngine = locationEngine.apply { requestLocationUpdates() }
+
+    GlobalScope.launch {
+      locationEngine.updateLocationFlow().collect {
+        locationUpdatesChannel.send(it)
+      }
     }
   }
 
+  override fun requestLastLocation(locationEngine: LocationEngine) {
+    this.locationEngine = locationEngine.apply { requestLastLocation() }
+
+    GlobalScope.launch {
+      locationEngine.lastLocationFlow().collect {
+        lastLocationChannel.send(it)
+      }
+    }
+  }
+
+
+  override fun removeLocationUpdate() {
+    locationEngine?.removeLocationUpdates()
+    locationEngine = null
+  }
+
   override fun changeMapStyle() {
+    val mapboxPreferences = DI.preferencesApi.mapbox()
     val nextStyle = (mapboxPreferences.mapStyle.ordinal + 1) % MapboxPreferences.MapStyle.values().size
     val mapStyle = MapboxPreferences.MapStyle.values()[nextStyle]
     mapboxPreferences.mapStyle = mapStyle
   }
 
-  override fun navigateToCurrentPosition() {
-    locationEngine.getLastLocation()
-  }
 
-  override fun clear() {
-    scope?.coroutineContext?.cancelChildren()
-    scope?.launch { cancel() }
-    locationEngine.removeLocationUpdates()
-    locationEngine.clear()
-  }
 }

@@ -9,7 +9,6 @@ import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
-import com.apro.paraflight.ui.mapbox.MapboxInteractorImpl
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -33,7 +32,10 @@ interface MainScreenComponent {
     fun mapboxPreferences(mapboxPreferences: MapboxPreferences): Builder
 
     @BindsInstance
-    fun locationEngine(repository: LocationEngine): Builder
+    fun mapboxInteractor(mapboxInteractor: MapboxInteractor): Builder
+
+    @BindsInstance
+    fun locationEngine(engine: LocationEngine): Builder
 
     fun build(): MainScreenComponent
   }
@@ -44,6 +46,7 @@ interface MainScreenComponent {
         .appRouter(appRouter())
         .eventBus(eventBus())
         .mapboxPreferences(DI.preferencesApi.mapbox())
+        .mapboxInteractor(mapboxInteractor())
         .locationEngine(engine)
         .build()
     }
@@ -57,6 +60,4 @@ abstract class MainScreenModule {
   @ViewModelKey(MainScreenViewModel::class)
   abstract fun mainScreenViewModel(viewModel: MainScreenViewModel): ViewModel
 
-  @Binds
-  abstract fun mapboxInteractor(interactor: MapboxInteractorImpl): MapboxInteractor
 }

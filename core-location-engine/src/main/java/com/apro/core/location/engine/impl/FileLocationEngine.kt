@@ -37,7 +37,7 @@ class FileLocationEngine(private val context: Context) : LocationEngine {
     Timber.d(">>> removeLocationUpdates")
   }
 
-  override fun getLastLocation() {
+  override fun requestLastLocation() {
     Timber.d(">>> getLastLocation")
   }
 

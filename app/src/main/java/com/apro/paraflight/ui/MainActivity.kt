@@ -97,6 +97,7 @@ class MainActivity : AppCompatActivity() {
           it.setStyle(DI.preferencesApi.mapbox().mapStyle.style) { style ->
             enableLocationComponentWithPermissionCheck(style)
             mapboxMap.locationComponent.compassEngine?.addCompassListener(compassListener)
+
             style.addSource(GeoJsonSource(ROUTE_SOURCE_ID))
             style.addLayer(LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID).withProperties(
               lineWidth(5f),
@@ -107,18 +108,15 @@ class MainActivity : AppCompatActivity() {
       }
     }
     // set map style
-    viewModel.style.observe {
-      println(">>> style changed: $it")
-      mapboxMap.setStyle(it)
-    }
+    viewModel.styleData.observe { mapboxMap.setStyle(it) }
 
     // my current position
     viewModel.myCurrentPosition.observe { mapboxMap.animateCamera(it.first, it.second) }
 
-//     update location
+    // update location
     viewModel.locationData.observe {
+      mapboxMap.locationComponent.cameraMode = CameraMode.TRACKING_COMPASS
       mapboxMap.locationComponent.forceLocationUpdate(it)
-      mapboxMap.cameraPosition = CameraPosition.Builder().target(LatLng(it)).build()
     }
     // draw route
     viewModel.routeData.observe {
@@ -126,6 +124,22 @@ class MainActivity : AppCompatActivity() {
         val source = style.getSourceAs<GeoJsonSource>(ROUTE_SOURCE_ID)
         source?.setGeoJson(FeatureCollection.fromFeatures(arrayOf(Feature.fromGeometry(LineString.fromLngLats(it)))))
       }
+    }
+
+    viewModel.uiSettingsData.observe {
+
+      mapboxMap.uiSettings.isDisableRotateWhenScaling = it.disableRotateWhenScaling
+      mapboxMap.uiSettings.isRotateGesturesEnabled = it.rotateGesturesEnabled
+      mapboxMap.uiSettings.isTiltGesturesEnabled = it.tiltGesturesEnabled
+      mapboxMap.uiSettings.isZoomGesturesEnabled = it.zoomGesturesEnabled
+      mapboxMap.uiSettings.isScrollGesturesEnabled = it.scrollGesturesEnabled
+      mapboxMap.uiSettings.isHorizontalScrollGesturesEnabled = it.horizontalScrollGesturesEnabled
+      mapboxMap.uiSettings.isDoubleTapGesturesEnabled = it.doubleTapGesturesEnabled
+      mapboxMap.uiSettings.isQuickZoomGesturesEnabled = it.quickZoomGesturesEnabled
+      mapboxMap.uiSettings.isScaleVelocityAnimationEnabled = it.scaleVelocityAnimationEnabled
+      mapboxMap.uiSettings.isRotateVelocityAnimationEnabled = it.rotateVelocityAnimationEnabled
+      mapboxMap.uiSettings.isFlingVelocityAnimationEnabled = it.flingVelocityAnimationEnabled
+      mapboxMap.uiSettings.isIncreaseScaleThresholdWhenRotating = it.increaseScaleThresholdWhenRotating
     }
 
     DI.appComponent.appRouter().newRootScreen(Screens.main(MapboxLocationEngine(this)))
@@ -150,7 +164,6 @@ class MainActivity : AppCompatActivity() {
   }
 
   override fun onPause() {
-    println(">>> on pause$")
     DI.appComponent.navigatorHolder().removeNavigator()
     mapView.onPause()
     super.onPause()
@@ -162,8 +175,6 @@ class MainActivity : AppCompatActivity() {
   }
 
   override fun onDestroy() {
-    println(">>> on destroy$")
-
     mapboxMap.locationComponent.compassEngine?.removeCompassListener(compassListener)
     mapView.onDestroy()
     super.onDestroy()

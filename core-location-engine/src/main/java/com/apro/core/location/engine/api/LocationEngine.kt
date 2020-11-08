@@ -5,13 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface LocationEngine {
   fun requestLocationUpdates()
+  fun updateLocationFlow(): Flow<Location>
   fun removeLocationUpdates()
 
-  fun getLastLocation()
-
+  fun requestLastLocation()
   fun lastLocationFlow(): Flow<Location>
-
-  fun updateLocationFlow(): Flow<Location>
 
   fun clear()
 }

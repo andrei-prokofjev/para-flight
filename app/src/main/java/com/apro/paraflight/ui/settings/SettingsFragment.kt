@@ -2,7 +2,6 @@ package com.apro.paraflight.ui.settings
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.ui.BaseFragment
@@ -58,7 +57,6 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
         }
       }
 
-      unitsLayout.isVisible = false // todo: not implemented yet
     }
   }
 
