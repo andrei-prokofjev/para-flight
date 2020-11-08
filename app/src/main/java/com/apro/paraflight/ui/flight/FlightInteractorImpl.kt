@@ -38,7 +38,6 @@ class FlightInteractorImpl @Inject constructor(
 
   private var scope: CoroutineScope? = null
 
-
   private val flightStateChannel = ConflatedBroadcastChannel<FlightInteractor.FlightState>()
 
   private val testChannel = ConflatedBroadcastChannel<String>()
@@ -65,6 +64,7 @@ class FlightInteractorImpl @Inject constructor(
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
 
     mapboxInteractor.setSettings(MapboxSettings(
+      locationComponentEnabled = true,
       rotateGesturesEnabled = false,
       doubleTapGesturesEnabled = false,
       horizontalScrollGesturesEnabled = false,
@@ -128,7 +128,7 @@ class FlightInteractorImpl @Inject constructor(
 
     scope?.launch {
       flightStateFlow().collect {
-        testChannel.send(it.toString())
+        //  testChannel.send(it.toString())
 
         when (it) {
           FlightInteractor.FlightState.PREPARING -> {

@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
+  @SuppressLint("MissingPermission")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     AppCenter.start(application, getString(R.string.app_center_access_token), Analytics::class.java, Crashes::class.java)
@@ -90,7 +91,6 @@ class MainActivity : AppCompatActivity() {
           with(mapboxMap.uiSettings) {
             isLogoEnabled = false
             isAttributionEnabled = false
-            isCompassEnabled = true
             isCompassEnabled = false
           }
 
@@ -115,8 +115,10 @@ class MainActivity : AppCompatActivity() {
 
     // update location
     viewModel.locationData.observe {
-      mapboxMap.locationComponent.cameraMode = CameraMode.TRACKING_COMPASS
-      mapboxMap.locationComponent.forceLocationUpdate(it)
+      with(mapboxMap.locationComponent) {
+        cameraMode = CameraMode.TRACKING_COMPASS
+        forceLocationUpdate(it)
+      }
     }
     // draw route
     viewModel.routeData.observe {
@@ -127,18 +129,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     viewModel.uiSettingsData.observe {
-      mapboxMap.uiSettings.isDisableRotateWhenScaling = it.disableRotateWhenScaling
-      mapboxMap.uiSettings.isRotateGesturesEnabled = it.rotateGesturesEnabled
-      mapboxMap.uiSettings.isTiltGesturesEnabled = it.tiltGesturesEnabled
-      mapboxMap.uiSettings.isZoomGesturesEnabled = it.zoomGesturesEnabled
-      mapboxMap.uiSettings.isScrollGesturesEnabled = it.scrollGesturesEnabled
-      mapboxMap.uiSettings.isHorizontalScrollGesturesEnabled = it.horizontalScrollGesturesEnabled
-      mapboxMap.uiSettings.isDoubleTapGesturesEnabled = it.doubleTapGesturesEnabled
-      mapboxMap.uiSettings.isQuickZoomGesturesEnabled = it.quickZoomGesturesEnabled
-      mapboxMap.uiSettings.isScaleVelocityAnimationEnabled = it.scaleVelocityAnimationEnabled
-      mapboxMap.uiSettings.isRotateVelocityAnimationEnabled = it.rotateVelocityAnimationEnabled
-      mapboxMap.uiSettings.isFlingVelocityAnimationEnabled = it.flingVelocityAnimationEnabled
-      mapboxMap.uiSettings.isIncreaseScaleThresholdWhenRotating = it.increaseScaleThresholdWhenRotating
+      mapboxMap.locationComponent.isLocationComponentEnabled = it.locationComponentEnabled
+
+      with(mapboxMap.uiSettings) {
+        isDisableRotateWhenScaling = it.disableRotateWhenScaling
+        isRotateGesturesEnabled = it.rotateGesturesEnabled
+        isTiltGesturesEnabled = it.tiltGesturesEnabled
+        isZoomGesturesEnabled = it.zoomGesturesEnabled
+        isScrollGesturesEnabled = it.scrollGesturesEnabled
+        isHorizontalScrollGesturesEnabled = it.horizontalScrollGesturesEnabled
+        isDoubleTapGesturesEnabled = it.doubleTapGesturesEnabled
+        isQuickZoomGesturesEnabled = it.quickZoomGesturesEnabled
+        isScaleVelocityAnimationEnabled = it.scaleVelocityAnimationEnabled
+        isRotateVelocityAnimationEnabled = it.rotateVelocityAnimationEnabled
+        isFlingVelocityAnimationEnabled = it.flingVelocityAnimationEnabled
+        isIncreaseScaleThresholdWhenRotating = it.increaseScaleThresholdWhenRotating
+      }
     }
 
     DI.appComponent.appRouter().newRootScreen(Screens.main(MapboxLocationEngine(this)))
@@ -203,7 +209,7 @@ class MainActivity : AppCompatActivity() {
 
     locationComponent.let {
       it.activateLocationComponent(locationComponentActivationOptions)
-      it.isLocationComponentEnabled = true
+      it.isLocationComponentEnabled = false
       it.cameraMode = CameraMode.TRACKING_COMPASS
       it.renderMode = RenderMode.COMPASS
     }

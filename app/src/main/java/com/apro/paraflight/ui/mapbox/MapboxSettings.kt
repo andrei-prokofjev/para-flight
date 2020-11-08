@@ -1,6 +1,7 @@
 package com.apro.paraflight.ui.mapbox
 
 data class MapboxSettings(
+  val locationComponentEnabled: Boolean = false,
   val disableRotateWhenScaling: Boolean = true,
   val rotateGesturesEnabled: Boolean = true,
   val tiltGesturesEnabled: Boolean = true,
