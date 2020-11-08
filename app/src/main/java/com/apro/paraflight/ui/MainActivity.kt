@@ -26,7 +26,6 @@ import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.location.CompassListener
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
@@ -57,14 +56,6 @@ class MainActivity : AppCompatActivity() {
   lateinit var mapView: MapView
 
   lateinit var mapboxMap: MapboxMap
-
-  private val compassListener = object : CompassListener {
-    override fun onCompassChanged(userHeading: Float) {
-    }
-
-    override fun onCompassAccuracyChange(compassStatus: Int) {
-    }
-  }
 
   @SuppressLint("MissingPermission")
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
           it.setStyle(DI.preferencesApi.mapbox().mapStyle.style) { style ->
             enableLocationComponentWithPermissionCheck(style)
-            mapboxMap.locationComponent.compassEngine?.addCompassListener(compassListener)
+           // mapboxMap.locationComponent.compassEngine?.addCompassListener(compassListener)
 
             style.addSource(GeoJsonSource(ROUTE_SOURCE_ID))
             style.addLayer(LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID).withProperties(
@@ -131,8 +122,6 @@ class MainActivity : AppCompatActivity() {
 
     viewModel.uiSettingsData.observe {
       mapboxMap.locationComponent.isLocationComponentEnabled = it.locationComponentEnabled
-
-
 
       with(mapboxMap.uiSettings) {
         isDisableRotateWhenScaling = it.disableRotateWhenScaling
@@ -187,7 +176,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   override fun onDestroy() {
-    mapboxMap.locationComponent.compassEngine?.removeCompassListener(compassListener)
+    // mapboxMap.locationComponent.compassEngine?.removeCompassListener(compassListener)
     mapView.onDestroy()
     super.onDestroy()
   }
