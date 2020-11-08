@@ -222,7 +222,9 @@ class FlightInteractorImpl @Inject constructor(
   }
 
   override fun clear() {
-    mapboxInteractor.setSettings(MapboxSettings())
+    mapboxInteractor.setSettings(MapboxSettings(
+      zoom = 10.0
+    ))
     timeNotificationTicker?.cancel()
     scope?.coroutineContext?.cancelChildren()
     scope?.launch { cancel() }

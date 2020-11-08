@@ -24,6 +24,7 @@ import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.LineString
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.CompassListener
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
@@ -131,6 +132,8 @@ class MainActivity : AppCompatActivity() {
     viewModel.uiSettingsData.observe {
       mapboxMap.locationComponent.isLocationComponentEnabled = it.locationComponentEnabled
 
+
+
       with(mapboxMap.uiSettings) {
         isDisableRotateWhenScaling = it.disableRotateWhenScaling
         isRotateGesturesEnabled = it.rotateGesturesEnabled
@@ -145,6 +148,10 @@ class MainActivity : AppCompatActivity() {
         isFlingVelocityAnimationEnabled = it.flingVelocityAnimationEnabled
         isIncreaseScaleThresholdWhenRotating = it.increaseScaleThresholdWhenRotating
       }
+
+      mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.Builder()
+        .zoom(it.zoom)
+        .build()), 500)
     }
 
     DI.appComponent.appRouter().newRootScreen(Screens.main(MapboxLocationEngine(this)))
