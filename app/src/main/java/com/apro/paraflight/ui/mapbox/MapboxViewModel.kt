@@ -4,7 +4,6 @@ import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.apro.core.network.Utils
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.BaseViewModel
 import com.mapbox.geojson.Point
@@ -63,15 +62,15 @@ class MapboxViewModel @Inject constructor(
       mapboxInteractor.uiSettingsFlow().collect {
         _uiSettingsData.postValue(it)
 
-        val a = Utils.getMACAddress("wlan0");
-        val b = Utils.getMACAddress("eth0");
-        val c = Utils.getIPAddress(true); // IPv4
-        val d = Utils.getIPAddress(false); // IPv6
-
-        println(">>> $a")
-        println(">>> $b")
-        println(">>> $c")
-        println(">>> $d")
+//        val a = Utils.getMACAddress("wlan0");
+//        val b = Utils.getMACAddress("eth0");
+//        val c = Utils.getIPAddress(true); // IPv4
+//        val d = Utils.getIPAddress(false); // IPv6
+//
+//        println(">>> $a")
+//        println(">>> $b")
+//        println(">>> $c")
+//        println(">>> $d")
       }
     }
 

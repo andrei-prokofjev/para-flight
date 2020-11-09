@@ -122,7 +122,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     viewModel.uiSettingsData.observe {
-      mapboxMap.locationComponent.isLocationComponentEnabled = it.locationComponentEnabled
+      println(">>> settings: $it")
+      //  mapboxMap.locationComponent.isLocationComponentEnabled = it.locationComponentEnabled
 
       with(mapboxMap.uiSettings) {
         isDisableRotateWhenScaling = it.disableRotateWhenScaling
