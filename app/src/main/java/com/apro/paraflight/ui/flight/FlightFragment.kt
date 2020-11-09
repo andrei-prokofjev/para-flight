@@ -33,11 +33,13 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
             speedMeterView.amount = it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount.roundToInt().toString()
             speedMeterView.unit = getString(R.string.km_h)
             distMeterView.amount = it.dist?.meters?.convertTo(Distance.Kilometer)?.amount?.roundTo(1)?.toString() ?: "-.-"
+            distMeterView.unit = getString(R.string.km)
           }
           SettingsPreferences.Units.IMPERIAL -> {
             speedMeterView.amount = it.speed.metersPerSecond.convertTo(Speed.MilePerHour).amount.roundToInt().toString()
             speedMeterView.unit = getString(R.string.mph)
             distMeterView.amount = it.dist?.meters?.convertTo(Distance.Mile)?.amount?.roundTo(1)?.toString() ?: "-.-"
+            distMeterView.unit = getString(R.string.ml)
           }
         }
 
