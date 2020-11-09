@@ -21,6 +21,7 @@ class Distance(name: String, ratio: Double) : Unit(name, ratio) {
     val Meter = Distance("m", 1.0)
     val Centimeter = Distance("cm", 0.01)
     val Millimeter = Distance("mm", 0.001)
+    val Feet = Distance("ft", 0.3048)
   }
 }
 

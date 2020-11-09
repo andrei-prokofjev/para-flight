@@ -68,9 +68,9 @@ class FlightInteractorImpl @Inject constructor(
       locationComponentEnabled = true,
       rotateGesturesEnabled = false,
       doubleTapGesturesEnabled = false,
-      horizontalScrollGesturesEnabled = false,
-      scrollGesturesEnabled = false,
-      zoomGesturesEnabled = false
+      horizontalScrollGesturesEnabled = true,
+      scrollGesturesEnabled = true,
+      zoomGesturesEnabled = true
     ))
 
     var takeOffTime = 0L

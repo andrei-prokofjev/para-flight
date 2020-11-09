@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
           it.setStyle(DI.preferencesApi.mapbox().mapStyle.style) { style ->
             enableLocationComponentWithPermissionCheck(style)
-           // mapboxMap.locationComponent.compassEngine?.addCompassListener(compassListener)
+            // mapboxMap.locationComponent.compassEngine?.addCompassListener(compassListener)
 
             style.addSource(GeoJsonSource(ROUTE_SOURCE_ID))
             style.addLayer(LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID).withProperties(
@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity() {
     viewModel.locationData.observe {
       with(mapboxMap.locationComponent) {
         cameraMode = CameraMode.TRACKING_COMPASS
+        renderMode = RenderMode.COMPASS
         forceLocationUpdate(it)
       }
     }
