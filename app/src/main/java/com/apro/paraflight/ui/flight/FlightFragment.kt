@@ -4,12 +4,16 @@ package com.apro.paraflight.ui.flight
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.ui.BaseFragment
 import com.apro.core.ui.onClick
+import com.apro.core.util.*
+import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentFlightBinding
 import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.common.viewBinding
+import kotlin.math.roundToInt
 
 
 class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListener {
@@ -23,10 +27,22 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
 
     with(binding) {
       viewModel.flightData.observe {
-        speedMeterView.amount = it.speed
-        altitudeMeterView.amount = it.alt
-        timeMeterView.amount = it.duration
-        distMeterView.amount = it.dist
+
+        when (DI.preferencesApi.settings().units) {
+          SettingsPreferences.Units.METRIC -> {
+            speedMeterView.amount = it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount.roundToInt().toString()
+            speedMeterView.unit = getString(R.string.km_h)
+            distMeterView.amount = it.dist?.meters?.convertTo(Distance.Kilometer)?.amount?.roundTo(1)?.toString() ?: "-.-"
+          }
+          SettingsPreferences.Units.IMPERIAL -> {
+            speedMeterView.amount = it.speed.metersPerSecond.convertTo(Speed.MilePerHour).amount.roundToInt().toString()
+            speedMeterView.unit = getString(R.string.mph)
+            distMeterView.amount = it.dist?.meters?.convertTo(Distance.Mile)?.amount?.roundTo(1)?.toString() ?: "-.-"
+          }
+        }
+
+        altitudeMeterView.amount = it.alt.roundToInt().toString()
+        timeMeterView.amount = it.duration?.toTimeFormat() ?: "-:-"
       }
 
       layerImageView.onClick { viewModel.onLayerClick() }

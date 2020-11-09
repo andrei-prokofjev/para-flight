@@ -23,28 +23,31 @@
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/speedMeterView"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintWidth_percent=".33"
       app:mv_name="@string/gs"
       app:mv_unit="@string/km_h" />
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/timeMeterView"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintWidth_percent=".33"
       app:mv_title="@string/flight_time" />
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/altitudeMeterView"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintWidth_percent=".33"
       app:mv_name="@string/asl"
       app:mv_unit="@string/m" />
 
@@ -67,27 +70,30 @@
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/distMeterView"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintWidth_percent=".33"
       app:mv_name="DST"
       app:mv_unit="@string/km" />
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/mv1"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent" />
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintWidth_percent=".33" />
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/mv2"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent" />
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintWidth_percent=".33" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,11 +31,11 @@ class MeterView constructor(context: Context, attr: AttributeSet?) :
       field = value
     }
 
-  private var unit: String? = null
-    set(value) {
-      binding.unitTextView.text = value
-      field = value
-    }
+   var unit: String? = null
+     set(value) {
+       binding.unitTextView.text = value
+       field = value
+     }
 
   init {
     val a = context.obtainStyledAttributes(attr, R.styleable.MeterView)

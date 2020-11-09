@@ -2,7 +2,7 @@ package com.apro.core.util
 
 import java.util.concurrent.TimeUnit
 
-open class Unit(val name: String, private val ratio: Double) {
+open class Unit(val name: String, val ratio: Double) {
   fun convertToBaseUnit(amount: Double) = amount * ratio
   fun convertFromBaseUnit(amount: Double) = amount / ratio
 }
@@ -16,8 +16,8 @@ open class Quantity<T : Unit>(val amount: Double, private val unit: T) {
 
 class Distance(name: String, ratio: Double) : Unit(name, ratio) {
   companion object Factory {
-    val Mile = Distance("ml", 1.60934 * 1000.0)
     val Kilometer = Distance("km", 1000.0)
+    val Mile = Distance("ml", 1.60934 * 1000.0)
     val Meter = Distance("m", 1.0)
     val Centimeter = Distance("cm", 0.01)
     val Millimeter = Distance("mm", 0.001)
@@ -57,8 +57,8 @@ val Number.milliseconds: Quantity<Time> get() = Quantity(toDouble(), Time.Millis
 
 enum class SpeedUnit(val n: String, val ratio: Double) {
   METER_PER_SECOND("m/s", 1.0),
-  KM_PER_HOUR("km/h", 1000 / TimeUnit.HOURS.toSeconds(1L).toDouble()),
-  MILE_PER_HOUR("mph", 1.60934 * 1000 / TimeUnit.HOURS.toSeconds(1L).toDouble()),
+  KM_PER_HOUR("km/h", Distance.Kilometer.ratio / TimeUnit.HOURS.toSeconds(1L).toDouble()),
+  MILE_PER_HOUR("mph", Distance.Mile.ratio / TimeUnit.HOURS.toSeconds(1L).toDouble()),
 }
 
 class Speed(unit: SpeedUnit) : Unit(unit.n, unit.ratio) {
@@ -73,11 +73,7 @@ val Quantity<Speed>.MetersPerSecond get() = convertTo(Speed.KilometerPerHour)
 val Quantity<Speed>.KilometerPerHour get() = convertTo(Speed.MetersPerSecond)
 
 val Number.metersPerSecond: Quantity<Speed> get() = Quantity(toDouble(), Speed.MetersPerSecond)
-val Number.kilometersPerHour: Quantity<Speed>
-  get() = Quantity(this.toDouble(),
-    Speed.KilometerPerHour)
+val Number.kilometersPerHour: Quantity<Speed> get() = Quantity(this.toDouble(), Speed.KilometerPerHour)
 
 val Float.metersPerSecond: Quantity<Speed> get() = Quantity(toDouble(), Speed.MetersPerSecond)
-val Float.kilometersPerHour: Quantity<Speed>
-  get() = Quantity(this.toDouble(),
-    Speed.KilometerPerHour)
+val Float.kilometersPerHour: Quantity<Speed> get() = Quantity(this.toDouble(), Speed.KilometerPerHour)

@@ -4,6 +4,7 @@
   <string name="app_center_access_token" translatable="false">4c85d11d-d8ff-46c7-a985-0b638b806bab</string>
   <string name="gs">GS</string>
   <string name="km_h">km/h</string>
+  <string name="mph">mph</string>
   <string name="asl">ASL</string>
   <string name="m">m</string>
   <string name="km">km</string>
