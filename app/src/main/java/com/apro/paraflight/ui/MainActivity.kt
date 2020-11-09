@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
 
     viewModel.uiSettingsData.observe {
       println(">>> settings: $it")
-      //  mapboxMap.locationComponent.isLocationComponentEnabled = it.locationComponentEnabled
+        mapboxMap.locationComponent.isLocationComponentEnabled = it.locationComponentEnabled
 
       with(mapboxMap.uiSettings) {
         isDisableRotateWhenScaling = it.disableRotateWhenScaling
@@ -202,7 +202,7 @@ class MainActivity : AppCompatActivity() {
     val locationComponent = mapboxMap.locationComponent
     val locationComponentActivationOptions = LocationComponentActivationOptions
       .builder(this, loadedMapStyle)
-      .useDefaultLocationEngine(false)
+      .useDefaultLocationEngine(true)
       .build()
 
     locationComponent.let {
