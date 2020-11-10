@@ -120,10 +120,10 @@ class MainActivity : AppCompatActivity() {
         source?.setGeoJson(FeatureCollection.fromFeatures(arrayOf(Feature.fromGeometry(LineString.fromLngLats(it)))))
       }
     }
-
+    // ui settings
     viewModel.uiSettingsData.observe {
-      println(">>> settings: $it")
-        mapboxMap.locationComponent.isLocationComponentEnabled = it.locationComponentEnabled
+
+      mapboxMap.locationComponent.isLocationComponentEnabled = it.locationComponentEnabled
 
       with(mapboxMap.uiSettings) {
         isDisableRotateWhenScaling = it.disableRotateWhenScaling
@@ -148,6 +148,25 @@ class MainActivity : AppCompatActivity() {
     DI.appComponent.appRouter().newRootScreen(Screens.main(MapboxLocationEngine(this)))
   }
 
+  @SuppressLint("MissingPermission")
+  @NeedsPermission(
+    Manifest.permission.ACCESS_FINE_LOCATION,
+    Manifest.permission.ACCESS_COARSE_LOCATION
+  )
+  fun enableLocationComponent(loadedMapStyle: Style) {
+    val locationComponent = mapboxMap.locationComponent
+    val locationComponentActivationOptions = LocationComponentActivationOptions
+      .builder(this, loadedMapStyle)
+      .useDefaultLocationEngine(true)
+      .build()
+
+    locationComponent.let {
+      it.activateLocationComponent(locationComponentActivationOptions)
+      it.isLocationComponentEnabled = true
+      it.cameraMode = CameraMode.TRACKING_COMPASS
+      it.renderMode = RenderMode.COMPASS
+    }
+  }
 
   override fun onBackPressed() {
     supportFragmentManager.findFragmentById(R.id.mainContainerView)?.let {
@@ -191,26 +210,6 @@ class MainActivity : AppCompatActivity() {
   override fun onLowMemory() {
     super.onLowMemory()
     mapView.onLowMemory()
-  }
-
-  @SuppressLint("MissingPermission")
-  @NeedsPermission(
-    Manifest.permission.ACCESS_FINE_LOCATION,
-    Manifest.permission.ACCESS_COARSE_LOCATION
-  )
-  fun enableLocationComponent(loadedMapStyle: Style) {
-    val locationComponent = mapboxMap.locationComponent
-    val locationComponentActivationOptions = LocationComponentActivationOptions
-      .builder(this, loadedMapStyle)
-      .useDefaultLocationEngine(true)
-      .build()
-
-    locationComponent.let {
-      it.activateLocationComponent(locationComponentActivationOptions)
-      it.isLocationComponentEnabled = false
-      it.cameraMode = CameraMode.TRACKING_COMPASS
-      it.renderMode = RenderMode.COMPASS
-    }
   }
 
   @SuppressLint("NeedOnRequestPermissionsResult")

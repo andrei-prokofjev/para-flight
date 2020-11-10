@@ -63,7 +63,7 @@ class FlightInteractorImpl @Inject constructor(
   init {
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
 
-    mapboxInteractor.setSettings(MapboxSettings(
+    mapboxInteractor.uiSettings = MapboxSettings(
       zoom = 14.0,
       locationComponentEnabled = true,
       rotateGesturesEnabled = false,
@@ -71,7 +71,7 @@ class FlightInteractorImpl @Inject constructor(
       horizontalScrollGesturesEnabled = true,
       scrollGesturesEnabled = true,
       zoomGesturesEnabled = true
-    ))
+    )
 
     var takeOffTime = 0L
     var duration = 0L
@@ -223,9 +223,9 @@ class FlightInteractorImpl @Inject constructor(
   }
 
   override fun clear() {
-    mapboxInteractor.setSettings(MapboxSettings(
+    mapboxInteractor.uiSettings = MapboxSettings(
       zoom = 12.0
-    ))
+    )
     timeNotificationTicker?.cancel()
     scope?.coroutineContext?.cancelChildren()
     scope?.launch { cancel() }

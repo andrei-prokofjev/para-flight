@@ -28,8 +28,7 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintWidth_percent=".33"
-      app:mv_name="@string/gs"
-      app:mv_unit="@string/km_h" />
+      app:mv_name="@string/gs" />
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/timeMeterView"
@@ -75,8 +74,7 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintWidth_percent=".33"
-      app:mv_name="DST"
-      app:mv_unit="@string/km" />
+      app:mv_name="DST" />
 
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/mv1"
