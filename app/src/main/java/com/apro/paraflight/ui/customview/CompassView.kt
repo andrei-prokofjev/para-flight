@@ -14,10 +14,12 @@ class CompassView(context: Context, attr: AttributeSet?) : View(context, attr) {
   private val diameter = dpToPx(300f)
   private val radius = diameter / 2
 
-  private val rec = RectF(0f, 0f, diameter, diameter)
+  private val rec1 = RectF(0f, 0f, diameter, diameter)
+  private val rec2 = RectF(70f, 70f, diameter - 70, diameter - 70)
 
   val path = Path().apply {
-    addArc(rec, 0f, 360f)
+    addArc(rec1, 0f, 360f)
+    addArc(rec2, 0f, 360f)
   }
 
   override fun onDraw(canvas: Canvas) {
@@ -29,7 +31,7 @@ class CompassView(context: Context, attr: AttributeSet?) : View(context, attr) {
 
     paint.style = Paint.Style.STROKE
     paint.strokeWidth = dpToPx(2f)
-    paint.color = Color.parseColor("#CD5C5C")
+    paint.color = Color.parseColor("#ffffff")
     canvas.drawPath(path, paint)
 
     paint.style = Paint.Style.FILL
@@ -39,10 +41,10 @@ class CompassView(context: Context, attr: AttributeSet?) : View(context, attr) {
     paint.textAlign = Paint.Align.CENTER
     paint.textSize = dpToPx(24f)
 
-    canvas.drawTextOnPath("W", path, (Math.PI * diameter).toFloat() / 4f, dpToPx(24f), paint)
+    canvas.drawTextOnPath("N", path, (Math.PI * diameter).toFloat() / 4f, dpToPx(24f), paint)
     canvas.drawTextOnPath("E", path, (Math.PI * diameter).toFloat() / 2f, dpToPx(24f), paint)
-    canvas.drawTextOnPath("N", path, -(Math.PI * diameter).toFloat() / 4f, dpToPx(24f), paint)
-    canvas.drawTextOnPath("S", path, 0f, dpToPx(24f), paint)
+    canvas.drawTextOnPath("S", path, -(Math.PI * diameter).toFloat() / 4f, dpToPx(24f), paint)
+    canvas.drawTextOnPath("W", path, 0f, dpToPx(24f), paint)
 
 
   }
