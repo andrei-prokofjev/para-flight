@@ -56,10 +56,11 @@ class CompassView(context: Context, attr: AttributeSet?) : View(context, attr) {
 
     paint.color = Color.RED
     canvas.drawTextOnPath("N", path, (Math.PI * radius).toFloat() / 2, fontSize, paint)
-    paint.color = color
+    paint.color = Color.YELLOW
     canvas.drawTextOnPath("W", path, 0f, fontSize, paint)
     canvas.drawTextOnPath("E", path, 3 * (Math.PI * radius).toFloat() / 2, fontSize, paint)
     canvas.drawTextOnPath("S", path, -(Math.PI * radius).toFloat() / 2, fontSize, paint)
+
 
     paint.typeface = Typeface.SANS_SERIF
     canvas.drawTextOnPath("21", path, -(Math.PI * radius).toFloat() / 3, fontSize, paint)
@@ -73,6 +74,7 @@ class CompassView(context: Context, attr: AttributeSet?) : View(context, attr) {
     canvas.drawTextOnPath("3", path, 2 * Math.PI.toFloat() * radius / 3, fontSize, paint)
     canvas.drawTextOnPath("15", path, -2 * Math.PI.toFloat() * radius / 3, fontSize, paint)
 
+    paint.color = color
     paint.style = Paint.Style.STROKE
 
 
