@@ -18,6 +18,13 @@
       android:layout_height="match_parent"
       app:defaultNavHost="true" />
 
+  <com.apro.paraflight.ui.customview.CompassView
+      android:id="@+id/compassView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="gone"
+      tools:visibility="visible" />
+
   <!--  <include-->
   <!--      android:id="@+id/bottomSheetLayout"-->
   <!--      layout="@layout/layout_bottom_sheet" />-->

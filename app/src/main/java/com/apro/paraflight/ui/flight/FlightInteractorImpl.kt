@@ -64,6 +64,7 @@ class FlightInteractorImpl @Inject constructor(
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
 
     mapboxInteractor.uiSettings = MapboxSettings(
+      compassEnabled = true,
       zoom = 14.0,
       locationComponentEnabled = true,
       rotateGesturesEnabled = false,

@@ -2,13 +2,17 @@ package com.apro.paraflight.ui
 
 
 import android.Manifest
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import com.apro.core.location.engine.impl.MapboxLocationEngine
 import com.apro.core.navigation.AppNavigator
@@ -26,6 +30,7 @@ import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.location.CompassListener
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
@@ -45,6 +50,7 @@ import permissions.dispatcher.*
 @RuntimePermissions
 class MainActivity : AppCompatActivity() {
 
+
   private val navigator = AppNavigator(this, R.id.mainContainerView, supportFragmentManager, supportFragmentManager.fragmentFactory)
 
   private val component by lazy { MapboxScreenComponent.create(MapboxLocationEngine(this)) }
@@ -56,6 +62,24 @@ class MainActivity : AppCompatActivity() {
   lateinit var mapView: MapView
 
   lateinit var mapboxMap: MapboxMap
+
+  private val compassListener: CompassListener = object : CompassListener {
+    override fun onCompassChanged(userHeading: Float) {
+      AnimatorSet().apply {
+        play(
+          ObjectAnimator.ofFloat(binding.compassView, View.ROTATION, binding.compassView.rotation, -userHeading).apply {
+            duration = 800
+          }
+        )
+        start()
+      }
+    }
+
+    override fun onCompassAccuracyChange(compassStatus: Int) {
+      println(">>> status: $compassStatus")
+    }
+
+  }
 
   @SuppressLint("MissingPermission")
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +112,6 @@ class MainActivity : AppCompatActivity() {
 
           it.setStyle(DI.preferencesApi.mapbox().mapStyle.style) { style ->
             enableLocationComponentWithPermissionCheck(style)
-            // mapboxMap.locationComponent.compassEngine?.addCompassListener(compassListener)
 
             style.addSource(GeoJsonSource(ROUTE_SOURCE_ID))
             style.addLayer(LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID).withProperties(
@@ -108,8 +131,8 @@ class MainActivity : AppCompatActivity() {
     // update location
     viewModel.locationData.observe {
       with(mapboxMap.locationComponent) {
-        cameraMode = CameraMode.TRACKING_COMPASS
-        renderMode = RenderMode.COMPASS
+        cameraMode = CameraMode.TRACKING_GPS
+        renderMode = RenderMode.GPS
         forceLocationUpdate(it)
       }
     }
@@ -122,8 +145,15 @@ class MainActivity : AppCompatActivity() {
     }
     // ui settings
     viewModel.uiSettingsData.observe {
-
       mapboxMap.locationComponent.isLocationComponentEnabled = it.locationComponentEnabled
+
+      binding.compassView.isVisible = it.compassEnabled
+
+      if (it.compassEnabled) {
+        mapboxMap.locationComponent.compassEngine?.addCompassListener(compassListener)
+      } else {
+        mapboxMap.locationComponent.compassEngine?.removeCompassListener(compassListener)
+      }
 
       with(mapboxMap.uiSettings) {
         isDisableRotateWhenScaling = it.disableRotateWhenScaling
@@ -197,7 +227,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   override fun onDestroy() {
-    // mapboxMap.locationComponent.compassEngine?.removeCompassListener(compassListener)
+
     mapView.onDestroy()
     super.onDestroy()
   }
@@ -251,3 +281,5 @@ class MainActivity : AppCompatActivity() {
     private const val ROUTE_LAYER_ID = "route-layer"
   }
 }
+
+
