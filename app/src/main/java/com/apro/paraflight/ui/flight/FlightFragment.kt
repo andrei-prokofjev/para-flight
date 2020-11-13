@@ -13,6 +13,7 @@ import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentFlightBinding
 import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.common.viewBinding
+import com.apro.paraflight.ui.mapbox.MapboxSettings
 import kotlin.math.roundToInt
 
 
@@ -57,8 +58,12 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
     }
   }
 
+  override fun onResume() {
+    super.onResume()
+    viewModel.setSettings(MapboxSettings.FlightScreenMapboxSettings)
+  }
+
   override fun onBackPressed(): Boolean {
-    //viewModel.land()
     return false
   }
 

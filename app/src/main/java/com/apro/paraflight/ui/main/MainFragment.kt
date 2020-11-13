@@ -11,6 +11,7 @@ import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentMainBinding
 import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.common.viewBinding
+import com.apro.paraflight.ui.mapbox.MapboxSettings
 
 
 class MainFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {
@@ -29,6 +30,11 @@ class MainFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {
       myLocationImageButton.onClick { viewModel.onMyLocationClick() }
       preflightImageView.onClick { viewModel.onPreflightClick(MapboxLocationEngine(requireContext())) }
     }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    viewModel.setSettings(MapboxSettings.DefaultMapboxSettings)
   }
 
   companion object {

@@ -10,7 +10,6 @@ import com.apro.core.util.metersPerSecond
 import com.apro.core.util.roundTo
 import com.apro.paraflight.R
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
-import com.apro.paraflight.ui.mapbox.MapboxSettings
 import com.apro.paraflight.util.ResourceProvider
 import com.apro.paraflight.voice.VoiceGuidanceInteractor
 import com.mapbox.geojson.Point
@@ -64,17 +63,6 @@ class FlightInteractorImpl @Inject constructor(
 
     clear()
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
-
-    mapboxInteractor.uiSettings = MapboxSettings(
-      compassEnabled = false,
-      zoom = 4.0,
-      locationComponentEnabled = false,
-      rotateGesturesEnabled = false,
-      doubleTapGesturesEnabled = false,
-      horizontalScrollGesturesEnabled = true,
-      scrollGesturesEnabled = true,
-      zoomGesturesEnabled = true
-    )
 
     var takeOffTime = 0L
     var duration = 0L

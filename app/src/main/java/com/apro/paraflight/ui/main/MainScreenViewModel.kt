@@ -6,19 +6,20 @@ import com.apro.core.navigation.AppRouter
 import com.apro.core.ui.BaseViewModel
 import com.apro.paraflight.ui.Screens
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
+import com.apro.paraflight.ui.mapbox.MapboxSettings
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainScreenViewModel @Inject constructor(
   val appRouter: AppRouter,
   private val mapboxInteractor: MapboxInteractor,
-  private val locationEngine: LocationEngine,
-  val mainInteractor: MainInteractor
+  private val locationEngine: LocationEngine
+
 ) : BaseViewModel() {
 
-  init {
-    println(">>> aaaa$")
-    mainInteractor.start()
+
+  fun setSettings(settings: MapboxSettings) {
+    mapboxInteractor.uiSettings = settings
   }
 
   fun onSettingsClick() {

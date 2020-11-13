@@ -8,6 +8,7 @@ import com.apro.core.model.FlightModel
 import com.apro.core.navigation.AppRouter
 import com.apro.core.ui.BaseViewModel
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
+import com.apro.paraflight.ui.mapbox.MapboxSettings
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,6 +40,10 @@ class FlightScreenViewModel @Inject constructor(
         _testData.postValue(it)
       }
     }
+  }
+
+  fun setSettings(settings: MapboxSettings) {
+    mapboxInteractor.uiSettings = settings
   }
 
   fun onLayerClick() {

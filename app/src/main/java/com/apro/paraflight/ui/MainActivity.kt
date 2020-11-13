@@ -22,6 +22,7 @@ import com.apro.paraflight.R
 import com.apro.paraflight.databinding.ActivityMainBinding
 import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.mapbox.MapboxScreenComponent
+import com.apro.paraflight.ui.mapbox.MapboxSettings
 import com.apro.paraflight.ui.mapbox.MapboxViewModel
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
   lateinit var mapView: MapView
 
-  lateinit var mapboxMap: MapboxMap
+  private var mapboxMap: MapboxMap? = null
 
   private val compassListener: CompassListener = object : CompassListener {
     override fun onCompassChanged(userHeading: Float) {
@@ -104,7 +105,9 @@ class MainActivity : AppCompatActivity() {
         getMapAsync {
           mapboxMap = it
 
-          with(mapboxMap.uiSettings) {
+          setSettings(MapboxSettings.DefaultMapboxSettings)
+
+          with(it.uiSettings) {
             isLogoEnabled = false
             isAttributionEnabled = false
             isCompassEnabled = false
@@ -123,59 +126,68 @@ class MainActivity : AppCompatActivity() {
       }
     }
     // set map style
-    viewModel.styleData.observe { mapboxMap.setStyle(it) }
+    viewModel.styleData.observe { mapboxMap?.setStyle(it) }
 
     // my current position
-    viewModel.myCurrentPosition.observe { mapboxMap.animateCamera(it.first, it.second) }
+    viewModel.myCurrentPosition.observe { mapboxMap?.animateCamera(it.first, it.second) }
 
     // update location
-    viewModel.locationData.observe {
-      with(mapboxMap.locationComponent) {
-        cameraMode = CameraMode.TRACKING_GPS
-        renderMode = RenderMode.GPS
-        forceLocationUpdate(it)
+    viewModel.locationData.observe { location ->
+      mapboxMap?.let {
+        with(it.locationComponent) {
+          cameraMode = CameraMode.TRACKING_GPS
+          renderMode = RenderMode.GPS
+          forceLocationUpdate(location)
+        }
       }
     }
     // draw route
     viewModel.routeData.observe {
-      mapboxMap.style?.let { style ->
+      mapboxMap?.style?.let { style ->
         val source = style.getSourceAs<GeoJsonSource>(ROUTE_SOURCE_ID)
         source?.setGeoJson(FeatureCollection.fromFeatures(arrayOf(Feature.fromGeometry(LineString.fromLngLats(it)))))
       }
     }
     // ui settings
-    viewModel.uiSettingsData.observe {
-      mapboxMap.locationComponent.isLocationComponentEnabled = it.locationComponentEnabled
-
-      binding.compassView.isVisible = it.compassEnabled
-
-      if (it.compassEnabled) {
-        mapboxMap.locationComponent.compassEngine?.addCompassListener(compassListener)
-      } else {
-        mapboxMap.locationComponent.compassEngine?.removeCompassListener(compassListener)
-      }
-
-      with(mapboxMap.uiSettings) {
-        isDisableRotateWhenScaling = it.disableRotateWhenScaling
-        isRotateGesturesEnabled = it.rotateGesturesEnabled
-        isTiltGesturesEnabled = it.tiltGesturesEnabled
-        isZoomGesturesEnabled = it.zoomGesturesEnabled
-        isScrollGesturesEnabled = it.scrollGesturesEnabled
-        isHorizontalScrollGesturesEnabled = it.horizontalScrollGesturesEnabled
-        isDoubleTapGesturesEnabled = it.doubleTapGesturesEnabled
-        isQuickZoomGesturesEnabled = it.quickZoomGesturesEnabled
-        isScaleVelocityAnimationEnabled = it.scaleVelocityAnimationEnabled
-        isRotateVelocityAnimationEnabled = it.rotateVelocityAnimationEnabled
-        isFlingVelocityAnimationEnabled = it.flingVelocityAnimationEnabled
-        isIncreaseScaleThresholdWhenRotating = it.increaseScaleThresholdWhenRotating
-      }
-
-      mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.Builder()
-        .zoom(it.zoom)
-        .build()), 500)
-    }
+    viewModel.uiSettingsData.observe { settings -> setSettings(settings) }
 
     DI.appComponent.appRouter().newRootScreen(Screens.main(MapboxLocationEngine(this)))
+  }
+
+
+  @SuppressLint("MissingPermission")
+  private fun setSettings(settings: MapboxSettings) {
+    mapboxMap?.let {
+      if (it.locationComponent.isLocationComponentActivated) {
+        it.locationComponent.isLocationComponentEnabled = settings.locationComponentEnabled
+        if (settings.compassEnabled) {
+          it.locationComponent.compassEngine?.addCompassListener(compassListener)
+        } else {
+          it.locationComponent.compassEngine?.removeCompassListener(compassListener)
+        }
+      }
+
+      binding.compassView.isVisible = settings.compassEnabled
+
+      with(it.uiSettings) {
+        isDisableRotateWhenScaling = settings.disableRotateWhenScaling
+        isRotateGesturesEnabled = settings.rotateGesturesEnabled
+        isTiltGesturesEnabled = settings.tiltGesturesEnabled
+        isZoomGesturesEnabled = settings.zoomGesturesEnabled
+        isScrollGesturesEnabled = settings.scrollGesturesEnabled
+        isHorizontalScrollGesturesEnabled = settings.horizontalScrollGesturesEnabled
+        isDoubleTapGesturesEnabled = settings.doubleTapGesturesEnabled
+        isQuickZoomGesturesEnabled = settings.quickZoomGesturesEnabled
+        isScaleVelocityAnimationEnabled = settings.scaleVelocityAnimationEnabled
+        isRotateVelocityAnimationEnabled = settings.rotateVelocityAnimationEnabled
+        isFlingVelocityAnimationEnabled = settings.flingVelocityAnimationEnabled
+        isIncreaseScaleThresholdWhenRotating = settings.increaseScaleThresholdWhenRotating
+      }
+
+      it.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.Builder()
+        .zoom(settings.zoom)
+        .build()), 500)
+    }
   }
 
   @SuppressLint("MissingPermission")
@@ -184,13 +196,13 @@ class MainActivity : AppCompatActivity() {
     Manifest.permission.ACCESS_COARSE_LOCATION
   )
   fun enableLocationComponent(loadedMapStyle: Style) {
-    val locationComponent = mapboxMap.locationComponent
+    val locationComponent = mapboxMap?.locationComponent
     val locationComponentActivationOptions = LocationComponentActivationOptions
       .builder(this, loadedMapStyle)
       .useDefaultLocationEngine(true)
       .build()
 
-    locationComponent.activateLocationComponent(locationComponentActivationOptions)
+    locationComponent?.activateLocationComponent(locationComponentActivationOptions)
   }
 
   override fun onBackPressed() {
@@ -222,7 +234,6 @@ class MainActivity : AppCompatActivity() {
   }
 
   override fun onDestroy() {
-
     mapView.onDestroy()
     super.onDestroy()
   }
