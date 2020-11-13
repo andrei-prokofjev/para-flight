@@ -23,10 +23,10 @@ class MainFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {
     super.onViewCreated(view, savedInstanceState)
 
     with(binding) {
-      settingsImageView.onClick { viewModel.onSettingsClick() }
-      logbookImageView.onClick { viewModel.onLogbookClick() }
-      layerImageView.onClick { viewModel.onLayerClick() }
-      myLocationImageView.onClick { viewModel.onMyLocationClick() }
+      settingsImageButton.onClick { viewModel.onSettingsClick() }
+      logbookImageButton.onClick { viewModel.onLogbookClick() }
+      layerImageButton.onClick { viewModel.onLayerClick() }
+      myLocationImageButton.onClick { viewModel.onMyLocationClick() }
       preflightImageView.onClick { viewModel.onPreflightClick(MapboxLocationEngine(requireContext())) }
     }
   }

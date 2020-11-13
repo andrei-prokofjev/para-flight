@@ -12,8 +12,14 @@ import javax.inject.Inject
 class MainScreenViewModel @Inject constructor(
   val appRouter: AppRouter,
   private val mapboxInteractor: MapboxInteractor,
-  private val locationEngine: LocationEngine
+  private val locationEngine: LocationEngine,
+  val mainInteractor: MainInteractor
 ) : BaseViewModel() {
+
+  init {
+    println(">>> aaaa$")
+    mainInteractor.start()
+  }
 
   fun onSettingsClick() {
     appRouter.navigateTo(Screens.settings())

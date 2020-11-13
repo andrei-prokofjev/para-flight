@@ -9,9 +9,9 @@
 
   <TextView
       android:id="@+id/nameTextView"
+      style="@style/Paraflight.Text.MeterView.Name"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:fontFamily="@font/roboto_medium"
       android:paddingStart="8dp"
       android:textAllCaps="true"
       android:textColor="@android:color/white"
@@ -23,10 +23,9 @@
 
   <TextView
       android:id="@+id/titleTextView"
+      style="@style/Paraflight.Text.MeterView.Title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:fontFamily="@font/roboto_medium"
-      android:textColor="@android:color/white"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
@@ -35,12 +34,10 @@
 
   <TextView
       android:id="@+id/amountTextView"
+      style="@style/Paraflight.Text.MeterView.Amount"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:fontFamily="@font/roboto_black"
       android:includeFontPadding="false"
-      android:textColor="@android:color/white"
-      android:textSize="46sp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -48,10 +45,10 @@
 
   <TextView
       android:id="@+id/unitTextView"
+      style="@style/Paraflight.Text.MeterView.Unit"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginEnd="4dp"
-      android:fontFamily="@font/roboto_medium"
       android:paddingStart="4dp"
       android:paddingEnd="8dp"
       android:textColor="@android:color/white"

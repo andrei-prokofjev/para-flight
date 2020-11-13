@@ -22,7 +22,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile), BackButtonListe
     super.onViewCreated(view, savedInstanceState)
 
     with(binding) {
-      backImageView.onClick { DI.appComponent.appRouter().exit() }
+      backImageButton.onClick { DI.appComponent.appRouter().exit() }
       settingsImageView.onClick { DI.appComponent.appRouter().navigateTo(Screens.settings()) }
       textView.onClick { DI.appComponent.appRouter().navigateTo(Screens.about()) }
 //      button.onClick {

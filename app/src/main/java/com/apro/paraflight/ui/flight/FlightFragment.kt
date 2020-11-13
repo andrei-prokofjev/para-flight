@@ -49,7 +49,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
         timeMeterView.amount = it.duration?.toTimeFormat() ?: "-:-"
       }
 
-      layerImageView.onClick { viewModel.onLayerClick() }
+      layerImageButton.onClick { viewModel.onLayerClick() }
 
       viewModel.testData.observe {
         stateTextView.text = it

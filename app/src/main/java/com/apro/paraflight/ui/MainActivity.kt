@@ -190,12 +190,7 @@ class MainActivity : AppCompatActivity() {
       .useDefaultLocationEngine(true)
       .build()
 
-    locationComponent.let {
-      it.activateLocationComponent(locationComponentActivationOptions)
-      it.isLocationComponentEnabled = true
-      it.cameraMode = CameraMode.TRACKING_COMPASS
-      it.renderMode = RenderMode.COMPASS
-    }
+    locationComponent.activateLocationComponent(locationComponentActivationOptions)
   }
 
   override fun onBackPressed() {

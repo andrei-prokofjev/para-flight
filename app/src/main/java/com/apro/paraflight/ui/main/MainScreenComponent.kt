@@ -60,4 +60,7 @@ abstract class MainScreenModule {
   @ViewModelKey(MainScreenViewModel::class)
   abstract fun mainScreenViewModel(viewModel: MainScreenViewModel): ViewModel
 
+  @Binds
+  abstract fun mainInteractor(interactor: MainInteractorImpl): MainInteractor
+
 }

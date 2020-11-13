@@ -77,7 +77,7 @@ abstract class MapboxScreenModule {
   @Binds
   @IntoMap
   @ViewModelKey(MapboxViewModel::class)
-  abstract fun mainScreenViewModel(viewModel: MapboxViewModel): ViewModel
+  abstract fun mapboxViewModel(viewModel: MapboxViewModel): ViewModel
 
   @Binds
   abstract fun voiceGuidanceInteractor(interactor: VoiceGuidanceInteractorImpl): VoiceGuidanceInteractor

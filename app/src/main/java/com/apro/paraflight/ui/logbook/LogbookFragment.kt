@@ -17,7 +17,7 @@ class LogbookFragment : BaseFragment(R.layout.fragment_logbook) {
     super.onViewCreated(view, savedInstanceState)
 
     with(binding) {
-      backImageView.onClick { DI.appComponent.appRouter().exit() }
+      backImageButton.onClick { DI.appComponent.appRouter().exit() }
     }
   }
 

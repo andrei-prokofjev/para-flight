@@ -8,16 +8,13 @@
     android:keepScreenOn="true">
 
 
-  <ImageView
-      android:id="@+id/backImageView"
+  <ImageButton
+      android:id="@+id/backImageButton"
+      style="@style/Paraflight.Button.Default"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/activity_horizontal_margin"
       android:layout_marginTop="40dp"
-      android:background="@drawable/bg_button"
-      android:elevation="@dimen/shadow_elevation"
-      android:foreground="@drawable/selector_button_dark"
-      android:padding="8dp"
       android:src="@drawable/ic_arrow_back"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"

@@ -19,7 +19,7 @@ class AboutFragment : BaseFragment(R.layout.fragment_about) {
 
     with(binding) {
       versionTextView.text = BuildConfig.VERSION_NAME
-      backImageView.onClick { DI.appComponent.appRouter().exit() }
+      backImageButton.onClick { DI.appComponent.appRouter().exit() }
     }
   }
 

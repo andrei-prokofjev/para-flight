@@ -1,0 +1,27 @@
+<resources>
+
+  <style name="Paraflight.Text.MeterView" parent="@android:style/TextAppearance.Medium">
+    <item name="android:textColor">@android:color/white</item>
+  </style>
+
+  <style name="Paraflight.Text.MeterView.Name" parent="Paraflight.Text.MeterView">
+    <item name="android:textSize">12sp</item>
+    <item name="android:fontFamily">@font/roboto_medium</item>
+  </style>
+
+  <style name="Paraflight.Text.MeterView.Title" parent="Paraflight.Text.MeterView">
+    <item name="android:textSize">12sp</item>
+    <item name="android:fontFamily">@font/roboto_medium</item>
+  </style>
+
+  <style name="Paraflight.Text.MeterView.Amount" parent="Paraflight.Text.MeterView">
+    <item name="android:textSize">46sp</item>
+    <item name="android:fontFamily">@font/roboto_black</item>
+  </style>
+
+  <style name="Paraflight.Text.MeterView.Unit" parent="Paraflight.Text.MeterView">
+    <item name="android:textSize">12sp</item>
+    <item name="android:fontFamily">@font/roboto_medium</item>
+  </style>
+
+</resources>

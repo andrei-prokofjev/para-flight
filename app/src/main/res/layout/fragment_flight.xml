@@ -20,7 +20,6 @@
       app:layout_constraintTop_toBottomOf="@id/speedMeterView"
       tools:text="PREPARING" />
 
-
   <com.apro.paraflight.ui.customview.MeterView
       android:id="@+id/speedMeterView"
       android:layout_width="0dp"
@@ -50,18 +49,14 @@
       app:mv_name="@string/asl"
       app:mv_unit="@string/m" />
 
-
-  <ImageView
-      android:id="@+id/layerImageView"
+  <ImageButton
+      android:id="@+id/layerImageButton"
+      style="@style/Paraflight.Button.Default"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginTop="180dp"
       android:layout_marginEnd="@dimen/activity_horizontal_margin"
-      android:background="@drawable/bg_button"
-      android:elevation="@dimen/shadow_elevation"
-      android:foreground="@drawable/selector_button_dark"
-      android:padding="8dp"
       android:src="@drawable/ic_layers"
-      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       tools:ignore="ContentDescription" />

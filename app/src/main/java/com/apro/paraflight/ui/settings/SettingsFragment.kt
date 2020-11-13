@@ -21,7 +21,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
     super.onViewCreated(view, savedInstanceState)
 
     with(binding) {
-      backImageView.onClick { viewModel.onBackClicked() }
+      backImageButton.onClick { viewModel.onBackClicked() }
 
       takeOffSpeedPicker.minValue = SettingsPreferences.MIN_TAKE_OFF_SPEED
       takeOffSpeedPicker.maxValue = SettingsPreferences.MAX_TAKE_OFF_SPEED
