@@ -12,10 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import com.apro.core.location.engine.impl.MapboxLocationEngine
 import com.apro.core.navigation.AppNavigator
+import com.apro.core.ui.show
 import com.apro.core.ui.toast
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity() {
         }
       }
 
-      binding.compassView.isVisible = settings.compassEnabled
+      binding.compassView.show(settings.compassEnabled)
 
       with(it.uiSettings) {
         isDisableRotateWhenScaling = settings.disableRotateWhenScaling
