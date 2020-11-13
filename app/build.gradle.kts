@@ -84,12 +84,13 @@ dependencies {
   implementation(Libs.appCompat)
   implementation(Libs.constraintLayout)
 
+  implementation(Libs.playServicesAuth)
+
   implementation(Libs.mapbox)
   implementation(Libs.mapboxSurf)
 
   implementation(Libs.navigationFragment)
   implementation(Libs.navigationUi)
-//  implementation(Libs.navigationFeatures)
 
   implementation(Libs.lifecycleExtensions)
   kapt(Libs.lifecycleCompiler)

@@ -3,9 +3,7 @@ package com.apro.paraflight.ui.settings
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.ui.BaseFragment
-import com.apro.core.ui.onClick
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentSettingsBinding
 import com.apro.paraflight.ui.common.viewBinding
@@ -21,6 +19,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
     super.onViewCreated(view, savedInstanceState)
 
     with(binding) {
+      googleSignButton.onClick { viewModel.googleSignIn() }
       backImageButton.onClick { viewModel.onBackClicked() }
 
       takeOffSpeedPicker.minValue = SettingsPreferences.MIN_TAKE_OFF_SPEED

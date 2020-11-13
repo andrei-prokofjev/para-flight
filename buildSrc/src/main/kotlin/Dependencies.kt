@@ -29,6 +29,9 @@ object Libs {
   const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.2"
   const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0"
 
+  // Google
+  const val playServicesAuth = "com.google.android.gms:play-services-auth:19.0.0"
+
   const val material = "com.google.android.material:material:1.1.0"
   const val fragment = "androidx.fragment:fragment-ktx:1.2.5"
 

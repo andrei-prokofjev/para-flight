@@ -57,9 +57,11 @@ class SettingsScreenViewModel @Inject constructor(
     settingsPreferences.units = value
   }
 
+  fun googleSignIn() {
+
+  }
+
   fun onBackClicked() {
     appRouter.exit()
   }
-
-
 }
