@@ -21,6 +21,7 @@
       android:launchMode="singleTask"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:theme="@style/AppTheme"
+      android:networkSecurityConfig="@xml/network_security_config"
       android:windowSoftInputMode="adjustNothing">
     <activity
         android:name=".ui.MainActivity"

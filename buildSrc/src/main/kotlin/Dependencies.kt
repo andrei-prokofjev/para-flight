@@ -83,7 +83,7 @@ object Libs {
 
 object BuildPlugins {
   const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-  const val androidGradle = "com.android.tools.build:gradle:4.1.0"
+  const val androidGradle = "com.android.tools.build:gradle:4.1.1"
   const val navigationSafeArgsGradlePlugin = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
 }
 

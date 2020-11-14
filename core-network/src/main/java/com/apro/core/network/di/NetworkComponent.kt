@@ -1,7 +1,7 @@
 package com.apro.core.network.di
 
 import com.apro.core.network.BuildConfig
-import com.apro.core.network.api.WeatherApi
+import com.apro.core.network.api.PpgApi
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @Singleton
 interface NetworkComponent {
 
-  fun api(): WeatherApi
+  fun api(): PpgApi
 
 }
 
@@ -24,11 +24,11 @@ interface NetworkComponent {
 abstract class NetworkModule {
 
   companion object {
-    private const val BASE_URL = "https://api.rawg.io/"
+    private const val BASE_URL = "http://10.0.2.2:8080"
 
     @Provides
     @Singleton
-    fun provideApi(): WeatherApi = Retrofit.Builder()
+    fun provideApi(): PpgApi = Retrofit.Builder()
       .baseUrl(BASE_URL)
       .addConverterFactory(GsonConverterFactory.create())
       .client(
@@ -41,6 +41,6 @@ abstract class NetworkModule {
           .build()
       )
       .build()
-      .create(WeatherApi::class.java)
+      .create(PpgApi::class.java)
   }
 }
