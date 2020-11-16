@@ -105,6 +105,20 @@ class MainActivity : AppCompatActivity() {
         getMapAsync {
           mapboxMap = it
 
+          it.addOnMapClickListener { l ->
+            println(">>> L$ " + l.latitude)
+
+            viewModel.myCurrentPosition
+
+            DI.appComponent.mapboxInteractor().requestLastLocation(MapboxLocationEngine(context))
+
+
+            true
+          }
+
+
+
+
           setSettings(MapboxSettings.DefaultMapboxSettings)
 
           with(it.uiSettings) {

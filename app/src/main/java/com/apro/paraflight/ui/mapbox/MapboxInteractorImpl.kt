@@ -4,6 +4,7 @@ import android.location.Location
 import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.paraflight.DI
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
@@ -42,6 +43,16 @@ class MapboxInteractorImpl @Inject constructor() : MapboxInteractor {
   }
 
   override fun requestLastLocation(locationEngine: LocationEngine) {
+    this.locationEngine = locationEngine.apply { requestLastLocation() }
+
+    GlobalScope.launch(Dispatchers.Main) {
+      locationEngine.lastLocationFlow().collect {
+        lastLocationChannel.send(it)
+      }
+    }
+  }
+
+  suspend fun requestLastLocationa(locationEngine: LocationEngine) {
     this.locationEngine = locationEngine.apply { requestLastLocation() }
 
     GlobalScope.launch {

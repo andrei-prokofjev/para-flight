@@ -66,6 +66,22 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
     locationEngine.removeLocationUpdates(locationUpdateCallback)
   }
 
+
+  @SuppressLint("MissingPermission")
+  suspend fun reql() {
+    locationEngine.getLastLocation(object : LocationEngineCallback<LocationEngineResult> {
+      override fun onSuccess(result: LocationEngineResult) {
+
+        result.lastLocation?.let {
+          scope?.launch { lastLocationChannel.send(it) }
+        }
+      }
+
+      override fun onFailure(exception: java.lang.Exception) {
+      }
+    })
+  }
+
   @SuppressLint("MissingPermission")
   override fun requestLastLocation() {
     if (isLocationPermissionsDenied()) return

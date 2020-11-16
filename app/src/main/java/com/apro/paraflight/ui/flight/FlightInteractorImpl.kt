@@ -47,7 +47,7 @@ class FlightInteractorImpl @Inject constructor(
 
   private fun flightStateFlow() = flightStateChannel.asFlow()
 
-  var flightState: FlightInteractor.FlightState = FlightInteractor.FlightState.PREPARING
+  private var flightState: FlightInteractor.FlightState = FlightInteractor.FlightState.PREPARING
     set(value) {
       field = value
       scope?.launch { flightStateChannel.send(value) }
@@ -75,6 +75,8 @@ class FlightInteractorImpl @Inject constructor(
       mapboxInteractor.locationUpdatesFlow().collect {
 
         val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, speed = it.speed)
+
+        println(">>> $ " + it.bearing)
 
         when (flightState) {
 
@@ -218,4 +220,5 @@ class FlightInteractorImpl @Inject constructor(
     scope?.coroutineContext?.cancelChildren()
     scope?.launch { cancel() }
   }
+
 }
