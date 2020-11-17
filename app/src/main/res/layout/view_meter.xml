@@ -9,7 +9,7 @@
 
   <TextView
       android:id="@+id/nameTextView"
-      style="@style/Paraflight.Text.MeterView.Name"
+      style="@style/TextAppearance.MeterView.Name"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:paddingStart="8dp"
@@ -23,7 +23,7 @@
 
   <TextView
       android:id="@+id/titleTextView"
-      style="@style/Paraflight.Text.MeterView.Title"
+      style="@style/TextAppearance.MeterView.Title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +34,7 @@
 
   <TextView
       android:id="@+id/amountTextView"
-      style="@style/Paraflight.Text.MeterView.Amount"
+      style="@style/TextAppearance.MeterView.Amount"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:includeFontPadding="false"
@@ -45,7 +45,7 @@
 
   <TextView
       android:id="@+id/unitTextView"
-      style="@style/Paraflight.Text.MeterView.Unit"
+      style="@style/TextAppearance.MeterView.Unit"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginEnd="4dp"

@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @Singleton
 interface NetworkComponent {
 
-  fun api(): PpgApi
+  fun ppgApi(): PpgApi
 
 }
 

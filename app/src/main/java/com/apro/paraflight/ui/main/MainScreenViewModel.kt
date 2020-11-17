@@ -33,7 +33,7 @@ class MainScreenViewModel @Inject constructor(
   fun onLogbookClick() {
     //appRouter.navigateTo(Screens.logbook())
     viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-      val response = DI.networkComponent.api().register(AuthRequestDto(
+      val response = DI.networkComponent.ppgApi().register(AuthRequestDto(
         name = "andrei",
         email = "andrei.prokofjev@gmail.com",
         password = "12345"

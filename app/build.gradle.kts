@@ -65,6 +65,11 @@ android {
   }
   flavorDimensions("default")
 
+  testOptions {
+    unitTests.isReturnDefaultValues = true
+  }
+
+
 }
 
 dependencies {

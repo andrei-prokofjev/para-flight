@@ -1,9 +1,9 @@
 package com.apro.paraflight
 
+import android.graphics.PointF
 import android.location.Location
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.apro.core.location.engine.api.LocationEngine.Companion.DEFAULT_MAX_WAIT_TIME
 import com.apro.paraflight.di.AppComponent
 import com.apro.paraflight.ui.flight.FlightInteractor
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -44,6 +44,10 @@ class LocationEngineInstrumentedTest {
     // Context of the app under test.
     val appContext = InstrumentationRegistry.getInstrumentation().targetContext
     assertEquals("com.apro.paraflight", appContext.packageName)
+
+    val p = PointF(10f, 30f)
+
+    println(">>>> $p")
   }
 
   @Test

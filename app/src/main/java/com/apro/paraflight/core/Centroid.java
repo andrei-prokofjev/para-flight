@@ -51,6 +51,8 @@ class Centroid {
      * @return
      */
     private static double[] getCentroid2D(final double[][] points) {
+
+
         final double[] centroid = new double[2];
         double sumX = 0;
         double sumY = 0;

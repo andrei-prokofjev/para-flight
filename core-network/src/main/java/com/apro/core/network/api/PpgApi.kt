@@ -9,4 +9,6 @@ interface PpgApi {
 
   @POST("/api/auth/register")
   suspend fun register(@Body requestDto: AuthRequestDto): AuthResponseDto
+
+
 }

@@ -1,27 +1,32 @@
 <resources>
 
-  <style name="Paraflight.Text.MeterView" parent="@android:style/TextAppearance.Medium">
+
+  <!--  MeterView-->
+  <style name="TextAppearance.MeterView" parent="android:TextAppearance">
     <item name="android:textColor">@android:color/white</item>
-  </style>
-
-  <style name="Paraflight.Text.MeterView.Name" parent="Paraflight.Text.MeterView">
     <item name="android:textSize">12sp</item>
     <item name="android:fontFamily">@font/roboto_medium</item>
   </style>
 
-  <style name="Paraflight.Text.MeterView.Title" parent="Paraflight.Text.MeterView">
-    <item name="android:textSize">12sp</item>
-    <item name="android:fontFamily">@font/roboto_medium</item>
-  </style>
+  <style name="TextAppearance.MeterView.Name" parent="TextAppearance.MeterView" />
 
-  <style name="Paraflight.Text.MeterView.Amount" parent="Paraflight.Text.MeterView">
+  <style name="TextAppearance.MeterView.Title" parent="TextAppearance.MeterView" />
+
+  <style name="TextAppearance.MeterView.Amount" parent="TextAppearance.MeterView">
     <item name="android:textSize">46sp</item>
     <item name="android:fontFamily">@font/roboto_black</item>
   </style>
 
-  <style name="Paraflight.Text.MeterView.Unit" parent="Paraflight.Text.MeterView">
-    <item name="android:textSize">12sp</item>
-    <item name="android:fontFamily">@font/roboto_medium</item>
+  <style name="TextAppearance.MeterView.Unit" parent="TextAppearance.MeterView" />
+
+  <!--  Settings-->
+  <style name="TextAppearance.Settings" parent="android:TextAppearance">
+    <item name="android:textColor">@color/black</item>
+  </style>
+
+  <style name="TextAppearance.Settings.Title" parent="TextAppearance.Settings">
+    <item name="android:textSize">18sp</item>
+    <item name="fontFamily">@font/roboto_bold</item>
   </style>
 
 </resources>

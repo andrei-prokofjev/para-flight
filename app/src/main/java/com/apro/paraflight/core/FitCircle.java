@@ -1,16 +1,16 @@
 package com.apro.paraflight.core;
 
-class FitCircle {
+ class FitCircle {
 
 
-    /**
-     * Pratt method (Newton style)
-     *
-     * @param points containing n (<i>x</i>, <i>y</i>) coordinates
-     * @return double[] containing (<i>x</i>, <i>y</i>) centre and radius
-     */
-    public static double[] prattNewton(final double[][] points) {
-        final int nPoints = points.length;
+     /**
+      * Pratt method (Newton style)
+      *
+      * @param points containing n (<i>x</i>, <i>y</i>) coordinates
+      * @return double[] containing (<i>x</i>, <i>y</i>) centre and radius
+      */
+     public static double[] prattNewton(final double[][] points) {
+         final int nPoints = points.length;
         if (nPoints < 3)
             throw new IllegalArgumentException("Too few points");
         final double[] centroid = Centroid.getCentroid(points);
