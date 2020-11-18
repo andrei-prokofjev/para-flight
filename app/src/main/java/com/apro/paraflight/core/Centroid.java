@@ -1,7 +1,6 @@
 package com.apro.paraflight.core;
 
-
-class Centroid {
+public class Centroid {
     /**
      * Find the centroid of an array in double[n][i] format, where n = number of
      * points and i = number of dimensions

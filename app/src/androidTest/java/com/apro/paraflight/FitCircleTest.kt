@@ -2,6 +2,8 @@ package com.apro.paraflight
 
 import android.graphics.PointF
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.apro.paraflight.core.Centroid
+import com.apro.paraflight.core.FitCircle
 import com.apro.paraflight.core.MyFitCircle
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -27,10 +29,11 @@ class FitCircleTest {
 
     val center = MyFitCircle.center(points)
 
-    assertEquals(center.x, 11.25f)
-    assertEquals(center.y, 36.25f)
+    val pts = Array(points.size) { i -> doubleArrayOf(points[i].x.toDouble(), points[i].y.toDouble()) }
+    val c = Centroid.getCentroid(pts)
 
-
+    assertEquals(center.x, c[0].toFloat())
+    assertEquals(center.y, c[1].toFloat())
   }
 
   @Test
@@ -41,10 +44,19 @@ class FitCircleTest {
       PointF(10f, 40f),
       PointF(20f, 45f),
     )
-    val a = MyFitCircle.taubinNewton(points)
+    val vector = MyFitCircle.taubinNewton(points)
+
+    val pts = Array(points.size) { i -> doubleArrayOf(points[i].x.toDouble(), points[i].y.toDouble()) }
+    val v = FitCircle.taubinNewton(pts)
+
+    println(">>> x " + v[0])
+    println(">>> y " + v[1])
+    println(">>> r " + v[2])
 
 
-    println(">>> a $a")
+    assertEquals(vector.x, 19.473793f)
+    assertEquals(vector.y, 32.1224f)
+    assertEquals(vector.radius, 12.511709f)
 
 
   }
