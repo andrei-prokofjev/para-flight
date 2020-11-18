@@ -1,5 +1,6 @@
 package com.apro.paraflight.ui.flight
 
+import android.graphics.PointF
 import android.location.Location
 import android.text.format.DateUtils
 import com.apro.core.model.FlightModel
@@ -9,6 +10,7 @@ import com.apro.core.util.Speed
 import com.apro.core.util.metersPerSecond
 import com.apro.core.util.roundTo
 import com.apro.paraflight.R
+import com.apro.paraflight.core.MyFitCircle
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.util.ResourceProvider
 import com.apro.paraflight.voice.VoiceGuidanceInteractor
@@ -24,7 +26,9 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.absoluteValue
+import kotlin.math.cos
 import kotlin.math.roundToInt
+import kotlin.math.sin
 
 
 class FlightInteractorImpl @Inject constructor(
@@ -39,8 +43,8 @@ class FlightInteractorImpl @Inject constructor(
 
   private val flightStateChannel = ConflatedBroadcastChannel<FlightInteractor.FlightState>()
 
-  private val testChannel = ConflatedBroadcastChannel<String>()
-  override val testFlow = testChannel.asFlow()
+  private val debugChannel = ConflatedBroadcastChannel<String>()
+  override val debugFlow = debugChannel.asFlow()
 
   private val flightDataChannel = ConflatedBroadcastChannel<FlightModel>()
   override fun flightDataFlow() = flightDataChannel.asFlow()
@@ -74,9 +78,17 @@ class FlightInteractorImpl @Inject constructor(
     scope?.launch {
       mapboxInteractor.locationUpdatesFlow().collect {
 
-        val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, speed = it.speed)
+        val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, speed = it.speed, bearing = it.bearing)
 
-        println(">>> $ " + it.bearing)
+        if (flightData.size >= 3) {
+          val a = flightData.takeLast(20)
+          val array = a.map {
+            val alpha = (it.bearing / 180f * Math.PI).toFloat()
+            PointF(sin(alpha) * it.speed, cos(alpha) * it.speed)
+          }.toTypedArray()
+          val vector = MyFitCircle.taubinNewton(array)
+          println(">>> vector: $vector")
+        }
 
         when (flightState) {
 
@@ -216,6 +228,7 @@ class FlightInteractorImpl @Inject constructor(
   }
 
   override fun clear() {
+    flightData.clear()
     timeNotificationTicker?.cancel()
     scope?.coroutineContext?.cancelChildren()
     scope?.launch { cancel() }

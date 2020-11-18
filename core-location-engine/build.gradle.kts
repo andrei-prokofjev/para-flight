@@ -29,6 +29,7 @@ android {
 
 dependencies {
   implementation(project(":core-model"))
+  implementation(project(":core-util"))
 
   implementation(Libs.kotlin)
   implementation(Libs.ktx)

@@ -36,7 +36,7 @@ class FlightScreenViewModel @Inject constructor(
     }
 
     viewModelScope.launch {
-      flightInteractor.testFlow.collect {
+      flightInteractor.debugFlow.collect {
         _testData.postValue(it)
       }
     }

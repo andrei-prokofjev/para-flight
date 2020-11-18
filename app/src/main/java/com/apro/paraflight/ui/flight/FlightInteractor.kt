@@ -13,7 +13,7 @@ interface FlightInteractor {
   }
 
   fun clear()
-  val testFlow: Flow<String>
+  val debugFlow: Flow<String>
 
   fun flightDataFlow(): Flow<FlightModel>
 }

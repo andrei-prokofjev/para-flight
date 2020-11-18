@@ -4,15 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import com.apro.core.location.engine.api.LocationEngine
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.io.File
+import java.io.IOException
+import java.io.InputStreamReader
 
-class FileLocationEngine(private val context: Context) : LocationEngine {
+class FileLocationEngine(val context: Context, private val file: File) : LocationEngine {
 
   private val updateLocationChannel = ConflatedBroadcastChannel<Location>()
   override fun updateLocationFlow() = updateLocationChannel.asFlow()
@@ -31,10 +31,24 @@ class FileLocationEngine(private val context: Context) : LocationEngine {
   @SuppressLint("MissingPermission")
   override fun requestLocationUpdates() {
     Timber.d(">>> requestLocationUpdates")
+
+    val data = readCsv(file.path)
+    scope?.launch {
+      data.forEach {
+        updateLocationChannel.send(it)
+        delay(100)
+      }
+
+      removeLocationUpdates()
+    }
   }
 
   override fun removeLocationUpdates() {
+
+
     Timber.d(">>> removeLocationUpdates")
+
+    clear()
   }
 
   override fun requestLastLocation() {
@@ -42,7 +56,31 @@ class FileLocationEngine(private val context: Context) : LocationEngine {
   }
 
   override fun clear() {
+    scope?.coroutineContext?.cancelChildren()
     scope?.launch { cancel() }
+  }
+
+  private fun readCsv(path: String): List<Location> {
+    val assets = context.assets
+    val flight = mutableListOf<Location>()
+
+    try {
+      val csvStream = assets.open(path)
+      val csvStreamReader = InputStreamReader(csvStream)
+      val lines = csvStreamReader.readLines()
+      lines.subList(1, lines.size).forEach {
+        val data = it.split(",")
+        val location = Location("mock")
+        location.speed = data[0].toFloat()
+        location.bearing = data[1].toFloat()
+        flight.add(location)
+      }
+    } catch (e: IOException) {
+      println(">>> !!! $e")
+    }
+
+    val list = emptyList<Location>()
+    return flight
   }
 
 }
