@@ -14,6 +14,6 @@ interface MapboxInteractor {
 
   fun changeMapStyle()
 
-  fun uiSettingsFlow(): Flow<MapboxSettings>
-  var uiSettings: MapboxSettings
+  fun mapboxSettingsFlow(): Flow<MapboxSettings>
+  var mapboxSettings: MapboxSettings
 }

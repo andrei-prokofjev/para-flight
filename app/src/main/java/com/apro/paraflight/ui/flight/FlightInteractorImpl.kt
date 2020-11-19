@@ -87,7 +87,9 @@ class FlightInteractorImpl @Inject constructor(
             PointF(sin(alpha) * it.speed, cos(alpha) * it.speed)
           }.toTypedArray()
           val vector = MyFitCircle.taubinNewton(array)
-          println(">>> vector: $vector")
+          // println(">>>  ${it.speed} vector: $vector")
+
+          println(">>> " + (it.speed - vector.radius))
         }
 
         when (flightState) {

@@ -23,13 +23,13 @@ class MapboxInteractorImpl @Inject constructor() : MapboxInteractor {
   private val lastLocationChannel = ConflatedBroadcastChannel<Location>()
   override fun lastLocationFlow() = lastLocationChannel.asFlow()
 
-  private val uiSettingsChannel = ConflatedBroadcastChannel<MapboxSettings>()
-  override fun uiSettingsFlow() = uiSettingsChannel.asFlow()
+  private val mapboxSettingsChannel = ConflatedBroadcastChannel<MapboxSettings>()
+  override fun mapboxSettingsFlow() = mapboxSettingsChannel.asFlow()
 
-  override var uiSettings: MapboxSettings
-    get() = uiSettingsChannel.value
+  override var mapboxSettings: MapboxSettings
+    get() = mapboxSettingsChannel.value
     set(value) {
-      GlobalScope.launch { uiSettingsChannel.send(value) }
+      GlobalScope.launch { mapboxSettingsChannel.send(value) }
     }
 
   override fun requestLocationUpdates(locationEngine: LocationEngine) {

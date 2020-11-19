@@ -52,15 +52,23 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
 
       layerImageButton.onClick { viewModel.onLayerClick() }
 
+      cameraModeMeterView.onClick { viewModel.changeCameraMode() }
+      renderModeMeterView.onClick { viewModel.changeRenderMode() }
+
       viewModel.testData.observe {
         stateTextView.text = it
+      }
+
+      viewModel.mapboxSettingsData.observe {
+        cameraModeMeterView.info = it.cameraMode.toString()
+        renderModeMeterView.info = it.renderMode.toString()
       }
     }
   }
 
   override fun onResume() {
     super.onResume()
-    viewModel.setSettings(MapboxSettings.FlightScreenMapboxSettings)
+    viewModel.updateSettings(MapboxSettings.FlightScreenMapboxSettings)
   }
 
   override fun onBackPressed(): Boolean {
@@ -75,8 +83,8 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
 
   override fun getViewToApplyNavigationBarMargin(root: View): Array<View> = arrayOf(
     binding.distMeterView,
-    binding.mv1,
-    binding.mv2
+    binding.cameraModeMeterView,
+    binding.renderModeMeterView
   )
 
   companion object {

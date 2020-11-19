@@ -21,9 +21,8 @@ object MyFitCircle {
     }
   }
 
-  fun taubinNewton(points: Array<PointF>): WindVector? {
-    if (points.size < 3) return null
-    //require(points.size >= 3) { "Too few points" }
+  fun taubinNewton(points: Array<PointF>): WindVector {
+    require(points.size >= 3) { "Too few points" }
     val centroid = center(points)
     var mxx = 0f
     var myy = 0f

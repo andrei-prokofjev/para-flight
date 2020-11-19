@@ -33,8 +33,6 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.CompassListener
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
-import com.mapbox.mapboxsdk.location.modes.CameraMode
-import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions
@@ -106,20 +104,14 @@ class MainActivity : AppCompatActivity() {
           mapboxMap = it
 
           it.addOnMapClickListener { l ->
-            println(">>> L$ " + l.latitude)
 
             viewModel.myCurrentPosition
 
             DI.appComponent.mapboxInteractor().requestLastLocation(MapboxLocationEngine(context))
-
-
             true
           }
 
-
-
-
-          setSettings(MapboxSettings.DefaultMapboxSettings)
+          updateSettings(MapboxSettings.DefaultMapboxSettings)
 
           with(it.uiSettings) {
             isLogoEnabled = false
@@ -147,13 +139,7 @@ class MainActivity : AppCompatActivity() {
 
     // update location
     viewModel.locationData.observe { location ->
-      mapboxMap?.let {
-        with(it.locationComponent) {
-          cameraMode = CameraMode.TRACKING_GPS
-          renderMode = RenderMode.GPS
-          forceLocationUpdate(location)
-        }
-      }
+      mapboxMap?.locationComponent?.forceLocationUpdate((location))
     }
     // draw route
     viewModel.routeData.observe {
@@ -163,21 +149,24 @@ class MainActivity : AppCompatActivity() {
       }
     }
     // ui settings
-    viewModel.uiSettingsData.observe { settings -> setSettings(settings) }
+    viewModel.mapboxSettingsData.observe { settings -> updateSettings(settings) }
 
     DI.appComponent.appRouter().newRootScreen(Screens.main(MapboxLocationEngine(this)))
   }
 
-
   @SuppressLint("MissingPermission")
-  private fun setSettings(settings: MapboxSettings) {
+  private fun updateSettings(settings: MapboxSettings) {
     mapboxMap?.let {
-      if (it.locationComponent.isLocationComponentActivated) {
-        it.locationComponent.isLocationComponentEnabled = settings.locationComponentEnabled
-        if (settings.compassEnabled) {
-          it.locationComponent.compassEngine?.addCompassListener(compassListener)
-        } else {
-          it.locationComponent.compassEngine?.removeCompassListener(compassListener)
+      with(it.locationComponent) {
+        if (isLocationComponentActivated) {
+          isLocationComponentEnabled = settings.locationComponentEnabled
+          if (settings.compassEnabled) {
+            compassEngine?.addCompassListener(compassListener)
+          } else {
+            compassEngine?.removeCompassListener(compassListener)
+          }
+          renderMode = settings.renderMode.mode
+          cameraMode = settings.cameraMode.mode
         }
       }
 
@@ -203,6 +192,7 @@ class MainActivity : AppCompatActivity() {
         .build()), 500)
     }
   }
+
 
   @SuppressLint("MissingPermission")
   @NeedsPermission(

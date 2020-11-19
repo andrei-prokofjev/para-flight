@@ -7,8 +7,10 @@ import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.model.FlightModel
 import com.apro.core.navigation.AppRouter
 import com.apro.core.ui.BaseViewModel
+import com.apro.paraflight.ui.mapbox.CameraMode
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.ui.mapbox.MapboxSettings
+import com.apro.paraflight.ui.mapbox.RenderMode
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,6 +28,10 @@ class FlightScreenViewModel @Inject constructor(
   private val _testData = MutableLiveData<String>()
   val testData: LiveData<String> = _testData
 
+
+  private val _mapboxSettingsData = MutableLiveData<MapboxSettings>()
+  val mapboxSettingsData: LiveData<MapboxSettings> = _mapboxSettingsData
+
   init {
     mapboxInteractor.requestLocationUpdates(locationEngine)
 
@@ -40,10 +46,16 @@ class FlightScreenViewModel @Inject constructor(
         _testData.postValue(it)
       }
     }
+
+    viewModelScope.launch {
+      mapboxInteractor.mapboxSettingsFlow().collect {
+        _mapboxSettingsData.postValue(it)
+      }
+    }
   }
 
-  fun setSettings(settings: MapboxSettings) {
-    mapboxInteractor.uiSettings = settings
+  fun updateSettings(settings: MapboxSettings) {
+    mapboxInteractor.mapboxSettings = settings
   }
 
   fun onLayerClick() {
@@ -51,8 +63,21 @@ class FlightScreenViewModel @Inject constructor(
   }
 
   override fun onCleared() {
-
     flightInteractor.clear()
     mapboxInteractor.removeLocationUpdate()
+  }
+
+  fun changeCameraMode() {
+    val next = (mapboxInteractor.mapboxSettings.cameraMode.ordinal + 1) % CameraMode.values().size
+    updateSettings(mapboxInteractor.mapboxSettings.copy(
+      cameraMode = CameraMode.values()[next]
+    ))
+  }
+
+  fun changeRenderMode() {
+    val next = (mapboxInteractor.mapboxSettings.renderMode.ordinal + 1) % RenderMode.values().size
+    updateSettings(mapboxInteractor.mapboxSettings.copy(
+      renderMode = RenderMode.values()[next]
+    ))
   }
 }

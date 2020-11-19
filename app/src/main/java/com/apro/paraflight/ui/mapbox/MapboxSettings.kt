@@ -1,6 +1,9 @@
 package com.apro.paraflight.ui.mapbox
 
-sealed class MapboxSettings(
+
+data class MapboxSettings(
+  val cameraMode: CameraMode = CameraMode.TRACKING_GPS,
+  val renderMode: RenderMode = RenderMode.GPS,
   val compassEnabled: Boolean = false,
   val zoom: Double = 12.0,
   val locationComponentEnabled: Boolean = false,
@@ -17,17 +20,20 @@ sealed class MapboxSettings(
   val flingVelocityAnimationEnabled: Boolean = true,
   val increaseScaleThresholdWhenRotating: Boolean = false,
 ) {
-  object DefaultMapboxSettings : MapboxSettings()
 
-  object FlightScreenMapboxSettings : MapboxSettings(
-    compassEnabled = true,
-    zoom = 16.0,
-    locationComponentEnabled = true,
-    rotateGesturesEnabled = false,
-    doubleTapGesturesEnabled = false,
-    horizontalScrollGesturesEnabled = true,
-    scrollGesturesEnabled = true,
-    zoomGesturesEnabled = true
-  )
+  companion object {
+    val DefaultMapboxSettings = MapboxSettings()
+
+    val FlightScreenMapboxSettings = MapboxSettings().copy(
+      compassEnabled = true,
+      zoom = 16.0,
+      locationComponentEnabled = true,
+      rotateGesturesEnabled = false,
+      doubleTapGesturesEnabled = false,
+      horizontalScrollGesturesEnabled = true,
+      scrollGesturesEnabled = true,
+      zoomGesturesEnabled = true
+    )
+  }
 }
 

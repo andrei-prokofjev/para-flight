@@ -33,8 +33,8 @@ class MapboxViewModel @Inject constructor(
   private val _myCurrentPosition = MutableLiveData<Pair<CameraUpdate, Int>>()
   val myCurrentPosition: LiveData<Pair<CameraUpdate, Int>> = _myCurrentPosition
 
-  private val _uiSettingsData = MutableLiveData<MapboxSettings>()
-  val uiSettingsData: LiveData<MapboxSettings> = _uiSettingsData
+  private val _mapboxSettingsData = MutableLiveData<MapboxSettings>()
+  val mapboxSettingsData: LiveData<MapboxSettings> = _mapboxSettingsData
 
 
   init {
@@ -59,18 +59,8 @@ class MapboxViewModel @Inject constructor(
     }
 
     viewModelScope.launch {
-      mapboxInteractor.uiSettingsFlow().collect {
-        _uiSettingsData.postValue(it)
-
-//        val a = Utils.getMACAddress("wlan0");
-//        val b = Utils.getMACAddress("eth0");
-//        val c = Utils.getIPAddress(true); // IPv4
-//        val d = Utils.getIPAddress(false); // IPv6
-//
-//        println(">>> $a")
-//        println(">>> $b")
-//        println(">>> $c")
-//        println(">>> $d")
+      mapboxInteractor.mapboxSettingsFlow().collect {
+        _mapboxSettingsData.postValue(it)
       }
     }
 

@@ -20,7 +20,7 @@ class MainScreenViewModel @Inject constructor(
 
 
   fun setSettings(settings: MapboxSettings) {
-    mapboxInteractor.uiSettings = settings
+    mapboxInteractor.mapboxSettings = settings
   }
 
   fun onSettingsClick() {

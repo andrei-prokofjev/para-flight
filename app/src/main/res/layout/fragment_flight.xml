@@ -72,21 +72,23 @@
       app:mv_name="DST" />
 
   <com.apro.paraflight.ui.customview.MeterView
-      android:id="@+id/mv1"
+      android:id="@+id/cameraModeMeterView"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintWidth_percent=".33" />
+      app:layout_constraintWidth_percent=".33"
+      app:mv_title="camera" />
 
   <com.apro.paraflight.ui.customview.MeterView
-      android:id="@+id/mv2"
+      android:id="@+id/renderModeMeterView"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintWidth_percent=".33" />
+      app:layout_constraintWidth_percent=".33"
+      app:mv_title="render" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

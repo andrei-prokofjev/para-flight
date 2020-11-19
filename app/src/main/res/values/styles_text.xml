@@ -12,6 +12,11 @@
 
   <style name="TextAppearance.MeterView.Title" parent="TextAppearance.MeterView" />
 
+  <style name="TextAppearance.MeterView.Info" parent="TextAppearance.MeterView">
+    <item name="android:textSize">14sp</item>
+    <item name="android:fontFamily">@font/roboto_black</item>
+  </style>
+
   <style name="TextAppearance.MeterView.Amount" parent="TextAppearance.MeterView">
     <item name="android:textSize">46sp</item>
     <item name="android:fontFamily">@font/roboto_black</item>

@@ -31,18 +31,24 @@ class MeterView constructor(context: Context, attr: AttributeSet?) :
       field = value
     }
 
-   var unit: String? = null
-     set(value) {
-       binding.unitTextView.text = value
-       field = value
-     }
+  var info: String? = null
+    set(value) {
+      binding.infoTextView.text = value
+      field = value
+    }
+
+  var unit: String? = null
+    set(value) {
+      binding.unitTextView.text = value
+      field = value
+    }
 
   init {
     val a = context.obtainStyledAttributes(attr, R.styleable.MeterView)
     name = a.getString(R.styleable.MeterView_mv_name)
     title = a.getString(R.styleable.MeterView_mv_title)
     unit = a.getString(R.styleable.MeterView_mv_unit)
+    info = a.getString(R.styleable.MeterView_mv_info)
     a.recycle()
-
   }
 }
