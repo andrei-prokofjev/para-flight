@@ -39,6 +39,8 @@ class MainScreenViewModel @Inject constructor(
 //      println(">>> resp: $response")
 //    }
 
+
+    mapboxInteractor.mapboxSettings = MapboxSettings.ReplayFlightMapboxSettings
     appRouter.navigateTo(Screens.flight(locationEngine))
 
   }

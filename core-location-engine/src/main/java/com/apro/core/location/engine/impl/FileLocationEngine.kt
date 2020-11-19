@@ -35,8 +35,9 @@ class FileLocationEngine(val context: Context, private val file: File) : Locatio
     val data = readCsv(file.path)
     scope?.launch {
       data.forEach {
+
         updateLocationChannel.send(it)
-        delay(100)
+        delay(500)
       }
 
       removeLocationUpdates()
@@ -71,8 +72,12 @@ class FileLocationEngine(val context: Context, private val file: File) : Locatio
       lines.subList(1, lines.size).forEach {
         val data = it.split(",")
         val location = Location("mock")
-        location.speed = data[0].toFloat()
-        location.bearing = data[1].toFloat()
+        location.latitude = data[0].toDouble()
+        location.longitude = data[1].toDouble()
+        location.time = data[2].toLong()
+        location.altitude = data[3].toDouble()
+        location.speed = data[4].toFloat()
+        location.bearing = data[5].toFloat()
         flight.add(location)
       }
     } catch (e: IOException) {

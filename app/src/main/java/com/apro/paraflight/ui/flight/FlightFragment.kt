@@ -68,7 +68,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
 
   override fun onResume() {
     super.onResume()
-    viewModel.updateSettings(MapboxSettings.FlightScreenMapboxSettings)
+    viewModel.updateSettings(MapboxSettings.FlightMapboxSettings)
   }
 
   override fun onBackPressed(): Boolean {

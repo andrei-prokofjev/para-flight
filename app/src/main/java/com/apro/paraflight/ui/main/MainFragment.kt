@@ -28,7 +28,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main), BackButtonListener {
     with(binding) {
       settingsImageButton.onClick { viewModel.onSettingsClick() }
       logbookImageButton.onClick {
-        val file = File("windCalc_Test_Data_AS10_WS2_WD30_.csv")
+        val file = File("vormsi20200624.csv")
         viewModel.onLogbookClick(FileLocationEngine(requireContext(), file))
       }
       layerImageButton.onClick { viewModel.onLayerClick() }

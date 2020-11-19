@@ -24,7 +24,7 @@ data class MapboxSettings(
   companion object {
     val DefaultMapboxSettings = MapboxSettings()
 
-    val FlightScreenMapboxSettings = MapboxSettings().copy(
+    val FlightMapboxSettings = MapboxSettings().copy(
       compassEnabled = true,
       zoom = 16.0,
       locationComponentEnabled = true,
@@ -34,6 +34,14 @@ data class MapboxSettings(
       scrollGesturesEnabled = true,
       zoomGesturesEnabled = true
     )
+
+    val ReplayFlightMapboxSettings = MapboxSettings().copy(
+      cameraMode = CameraMode.TRACKING,
+      renderMode = RenderMode.NORMAL,
+      compassEnabled = true,
+
+
+      )
   }
 }
 

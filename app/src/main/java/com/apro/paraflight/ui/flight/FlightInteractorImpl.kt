@@ -77,6 +77,7 @@ class FlightInteractorImpl @Inject constructor(
 
     scope?.launch {
       mapboxInteractor.locationUpdatesFlow().collect {
+        println(">>> loc: $it")
 
         val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, speed = it.speed, bearing = it.bearing)
 
@@ -89,7 +90,7 @@ class FlightInteractorImpl @Inject constructor(
           val vector = FitCircle.taubinNewton(array)
           // println(">>>  ${it.speed} vector: $vector")
 
-          println(">>> " + (it.speed - vector.radius))
+          //  println(">>> " + (it.speed - vector.radius))
         }
 
         when (flightState) {
