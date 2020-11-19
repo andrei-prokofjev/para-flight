@@ -2,7 +2,7 @@ package com.apro.paraflight.ui.mapbox
 
 
 data class MapboxSettings(
-  val cameraMode: CameraMode = CameraMode.TRACKING_GPS,
+  val cameraMode: CameraMode = CameraMode.TRACK_GPS,
   val renderMode: RenderMode = RenderMode.GPS,
   val compassEnabled: Boolean = false,
   val zoom: Double = 12.0,

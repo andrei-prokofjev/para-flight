@@ -75,7 +75,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCompassAccuracyChange(compassStatus: Int) {
-      println(">>> status: $compassStatus")
     }
 
   }
@@ -149,7 +148,7 @@ class MainActivity : AppCompatActivity() {
       }
     }
     // ui settings
-    viewModel.mapboxSettingsData.observe { settings -> updateSettings(settings) }
+    viewModel.mapboxSettingsData.observe { updateSettings(it) }
 
     DI.appComponent.appRouter().newRootScreen(Screens.main(MapboxLocationEngine(this)))
   }
