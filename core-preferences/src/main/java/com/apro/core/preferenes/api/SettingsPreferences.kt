@@ -18,6 +18,8 @@ interface SettingsPreferences {
 
   var units: Units
 
+  var windDetector: Boolean
+
   companion object {
     const val MIN_TAKE_OFF_SPEED = 5
     const val MAX_TAKE_OFF_SPEED = 25

@@ -9,7 +9,6 @@
   <TextView
       android:id="@+id/stateTextView"
       android:layout_width="wrap_content"
-
       android:layout_height="wrap_content"
       android:layout_marginStart="16dp"
       android:layout_marginTop="20dp"
@@ -90,6 +89,22 @@
       app:layout_constraintWidth_percent=".33"
       app:mv_title="render" />
 
+  <TextView
+      android:id="@+id/windSpeed"
+      android:layout_width="100dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="90dp"
+      android:background="#AA000000"
+      android:fontFamily="@font/roboto_bold"
+      android:gravity="center"
+      android:padding="4dp"
+      android:textColor="#ffffff00"
+      android:textSize="24sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="10 m/s" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

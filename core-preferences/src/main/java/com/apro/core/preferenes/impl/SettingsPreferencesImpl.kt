@@ -35,6 +35,12 @@ class SettingsPreferencesImpl @Inject constructor(
     }
 
   override var voiceGuidance: Boolean
+    get() = prefs.getBoolean(WIND_DETECTOR, DEFAULT_WIND_DETECTOR)
+    set(value) {
+      prefs.edit().putBoolean(WIND_DETECTOR, value).apply()
+    }
+
+  override var windDetector: Boolean
     get() = prefs.getBoolean(VOICE_GUIDANCE, DEFAULT_VOICE_GUIDANCE)
     set(value) {
       prefs.edit().putBoolean(VOICE_GUIDANCE, value).apply()
@@ -63,6 +69,9 @@ class SettingsPreferencesImpl @Inject constructor(
 
     const val DEFAULT_VOICE_GUIDANCE = true
     const val VOICE_GUIDANCE = "voice_guidance"
+
+    const val DEFAULT_WIND_DETECTOR = true
+    const val WIND_DETECTOR = "wind_detector"
 
     const val DEFAULT_TIME_NOTIFICATION_INTERVAL = 1 * 60_0000L
     const val TIME_NOTIFICATION_INTERVAL = "time_notification_interval"

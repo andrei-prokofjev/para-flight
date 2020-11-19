@@ -45,6 +45,9 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
       voiceGuidanceSwitch.setOnCheckedChangeListener { _, on -> viewModel.saveVoiceGuidance(on) }
       viewModel.voiceGuidanceData.observe { voiceGuidanceSwitch.isChecked = it }
 
+      windDetectorSwitch.setOnCheckedChangeListener { _, on -> viewModel.saveWindDetector(on) }
+      viewModel.windDetectorData.observe { windDetectorSwitch.isChecked = it }
+
       viewModel.unitsData.observe {
         when (it) {
           SettingsPreferences.Units.METRIC -> unitsRadioGroup.check(R.id.metricRadioButton)
@@ -57,6 +60,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
           R.id.imperialRadioButton -> viewModel.saveUnits(SettingsPreferences.Units.IMPERIAL)
         }
       }
+
 
     }
   }

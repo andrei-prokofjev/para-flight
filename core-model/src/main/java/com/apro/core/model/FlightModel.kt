@@ -5,7 +5,10 @@ data class FlightModel(
   val lat: Double,
   val alt: Double,
   val bearing: Float,
-  val speed: Float,
+  val groundSpeed: Float,
   val dist: Double? = null,
-  val duration: Long? = null
+  val duration: Long? = null,
+  val windVector: Pair<Float, Float>? = null,
+  val windSpeed: Float? = null,
+  val airSpeed: Float? = null
 )

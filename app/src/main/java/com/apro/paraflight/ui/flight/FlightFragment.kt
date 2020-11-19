@@ -31,7 +31,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
 
         when (DI.preferencesApi.settings().units) {
           SettingsPreferences.Units.METRIC -> {
-            speedMeterView.amount = it.speed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount.roundToInt().toString()
+            speedMeterView.amount = it.groundSpeed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount.roundToInt().toString()
             speedMeterView.unit = getString(R.string.km_h)
             distMeterView.amount = it.dist?.meters?.convertTo(Distance.Kilometer)?.amount?.roundTo(1)?.toString() ?: "-.-"
             distMeterView.unit = getString(R.string.km)
@@ -39,7 +39,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
             altitudeMeterView.amount = it.alt.roundToInt().toString()
           }
           SettingsPreferences.Units.IMPERIAL -> {
-            speedMeterView.amount = it.speed.metersPerSecond.convertTo(Speed.MilePerHour).amount.roundToInt().toString()
+            speedMeterView.amount = it.groundSpeed.metersPerSecond.convertTo(Speed.MilePerHour).amount.roundToInt().toString()
             speedMeterView.unit = getString(R.string.mph)
             distMeterView.amount = it.dist?.meters?.convertTo(Distance.Mile)?.amount?.roundTo(1)?.toString() ?: "-.-"
             distMeterView.unit = getString(R.string.ml)
@@ -48,6 +48,8 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
           }
         }
         timeMeterView.amount = it.duration?.toTimeFormat() ?: "-:-"
+
+        windSpeed.text = it.windSpeed?.roundTo(1)?.toString() ?: "-"
       }
 
       layerImageButton.onClick { viewModel.onLayerClick() }

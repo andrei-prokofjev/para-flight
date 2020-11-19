@@ -11,6 +11,7 @@ import com.apro.core.util.metersPerSecond
 import com.apro.core.util.roundTo
 import com.apro.paraflight.R
 import com.apro.paraflight.core.FitCircle
+import com.apro.paraflight.core.WindVector
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.util.ResourceProvider
 import com.apro.paraflight.voice.VoiceGuidanceInteractor
@@ -77,21 +78,10 @@ class FlightInteractorImpl @Inject constructor(
 
     scope?.launch {
       mapboxInteractor.locationUpdatesFlow().collect {
-        println(">>> loc: $it")
 
-        val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, speed = it.speed, bearing = it.bearing)
+        val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, groundSpeed = it.speed, bearing = it.bearing)
 
-        if (flightData.size >= 3) {
-          val a = flightData.takeLast(20)
-          val array = a.map {
-            val alpha = (it.bearing / 180f * Math.PI).toFloat()
-            PointF(sin(alpha) * it.speed, cos(alpha) * it.speed)
-          }.toTypedArray()
-          val vector = FitCircle.taubinNewton(array)
-          // println(">>>  ${it.speed} vector: $vector")
 
-          //  println(">>> " + (it.speed - vector.radius))
-        }
 
         when (flightState) {
 
@@ -119,7 +109,22 @@ class FlightInteractorImpl @Inject constructor(
             totalDistance += getDistance(it)
             duration = System.currentTimeMillis() - takeOffTime
 
-            val fd = flightModel.copy(dist = totalDistance, duration = duration)
+            val wv = if (settingsPreferences.windDetector && flightData.size >= 3) {
+              val a = flightData.takeLast(20)
+              val array = a.map {
+                val alpha = (it.bearing / 180f * Math.PI).toFloat()
+                PointF(sin(alpha) * it.groundSpeed, cos(alpha) * it.groundSpeed)
+              }.toTypedArray()
+              FitCircle.taubinNewton(array)
+            } else WindVector()
+
+            val fd = flightModel.copy(
+              dist = totalDistance,
+              duration = duration,
+              windVector = wv.x to wv.y,
+              windSpeed = wv.windSpeed(),
+              airSpeed = wv.radius
+            )
             flightDataChannel.send(fd)
             flightData.add(fd)
 
@@ -196,7 +201,7 @@ class FlightInteractorImpl @Inject constructor(
   // todo: redesign
   private fun showFlightSummary(totalDistance: Double, duration: Long) {
     var sum = 0f
-    flightData.forEach { sum += it.speed }
+    flightData.forEach { sum += it.groundSpeed }
     val averageSpeed = sum / flightData.size
 
     appRouter.openModalBottomSheet(FlightSummaryBottomSheetDialogFragment.create(

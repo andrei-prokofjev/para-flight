@@ -26,6 +26,9 @@ class SettingsScreenViewModel @Inject constructor(
   private val _voiceGuidanceData = MutableLiveData(settingsPreferences.voiceGuidance)
   val voiceGuidanceData: LiveData<Boolean> = _voiceGuidanceData
 
+  private val _windDetectorData = MutableLiveData(settingsPreferences.windDetector)
+  val windDetectorData: LiveData<Boolean> = _windDetectorData
+
   private val _unitsData = MutableLiveData(settingsPreferences.units)
   val unitsData: LiveData<SettingsPreferences.Units> = _unitsData
 
@@ -34,6 +37,7 @@ class SettingsScreenViewModel @Inject constructor(
     _takeOffAltDiffData.postValue(settingsPreferences.takeOffAltDiff)
     _minFlightSpeedData.postValue(settingsPreferences.minFlightSpeed)
     _voiceGuidanceData.postValue(settingsPreferences.voiceGuidance)
+    _windDetectorData.postValue(settingsPreferences.windDetector)
     _unitsData.postValue(settingsPreferences.units)
   }
 
@@ -63,5 +67,9 @@ class SettingsScreenViewModel @Inject constructor(
 
   fun onBackClicked() {
     appRouter.exit()
+  }
+
+  fun saveWindDetector(on: Boolean) {
+    settingsPreferences.windDetector = on
   }
 }

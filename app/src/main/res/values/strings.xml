@@ -30,6 +30,7 @@
   <string name="min_speed">Min Speed</string>
   <string name="metric">Metric</string>
   <string name="imperial">Imperial</string>
+  <string name="wind_detector">Wind Detector</string>
 
 
 </resources>

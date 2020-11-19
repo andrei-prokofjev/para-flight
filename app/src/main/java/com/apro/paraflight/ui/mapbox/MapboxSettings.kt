@@ -19,6 +19,7 @@ data class MapboxSettings(
   val rotateVelocityAnimationEnabled: Boolean = true,
   val flingVelocityAnimationEnabled: Boolean = true,
   val increaseScaleThresholdWhenRotating: Boolean = false,
+  val windDetector: Boolean = false
 ) {
 
   companion object {
