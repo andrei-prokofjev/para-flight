@@ -37,7 +37,7 @@ class FileLocationEngine(val context: Context, private val file: File) : Locatio
       data.forEach {
 
         updateLocationChannel.send(it)
-        delay(500)
+        delay(100)
       }
 
       removeLocationUpdates()
