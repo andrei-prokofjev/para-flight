@@ -33,6 +33,7 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.CompassListener
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
+import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions
@@ -139,6 +140,14 @@ class MainActivity : AppCompatActivity() {
     // update location
     viewModel.locationData.observe { location ->
       mapboxMap?.locationComponent?.forceLocationUpdate((location))
+
+      mapboxMap?.let {
+        with(it.locationComponent) {
+          cameraMode = CameraMode.TRACKING_GPS
+          // renderMode = RenderMode.GPS
+          forceLocationUpdate(location)
+        }
+      }
     }
     // draw route
     viewModel.routeData.observe {
@@ -164,6 +173,7 @@ class MainActivity : AppCompatActivity() {
           } else {
             compassEngine?.removeCompassListener(compassListener)
           }
+          println(">>> set camera $ + " + settings.cameraMode)
           renderMode = settings.renderMode.mode
           cameraMode = settings.cameraMode.mode
         }

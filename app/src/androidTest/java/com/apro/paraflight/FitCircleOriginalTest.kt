@@ -4,7 +4,7 @@ import android.graphics.PointF
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.apro.paraflight.core.Centroid
 import com.apro.paraflight.core.FitCircle
-import com.apro.paraflight.core.MyFitCircle
+import com.apro.paraflight.core.FitCircleOriginal
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,7 +15,7 @@ import org.junit.runner.RunWith
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class FitCircleTest {
+class FitCircleOriginalTest {
 
 
   @Test
@@ -27,7 +27,7 @@ class FitCircleTest {
       PointF(20f, 45f),
     )
 
-    val center = MyFitCircle.center(points)
+    val center = FitCircle.center(points)
 
     val pts = Array(points.size) { i -> doubleArrayOf(points[i].x.toDouble(), points[i].y.toDouble()) }
     val c = Centroid.getCentroid(pts)
@@ -44,10 +44,10 @@ class FitCircleTest {
       PointF(10f, 40f),
       PointF(20f, 45f),
     )
-    val vector = MyFitCircle.taubinNewton(points)
+    val vector = FitCircle.taubinNewton(points)
 
     val pts = Array(points.size) { i -> doubleArrayOf(points[i].x.toDouble(), points[i].y.toDouble()) }
-    val v = FitCircle.taubinNewton(pts)
+    val v = FitCircleOriginal.taubinNewton(pts)
 
     println(">>> x " + v[0])
     println(">>> y " + v[1])

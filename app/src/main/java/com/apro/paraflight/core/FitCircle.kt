@@ -5,7 +5,7 @@ import kotlin.math.abs
 import kotlin.math.sqrt
 
 
-object MyFitCircle {
+object FitCircle {
   fun center(points: Array<PointF>): PointF {
     var sumX = 0f
     var sumY = 0f

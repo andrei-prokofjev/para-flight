@@ -1,6 +1,6 @@
 package com.apro.paraflight.core;
 
- public class FitCircle {
+ public class FitCircleOriginal {
 
 
      /**

@@ -10,7 +10,7 @@ import com.apro.core.util.Speed
 import com.apro.core.util.metersPerSecond
 import com.apro.core.util.roundTo
 import com.apro.paraflight.R
-import com.apro.paraflight.core.MyFitCircle
+import com.apro.paraflight.core.FitCircle
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.util.ResourceProvider
 import com.apro.paraflight.voice.VoiceGuidanceInteractor
@@ -86,7 +86,7 @@ class FlightInteractorImpl @Inject constructor(
             val alpha = (it.bearing / 180f * Math.PI).toFloat()
             PointF(sin(alpha) * it.speed, cos(alpha) * it.speed)
           }.toTypedArray()
-          val vector = MyFitCircle.taubinNewton(array)
+          val vector = FitCircle.taubinNewton(array)
           // println(">>>  ${it.speed} vector: $vector")
 
           println(">>> " + (it.speed - vector.radius))
