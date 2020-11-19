@@ -33,8 +33,6 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.CompassListener
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
-import com.mapbox.mapboxsdk.location.modes.CameraMode
-import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions
@@ -139,18 +137,12 @@ class MainActivity : AppCompatActivity() {
     viewModel.myCurrentPosition.observe { mapboxMap?.animateCamera(it.first, it.second) }
 
     // update location
-    viewModel.locationData.observe { location ->
-      mapboxMap?.locationComponent?.forceLocationUpdate((location))
-
-      mapboxMap?.let {
-        with(it.locationComponent) {
-          cameraMode = CameraMode.TRACKING_COMPASS
-          renderMode = RenderMode.NORMAL
-
-          println(">>> actcual camera: " + cameraMode + " render: " + renderMode)
-          forceLocationUpdate(location)
-        }
-      }
+    viewModel.locationData.observe {
+      val position = CameraPosition.Builder()
+        .target(LatLng(it.latitude, it.longitude))
+        .build()
+      mapboxMap?.cameraPosition = position
+      // mapboxMap?.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
     }
     // draw route
     viewModel.routeData.observe {
@@ -178,7 +170,6 @@ class MainActivity : AppCompatActivity() {
           }
           renderMode = settings.renderMode.mode
           cameraMode = settings.cameraMode.mode
-          println(">>> camera: " + cameraMode + " render: " + renderMode)
         }
       }
 

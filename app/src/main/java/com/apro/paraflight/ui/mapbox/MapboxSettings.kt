@@ -39,9 +39,9 @@ data class MapboxSettings(
       cameraMode = CameraMode.TRACKING,
       renderMode = RenderMode.NORMAL,
       compassEnabled = true,
-
-
-      )
+      horizontalScrollGesturesEnabled = false,
+      scrollGesturesEnabled = false
+    )
   }
 }
 
