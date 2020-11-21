@@ -42,7 +42,8 @@ dependencies {
   implementation(Libs.coroutines)
   implementation(Libs.timber)
 
-  implementation(Libs.cicerone)
+
+  implementation(Libs.constraintLayout)
 
   implementation(Libs.delegates)
 

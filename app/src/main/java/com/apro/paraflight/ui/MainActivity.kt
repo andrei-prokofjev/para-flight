@@ -2,20 +2,16 @@ package com.apro.paraflight.ui
 
 
 import android.Manifest
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.LayoutInflater
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import com.apro.core.location.engine.impl.MapboxLocationEngine
 import com.apro.core.navigation.AppNavigator
-import com.apro.core.ui.show
 import com.apro.core.ui.toast
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
@@ -64,14 +60,7 @@ class MainActivity : AppCompatActivity() {
 
   private val compassListener: CompassListener = object : CompassListener {
     override fun onCompassChanged(userHeading: Float) {
-      AnimatorSet().apply {
-        play(
-          ObjectAnimator.ofFloat(binding.compassView, View.ROTATION, binding.compassView.rotation, -userHeading).apply {
-            duration = 800
-          }
-        )
-        start()
-      }
+
     }
 
     override fun onCompassAccuracyChange(compassStatus: Int) {
@@ -168,8 +157,6 @@ class MainActivity : AppCompatActivity() {
           cameraMode = settings.cameraMode.mode
         }
       }
-
-      binding.compassView.show(settings.compassEnabled)
 
       with(it.uiSettings) {
         isDisableRotateWhenScaling = settings.disableRotateWhenScaling

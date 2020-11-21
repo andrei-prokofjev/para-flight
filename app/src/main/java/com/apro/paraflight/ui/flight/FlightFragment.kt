@@ -48,7 +48,12 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
         }
         timeMeterView.amount = it.duration?.toTimeFormat() ?: "-:-"
 
-        windSpeed.text = it.windSpeed?.roundTo(1)?.toString() ?: "-"
+        windSpeedTextView.text = it.windSpeed?.roundTo(1)?.toString() ?: "-"
+
+        println(">>> it.winDirection: $ " + it.winDirection)
+
+        windDirectionView.rotation = it.winDirection
+
       }
 
       layerImageButton.onClick { viewModel.onLayerClick() }

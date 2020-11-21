@@ -89,13 +89,27 @@
       app:layout_constraintWidth_percent=".33"
       app:mv_title="render" />
 
+  <View
+      android:id="@+id/windDirectionView"
+      android:layout_width="30dp"
+      android:layout_height="60dp"
+      android:layout_marginTop="240dp"
+      android:alpha=".5"
+      android:background="@drawable/ic_arrow"
+      android:transformPivotX="15dp"
+      android:transformPivotY="30dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
   <TextView
-      android:id="@+id/windSpeed"
+      android:id="@+id/wind_speed_text_view"
       android:layout_width="100dp"
       android:layout_height="wrap_content"
       android:layout_marginTop="90dp"
       android:background="#AA000000"
-      android:fontFamily="@font/roboto_bold"
+      android:fontFamily="@font/roboto_black"
       android:gravity="center"
       android:padding="4dp"
       android:textColor="#ffffff00"
@@ -105,6 +119,16 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       tools:text="10 m/s" />
+
+  <com.apro.paraflight.ui.customview.CompassView
+      android:id="@+id/compassView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:alpha="0"
+      android:visibility="gone"
+
+      tools:visibility="visible" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

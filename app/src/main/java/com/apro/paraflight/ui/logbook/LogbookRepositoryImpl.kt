@@ -37,6 +37,7 @@ class LogbookRepositoryImpl @Inject constructor() : LogbookRepository {
             lines.subList(1, lines.size).forEach {
               val data = it.split(",")
               val location = Location(it)
+
               location.latitude = data[0].toDouble()
               location.longitude = data[1].toDouble()
               location.time = data[2].toLong()
@@ -55,6 +56,7 @@ class LogbookRepositoryImpl @Inject constructor() : LogbookRepository {
             ))
 
           } catch (e: Exception) {
+            e.printStackTrace()
             println(">>> !!! $e")
           }
         }

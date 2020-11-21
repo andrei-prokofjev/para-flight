@@ -86,8 +86,6 @@ class FlightInteractorImpl @Inject constructor(
         val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, groundSpeed = it.speed, bearing = it.bearing)
 
 
-        println(">>> $flightState")
-
         when (flightState) {
 
           FlightInteractor.FlightState.PREPARING -> {
@@ -116,7 +114,7 @@ class FlightInteractorImpl @Inject constructor(
             duration = it.time - takeOffTime
 
             val wv = if (settingsPreferences.windDetector && flightData.size >= 3) {
-              val a = flightData.takeLast(20)
+              val a = flightData.takeLast(50)
               val array = a.map {
                 val alpha = (it.bearing / 180f * Math.PI).toFloat()
                 PointF(sin(alpha) * it.groundSpeed, cos(alpha) * it.groundSpeed)
@@ -124,14 +122,18 @@ class FlightInteractorImpl @Inject constructor(
               FitCircle.taubinNewton(array)
             } else WindVector()
 
-            println(">>> wv: $wv")
+
+
+
+            Math.toDegrees(wv.winDirection()).toFloat()
 
             val fd = flightModel.copy(
               dist = totalDistance,
               duration = duration,
               windVector = wv.x to wv.y,
               windSpeed = wv.windSpeed(),
-              airSpeed = wv.radius
+              airSpeed = wv.radius,
+              winDirection = Math.toDegrees(wv.winDirection()).toFloat()
             )
             flightDataChannel.send(fd)
             flightData.add(fd)

@@ -10,5 +10,6 @@ data class FlightModel(
   val duration: Long? = null,
   val windVector: Pair<Float, Float>? = null,
   val windSpeed: Float? = null,
-  val airSpeed: Float? = null
+  val airSpeed: Float? = null,
+  val winDirection: Float = 0f
 )
