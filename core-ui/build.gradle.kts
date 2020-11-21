@@ -44,6 +44,8 @@ dependencies {
 
   implementation(Libs.cicerone)
 
+  implementation(Libs.delegates)
+
   testImplementation(TestLibs.junit)
   androidTestImplementation(TestLibs.testJunit)
   androidTestImplementation(TestLibs.espresso)

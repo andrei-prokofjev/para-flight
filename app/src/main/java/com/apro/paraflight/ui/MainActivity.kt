@@ -138,10 +138,7 @@ class MainActivity : AppCompatActivity() {
 
     // update location
     viewModel.locationData.observe {
-
-      mapboxMap?.animateCamera(CameraUpdateFactory.newLatLng(LatLng(it.latitude, it.longitude)), 8000)
-      //  mapboxMap?.easeCamera(CameraUpdateFactory.newLatLng(LatLng(it.latitude, it.longitude)), 400, false)
-//      mapboxMap?.animateCamera()
+      mapboxMap?.animateCamera(CameraUpdateFactory.newLatLng(LatLng(it.latitude, it.longitude)), 500)
     }
     // draw route
     viewModel.routeData.observe {

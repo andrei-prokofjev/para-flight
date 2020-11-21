@@ -1,6 +1,6 @@
 package com.apro.paraflight.di
 
-import android.content.Context
+import android.app.Application
 import com.apro.core.navigation.AppRouter
 import com.apro.core.navigation.di.NavigationModule
 import com.apro.core.util.event.EventBus
@@ -33,15 +33,15 @@ interface AppComponent {
   fun voiceGuidance(): VoiceGuidance
 
   companion object {
-    fun create(context: Context): AppComponent =
+    fun create(app: Application): AppComponent =
       DaggerAppComponent.builder()
-        .appModule(AppModule(context))
+        .appModule(AppModule(app))
         .build()
   }
 }
 
 @Module
-class AppModule(private val context: Context) {
+class AppModule(private val app: Application) {
 
   @Provides
   @Singleton
@@ -49,7 +49,7 @@ class AppModule(private val context: Context) {
 
   @Provides
   @Singleton
-  fun resourceProvider(): ResourceProvider = AndroidResourceProvider(context)
+  fun resourceProvider(): ResourceProvider = AndroidResourceProvider(app)
 
   @Provides
   @Singleton
@@ -57,7 +57,7 @@ class AppModule(private val context: Context) {
 
   @Provides
   @Singleton
-  fun provideVoiceGuidance(): VoiceGuidance = VoiceGuidanceImpl(context)
+  fun provideVoiceGuidance(): VoiceGuidance = VoiceGuidanceImpl(app)
 }
 
 

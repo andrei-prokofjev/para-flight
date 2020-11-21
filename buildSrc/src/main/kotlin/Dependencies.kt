@@ -44,6 +44,8 @@ object Libs {
   const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
   const val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
 
+  const val delegates = "com.hannesdorfmann:adapterdelegates4:4.3.0"
+
   // Permissions
   const val permissionsDispatcher = "org.permissionsdispatcher:permissionsdispatcher:${Versions.permissionsDispatcher}"
   const val permissionsDispatcherCompiler = "org.permissionsdispatcher:permissionsdispatcher-processor:${Versions.permissionsDispatcher}"

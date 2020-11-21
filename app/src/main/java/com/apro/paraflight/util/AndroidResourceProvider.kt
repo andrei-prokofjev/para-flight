@@ -23,4 +23,7 @@ class AndroidResourceProvider @Inject constructor(
 
   override fun getDrawable(@DrawableRes id: Int): Drawable? = ContextCompat.getDrawable(context, id)
 
+  override fun getAssetManager() = context.assets
+
+
 }

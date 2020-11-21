@@ -8,7 +8,7 @@ data class MapboxSettings(
   val zoom: Double = 12.0,
   val locationComponentEnabled: Boolean = false,
   val disableRotateWhenScaling: Boolean = true,
-  val rotateGesturesEnabled: Boolean = true,
+  val rotateGesturesEnabled: Boolean = false,
   val tiltGesturesEnabled: Boolean = true,
   val zoomGesturesEnabled: Boolean = false,
   val doubleTapGesturesEnabled: Boolean = false,
@@ -26,7 +26,7 @@ data class MapboxSettings(
     val DefaultMapboxSettings = MapboxSettings()
 
     val FlightMapboxSettings = MapboxSettings().copy(
-      compassEnabled = true,
+      compassEnabled = false,
       zoom = 16.0,
       locationComponentEnabled = true,
       rotateGesturesEnabled = false,
@@ -39,9 +39,12 @@ data class MapboxSettings(
     val ReplayFlightMapboxSettings = MapboxSettings().copy(
       cameraMode = CameraMode.TRACKING,
       renderMode = RenderMode.NORMAL,
-      compassEnabled = true,
+      compassEnabled = false,
+      zoom = 10.0,
       horizontalScrollGesturesEnabled = false,
-      scrollGesturesEnabled = false
+      scrollGesturesEnabled = false,
+      zoomGesturesEnabled = true
+
     )
   }
 }

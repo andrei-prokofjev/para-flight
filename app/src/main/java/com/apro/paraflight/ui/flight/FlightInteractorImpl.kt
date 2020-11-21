@@ -13,6 +13,7 @@ import com.apro.paraflight.R
 import com.apro.paraflight.core.FitCircle
 import com.apro.paraflight.core.WindVector
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
+import com.apro.paraflight.ui.mapbox.MapboxSettings
 import com.apro.paraflight.util.ResourceProvider
 import com.apro.paraflight.voice.VoiceGuidanceInteractor
 import com.mapbox.geojson.Point
@@ -37,7 +38,8 @@ class FlightInteractorImpl @Inject constructor(
   val resources: ResourceProvider,
   private val mapboxInteractor: MapboxInteractor,
   private val settingsPreferences: SettingsPreferences,
-  private val voiceGuidanceInteractor: VoiceGuidanceInteractor
+  private val voiceGuidanceInteractor: VoiceGuidanceInteractor,
+  private val mapboxSettings: MapboxSettings
 ) : FlightInteractor {
 
   private var scope: CoroutineScope? = null
@@ -66,6 +68,8 @@ class FlightInteractorImpl @Inject constructor(
 
   init {
 
+    mapboxInteractor.mapboxSettings = mapboxSettings
+
     clear()
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
 
@@ -82,6 +86,7 @@ class FlightInteractorImpl @Inject constructor(
         val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, groundSpeed = it.speed, bearing = it.bearing)
 
 
+        println(">>> $flightState")
 
         when (flightState) {
 
@@ -101,13 +106,14 @@ class FlightInteractorImpl @Inject constructor(
             flightData.add(fd)
 
             if ((baseAltitude - it.altitude).absoluteValue > settingsPreferences.takeOffAltDiff) {
+              takeOffTime = it.time
               flightState = FlightInteractor.FlightState.FLIGHT
             }
           }
 
           FlightInteractor.FlightState.FLIGHT -> {
             totalDistance += getDistance(it)
-            duration = System.currentTimeMillis() - takeOffTime
+            duration = it.time - takeOffTime
 
             val wv = if (settingsPreferences.windDetector && flightData.size >= 3) {
               val a = flightData.takeLast(20)
@@ -117,6 +123,8 @@ class FlightInteractorImpl @Inject constructor(
               }.toTypedArray()
               FitCircle.taubinNewton(array)
             } else WindVector()
+
+            println(">>> wv: $wv")
 
             val fd = flightModel.copy(
               dist = totalDistance,
@@ -158,19 +166,19 @@ class FlightInteractorImpl @Inject constructor(
           FlightInteractor.FlightState.FLIGHT -> {
             duration = 0
             totalDistance = 0.0
-            takeOffTime = System.currentTimeMillis()
+
 
             voiceGuidanceInteractor.speak(resources.getString(R.string.tts_you_are_off_the_ground_and_on_your_own_at_this_point))
 
-            voiceGuidanceInteractor.speak(resources.getString(R.string.tts_climbing_through_x_meters_at_x_kilometers_per_hour))
+            // voiceGuidanceInteractor.speak(resources.getString(R.string.tts_climbing_through_x_meters_at_x_kilometers_per_hour))
             //  timeNotificationTicker = ticker(settingsPreferences.timeNotificationInterval, settingsPreferences.timeNotificationInterval)
           }
 
           FlightInteractor.FlightState.LANDED -> {
             // todo: save flightData into db
             voiceGuidanceInteractor.speak(resources.getString(R.string.tts_you_have_successfully_reached_the_ground))
-            voiceGuidanceInteractor.speak(resources.getString(R.string.tts_we_certainly_enjoyed_serving_you_in_flight_today))
-            voiceGuidanceInteractor.speak(resources.getString(R.string.tts_hope_to_serve_you_soon_again))
+//            voiceGuidanceInteractor.speak(resources.getString(R.string.tts_we_certainly_enjoyed_serving_you_in_flight_today))
+//            voiceGuidanceInteractor.speak(resources.getString(R.string.tts_hope_to_serve_you_soon_again))
 
             withContext(Dispatchers.Main) {
               showFlightSummary(totalDistance, duration)

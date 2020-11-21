@@ -11,6 +11,7 @@ import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
+import com.apro.paraflight.ui.mapbox.MapboxSettings
 import com.apro.paraflight.util.ResourceProvider
 import com.apro.paraflight.voice.VoiceGuidanceInteractor
 import com.apro.paraflight.voice.VoiceGuidanceInteractorImpl
@@ -44,6 +45,9 @@ interface FlightScreenComponent {
     fun locationEngine(locationEngine: LocationEngine): Builder
 
     @BindsInstance
+    fun mapboxSettings(mapboxSettings: MapboxSettings): Builder
+
+    @BindsInstance
     fun mapboxPreferences(mapboxPreferences: MapboxPreferences): Builder
 
     @BindsInstance
@@ -56,14 +60,15 @@ interface FlightScreenComponent {
   }
 
   companion object {
-    fun create(engine: LocationEngine) = with(DI.appComponent) {
+    fun create(engine: LocationEngine, settings: MapboxSettings) = with(DI.appComponent) {
       DaggerFlightScreenComponent.builder()
+        .locationEngine(engine)
+        .mapboxSettings(settings)
         .resources(resources())
         .mapboxPreferences(DI.preferencesApi.mapbox())
         .appRouter(appRouter())
         .eventBus(eventBus())
         .mapboxInteractor(mapboxInteractor())
-        .locationEngine(engine)
         .voiceGuidance(voiceGuidance())
         .settingsPreferences(DI.preferencesApi.settings())
         .build()

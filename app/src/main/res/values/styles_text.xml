@@ -34,4 +34,18 @@
     <item name="fontFamily">@font/roboto_bold</item>
   </style>
 
+  <!--  Logbook-->
+  <style name="TextAppearance.Logbook.Title" parent="TextAppearance.Settings">
+    <item name="android:textSize">20sp</item>
+    <item name="fontFamily">@font/roboto_bold</item>
+    <item name="textAllCaps">true</item>
+    <item name="android:textColor">@color/black</item>
+  </style>
+
+  <style name="TextAppearance.Logbook.Info" parent="TextAppearance.Settings">
+    <item name="android:textSize">16sp</item>
+    <item name="fontFamily">@font/roboto_regular</item>
+    <item name="android:textColor">@color/black</item>
+  </style>
+
 </resources>

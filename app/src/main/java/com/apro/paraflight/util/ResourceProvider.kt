@@ -1,5 +1,6 @@
 package com.apro.paraflight.util
 
+import android.content.res.AssetManager
 import android.graphics.drawable.Drawable
 import androidx.annotation.DrawableRes
 import androidx.annotation.PluralsRes
@@ -13,4 +14,6 @@ interface ResourceProvider {
   fun getQuantityString(@PluralsRes id: Int, quantity: Int, vararg args: Any?): String
 
   fun getDrawable(@DrawableRes id: Int): Drawable?
+
+  fun getAssetManager(): AssetManager
 }

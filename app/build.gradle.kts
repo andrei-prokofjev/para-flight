@@ -89,6 +89,8 @@ dependencies {
   implementation(Libs.appCompat)
   implementation(Libs.constraintLayout)
 
+  implementation(Libs.delegates)
+
   implementation(Libs.playServicesAuth)
 
   implementation(Libs.mapbox)

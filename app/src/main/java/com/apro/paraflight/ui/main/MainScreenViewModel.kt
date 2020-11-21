@@ -8,6 +8,7 @@ import com.apro.paraflight.ui.Screens
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.ui.mapbox.MapboxSettings
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 class MainScreenViewModel @Inject constructor(
@@ -27,26 +28,13 @@ class MainScreenViewModel @Inject constructor(
     appRouter.navigateTo(Screens.settings())
   }
 
-  fun onLogbookClick(locationEngine: LocationEngine) {
-    //  appRouter.navigateTo(Screens.logbook())
-//    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-//      val response = DI.networkComponent.ppgApi().register(AuthRequestDto(
-//        name = "andrei",
-//        email = "andrei.prokofjev@gmail.com",
-//        password = "12345"
-//      ))
-//
-//      println(">>> resp: $response")
-//    }
-
-
-    mapboxInteractor.mapboxSettings = MapboxSettings.ReplayFlightMapboxSettings
-    appRouter.navigateTo(Screens.flight(locationEngine))
-
+  fun onLogbookClick() {
+    val file = File("vormsi_24-06-20.csv")
+    appRouter.navigateTo(Screens.logbook())
   }
 
   fun onPreflightClick(locationEngine: LocationEngine) {
-    appRouter.navigateTo(Screens.flight(locationEngine))
+    appRouter.navigateTo(Screens.flight(locationEngine, MapboxSettings.ReplayFlightMapboxSettings))
   }
 
   fun onLayerClick() {
