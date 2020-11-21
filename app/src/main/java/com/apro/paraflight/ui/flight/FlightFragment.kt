@@ -3,6 +3,7 @@ package com.apro.paraflight.ui.flight
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.ui.BaseFragment
@@ -50,21 +51,17 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
 
         windSpeedTextView.text = it.windSpeed?.roundTo(1)?.toString() ?: "-"
 
-        println(">>> it.winDirection: $ " + it.winDirection)
-
-        windDirectionView.rotation = it.winDirection
-
+        it.winDirection?.let {
+          windDirectionView.rotation = it
+        }
+        windDirectionView.isVisible = it.winDirection != null
       }
 
       layerImageButton.onClick { viewModel.onLayerClick() }
 
-
-
       viewModel.testData.observe {
         stateTextView.text = it
       }
-
-
     }
   }
 

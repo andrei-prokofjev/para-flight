@@ -11,7 +11,6 @@ import com.apro.core.util.metersPerSecond
 import com.apro.core.util.roundTo
 import com.apro.paraflight.R
 import com.apro.paraflight.core.FitCircle
-import com.apro.paraflight.core.WindVector
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.ui.mapbox.MapboxSettings
 import com.apro.paraflight.util.ResourceProvider
@@ -113,27 +112,21 @@ class FlightInteractorImpl @Inject constructor(
             totalDistance += getDistance(it)
             duration = it.time - takeOffTime
 
-            val wv = if (settingsPreferences.windDetector && flightData.size >= 3) {
-              val a = flightData.takeLast(50)
+            val wv = if (settingsPreferences.windDetector && flightData.size >= 30) {
+              val a = flightData.takeLast(100)
               val array = a.map {
                 val alpha = (it.bearing / 180f * Math.PI).toFloat()
                 PointF(sin(alpha) * it.groundSpeed, cos(alpha) * it.groundSpeed)
               }.toTypedArray()
               FitCircle.taubinNewton(array)
-            } else WindVector()
-
-
-
-
-            Math.toDegrees(wv.winDirection()).toFloat()
+            } else null
 
             val fd = flightModel.copy(
               dist = totalDistance,
               duration = duration,
-              windVector = wv.x to wv.y,
-              windSpeed = wv.windSpeed(),
-              airSpeed = wv.radius,
-              winDirection = Math.toDegrees(wv.winDirection()).toFloat()
+              windSpeed = wv?.windSpeed(),
+              airSpeed = wv?.radius,
+              winDirection = wv?.winDirection()?.let { Math.toDegrees(it).toFloat() }
             )
             flightDataChannel.send(fd)
             flightData.add(fd)
