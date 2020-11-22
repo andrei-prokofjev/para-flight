@@ -132,6 +132,8 @@ class FlightInteractorImpl @Inject constructor(
 
             println(">>> $winDirection")
 
+            debugChannel.send(">>> wind deg: " + winDirection)
+
 
             val fd = flightModel.copy(
               dist = totalDistance,
