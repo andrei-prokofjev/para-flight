@@ -46,6 +46,6 @@ class SettingsScreenViewModel @Inject constructor(
   }
 
   fun saveWindDetectorPoints(value: Int) {
-    settingsPreferences.windDetectionPoints = value
+   settingsPreferences.windDetectionPoints = value
   }
 }

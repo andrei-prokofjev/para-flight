@@ -32,6 +32,8 @@ interface SettingsPreferences {
     const val MIN_MIN_FLIGHT_SPEED = 0
     const val MAX_MIN_FLIGHT_SPEED = 7
 
+    const val WIND_DIRECTION_POINTS_STEP = 5
+
     const val MIN_WIND_DETECTION_POINTS = 4
     const val MAX_WIND_DETECTION_POINTS = 40
   }

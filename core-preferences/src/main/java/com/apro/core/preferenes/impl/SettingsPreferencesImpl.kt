@@ -90,7 +90,7 @@ class SettingsPreferencesImpl @Inject constructor(
     val DEFAULT_UNITS = SettingsPreferences.Units.METRIC.ordinal
     const val UNITS = "units"
 
-    const val DEFAULT_WIND_DETECTION_POINTS = 50
+    const val DEFAULT_WIND_DETECTION_POINTS = 4
     const val WIND_DETECTION_POINTS = "wind_detection_points"
   }
 

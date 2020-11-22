@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
           it.addOnMapClickListener { l ->
 
 
-          DI.appComponent.mapboxInteractor().requestLastLocation(MapboxLocationEngine(context))
+            DI.appComponent.mapboxInteractor().requestLastLocation(MapboxLocationEngine(context))
             true
           }
 

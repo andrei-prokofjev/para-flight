@@ -70,7 +70,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
         pointsNumberPicker.wrapSelectorWheel = false
 
         pointsNumberPicker.setOnValueChangedListener { _, _, new -> viewModel.saveWindDetectorPoints(new) }
-        pointsNumberPicker.setFormatter { (it * 5).toString() }
+        pointsNumberPicker.setFormatter { (it * SettingsPreferences.WIND_DIRECTION_POINTS_STEP).toString() }
 
         try {
           pointsNumberPicker.javaClass.getDeclaredMethod("changeValueByOne", Boolean::class.javaPrimitiveType).apply {

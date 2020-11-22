@@ -111,10 +111,9 @@ class FlightInteractorImpl @Inject constructor(
             duration = it.time - takeOffTime
 
             val windVector = if (settingsPreferences.windDetector && flightData.size >= 30) {
-              val a = flightData.takeLast(settingsPreferences.windDetectionPoints)
+              val a = flightData.takeLast(settingsPreferences.windDetectionPoints * SettingsPreferences.WIND_DIRECTION_POINTS_STEP)
               val array = a.map {
-                val angDeg = Math.toDegrees(it.bearing.toDouble()).toFloat()
-                PointF(sin(angDeg) * it.groundSpeed, cos(angDeg) * it.groundSpeed)
+                PointF(sin(Math.toDegrees(it.bearing.toDouble()).toFloat()) * it.groundSpeed, cos(Math.toDegrees(it.bearing.toDouble()).toFloat()) * it.groundSpeed)
               }.toTypedArray()
               FitCircle.taubinNewton(array)
             } else WindVector()
@@ -122,6 +121,7 @@ class FlightInteractorImpl @Inject constructor(
             val windSpeed = windVector.let { sqrt((it.x.pow(2) + it.y.pow(2)).toDouble()).toFloat() }
             var winDirection = windVector.let { Math.toDegrees(asin(it.x.toDouble() / windSpeed)) }.toFloat()
 
+            println(">>> speed: $windSpeed")
 
             if (windVector.y < 0) winDirection = 180 - windSpeed
             if (windVector.y > 0 && windVector.x < 0) winDirection += 360
@@ -132,7 +132,7 @@ class FlightInteractorImpl @Inject constructor(
 
             println(">>> $winDirection")
 
-            debugChannel.send(">>> wind deg: " + winDirection)
+            debugChannel.send(">>> wind deg: " + (settingsPreferences.windDetectionPoints * SettingsPreferences.WIND_DIRECTION_POINTS_STEP))
 
 
             val fd = flightModel.copy(
