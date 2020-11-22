@@ -58,6 +58,14 @@ class SettingsPreferencesImpl @Inject constructor(
       prefs.edit().putInt(UNITS, value.ordinal).apply()
     }
 
+  override var windDetectionPoints: Int
+    get() {
+      return prefs.getInt(WIND_DETECTION_POINTS, DEFAULT_WIND_DETECTION_POINTS)
+    }
+    set(value) {
+      prefs.edit().putInt(WIND_DETECTION_POINTS, value).apply()
+    }
+
   private companion object {
     const val PREFS = "settings_preferences"
 
@@ -81,5 +89,9 @@ class SettingsPreferencesImpl @Inject constructor(
 
     val DEFAULT_UNITS = SettingsPreferences.Units.METRIC.ordinal
     const val UNITS = "units"
+
+    const val DEFAULT_WIND_DETECTION_POINTS = 50
+    const val WIND_DETECTION_POINTS = "wind_detection_points"
   }
+
 }

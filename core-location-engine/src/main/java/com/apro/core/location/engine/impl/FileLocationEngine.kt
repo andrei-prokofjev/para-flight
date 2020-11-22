@@ -17,8 +17,6 @@ class FileLocationEngine(val context: Context, private val file: File) : Locatio
   private val updateLocationChannel = ConflatedBroadcastChannel<Location>()
   override fun updateLocationFlow() = updateLocationChannel.asFlow()
 
-  private val lastLocationChannel = ConflatedBroadcastChannel<Location>()
-  override fun lastLocationFlow() = lastLocationChannel.asFlow()
 
   var scope: CoroutineScope? = null
 
@@ -52,9 +50,8 @@ class FileLocationEngine(val context: Context, private val file: File) : Locatio
     clear()
   }
 
-  override fun requestLastLocation() {
-    Timber.d(">>> getLastLocation")
-  }
+  override suspend fun lastLocation() = Location(file.name)
+
 
   override fun clear() {
     scope?.coroutineContext?.cancelChildren()

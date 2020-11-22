@@ -8,8 +8,7 @@ interface LocationEngine {
   fun updateLocationFlow(): Flow<Location>
   fun removeLocationUpdates()
 
-  fun requestLastLocation()
-  fun lastLocationFlow(): Flow<Location>
+  suspend fun lastLocation(): Location
 
   fun clear()
 }

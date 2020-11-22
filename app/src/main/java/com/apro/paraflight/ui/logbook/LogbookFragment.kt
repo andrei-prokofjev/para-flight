@@ -39,6 +39,9 @@ class LogbookFragment : BaseFragment(R.layout.fragment_logbook) {
 
   }
 
+  override fun getViewToApplyStatusBarMargin(root: View): Array<View> = arrayOf(binding.logbooksRecyclerView)
+
+  override fun getViewToApplyNavigationBarMargin(root: View): Array<View> = arrayOf(binding.logbooksRecyclerView)
 
   companion object {
     fun create(component: LogbookScreenComponent) = LogbookFragment().apply {

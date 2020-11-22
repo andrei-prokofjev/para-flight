@@ -11,6 +11,7 @@ import com.apro.core.util.metersPerSecond
 import com.apro.core.util.roundTo
 import com.apro.paraflight.R
 import com.apro.paraflight.core.FitCircle
+import com.apro.paraflight.core.WindVector
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.ui.mapbox.MapboxSettings
 import com.apro.paraflight.util.ResourceProvider
@@ -26,10 +27,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.math.absoluteValue
-import kotlin.math.cos
-import kotlin.math.roundToInt
-import kotlin.math.sin
+import kotlin.math.*
 
 
 class FlightInteractorImpl @Inject constructor(
@@ -112,21 +110,35 @@ class FlightInteractorImpl @Inject constructor(
             totalDistance += getDistance(it)
             duration = it.time - takeOffTime
 
-            val wv = if (settingsPreferences.windDetector && flightData.size >= 30) {
-              val a = flightData.takeLast(100)
+            val windVector = if (settingsPreferences.windDetector && flightData.size >= 30) {
+              val a = flightData.takeLast(settingsPreferences.windDetectionPoints)
               val array = a.map {
-                val alpha = (it.bearing / 180f * Math.PI).toFloat()
-                PointF(sin(alpha) * it.groundSpeed, cos(alpha) * it.groundSpeed)
+                val angDeg = Math.toDegrees(it.bearing.toDouble()).toFloat()
+                PointF(sin(angDeg) * it.groundSpeed, cos(angDeg) * it.groundSpeed)
               }.toTypedArray()
               FitCircle.taubinNewton(array)
-            } else null
+            } else WindVector()
+
+            val windSpeed = windVector.let { sqrt((it.x.pow(2) + it.y.pow(2)).toDouble()).toFloat() }
+            var winDirection = windVector.let { Math.toDegrees(asin(it.x.toDouble() / windSpeed)) }.toFloat()
+
+
+            if (windVector.y < 0) winDirection = 180 - windSpeed
+            if (windVector.y > 0 && windVector.x < 0) winDirection += 360
+
+            if (windSpeed == 0f) {
+              winDirection = 0f
+            }
+
+            println(">>> $winDirection")
+
 
             val fd = flightModel.copy(
               dist = totalDistance,
               duration = duration,
-              windSpeed = wv?.windSpeed(),
-              airSpeed = wv?.radius,
-              winDirection = wv?.winDirection()?.let { Math.toDegrees(it).toFloat() }
+              windSpeed = windSpeed,
+              airSpeed = windVector.radius,
+              winDirection = winDirection
             )
             flightDataChannel.send(fd)
             flightData.add(fd)

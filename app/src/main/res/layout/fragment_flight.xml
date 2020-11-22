@@ -98,10 +98,12 @@
       android:background="@drawable/ic_arrow"
       android:transformPivotX="15dp"
       android:transformPivotY="30dp"
+      android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="visible" />
 
   <TextView
       android:id="@+id/wind_speed_text_view"
@@ -114,11 +116,13 @@
       android:padding="4dp"
       android:textColor="#ffffff00"
       android:textSize="24sp"
+      android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      tools:text="10 m/s" />
+      tools:text="10 m/s"
+      tools:visibility="visible" />
 
   <com.apro.paraflight.ui.customview.CompassView
       android:id="@+id/compassView"
@@ -126,7 +130,6 @@
       android:layout_height="match_parent"
       android:alpha="0"
       android:visibility="gone"
-
       tools:visibility="visible" />
 
 

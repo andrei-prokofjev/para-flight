@@ -31,6 +31,7 @@
   <string name="metric">Metric</string>
   <string name="imperial">Imperial</string>
   <string name="wind_detector">Wind Detector</string>
+  <string name="points">points</string>
 
 
 </resources>

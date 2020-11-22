@@ -7,10 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.ui.BaseViewModel
 import com.mapbox.geojson.Point
-import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.camera.CameraUpdate
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-import com.mapbox.mapboxsdk.geometry.LatLng
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,10 +25,6 @@ class MapboxViewModel @Inject constructor(
   private val _routeData = MutableLiveData<List<Point>>()
   val routeData: LiveData<List<Point>> = _routeData
 
-  // <position, duration>
-  private val _myCurrentPosition = MutableLiveData<Pair<CameraUpdate, Int>>()
-  val myCurrentPosition: LiveData<Pair<CameraUpdate, Int>> = _myCurrentPosition
-
   private val _mapboxSettingsData = MutableLiveData<MapboxSettings>()
   val mapboxSettingsData: LiveData<MapboxSettings> = _mapboxSettingsData
 
@@ -44,11 +36,7 @@ class MapboxViewModel @Inject constructor(
 
     viewModelScope.launch {
       mapboxInteractor.lastLocationFlow().collect {
-        val position = CameraPosition.Builder()
-          .target(LatLng(it.latitude, it.longitude))
-          .build()
-
-        _myCurrentPosition.postValue(CameraUpdateFactory.newCameraPosition(position) to 500)
+        _liveLocationData.postValue(it)
       }
     }
 

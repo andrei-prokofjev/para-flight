@@ -16,6 +16,9 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
 import timber.log.Timber
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
@@ -23,9 +26,6 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
   private val updateLocationChannel = ConflatedBroadcastChannel<Location>()
   override fun updateLocationFlow() = updateLocationChannel.asFlow()
-
-  private val lastLocationChannel = ConflatedBroadcastChannel<Location>()
-  override fun lastLocationFlow() = lastLocationChannel.asFlow()
 
   var scope: CoroutineScope? = null
 
@@ -36,8 +36,10 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
   private val locationUpdateCallback = object : LocationEngineCallback<LocationEngineResult> {
     override fun onSuccess(result: LocationEngineResult) {
-       Timber.d("location update: %s", result.lastLocation)
+      Timber.d("location update: %s", result.lastLocation)
       result.lastLocation?.let {
+
+        it.altitude = 10.0
         scope?.launch { updateLocationChannel.send(it) }
       }
     }
@@ -66,37 +68,24 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
     locationEngine.removeLocationUpdates(locationUpdateCallback)
   }
 
-
   @SuppressLint("MissingPermission")
-  suspend fun reql() {
-    locationEngine.getLastLocation(object : LocationEngineCallback<LocationEngineResult> {
-      override fun onSuccess(result: LocationEngineResult) {
+  override suspend fun lastLocation(): Location {
+    return suspendCoroutine { c ->
+      if (isLocationPermissionsDenied()) c.resumeWithException(Exception("permission not provided"))
 
-        result.lastLocation?.let {
-          scope?.launch { lastLocationChannel.send(it) }
+      locationEngine.getLastLocation(object : LocationEngineCallback<LocationEngineResult> {
+        override fun onSuccess(result: LocationEngineResult) {
+
+          result.lastLocation?.let {
+            c.resume(it)
+          }
         }
-      }
 
-      override fun onFailure(exception: java.lang.Exception) {
-      }
-    })
-  }
-
-  @SuppressLint("MissingPermission")
-  override fun requestLastLocation() {
-    if (isLocationPermissionsDenied()) return
-
-    locationEngine.getLastLocation(object : LocationEngineCallback<LocationEngineResult> {
-      override fun onSuccess(result: LocationEngineResult) {
-
-        result.lastLocation?.let {
-          scope?.launch { lastLocationChannel.send(it) }
+        override fun onFailure(exception: Exception) {
+          c.resumeWithException(exception)
         }
-      }
-
-      override fun onFailure(exception: java.lang.Exception) {
-      }
-    })
+      })
+    }
   }
 
   private fun isLocationPermissionsDenied(): Boolean {

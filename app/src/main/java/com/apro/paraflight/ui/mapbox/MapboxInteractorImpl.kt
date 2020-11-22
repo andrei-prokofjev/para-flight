@@ -43,25 +43,10 @@ class MapboxInteractorImpl @Inject constructor() : MapboxInteractor {
   }
 
   override fun requestLastLocation(locationEngine: LocationEngine) {
-    this.locationEngine = locationEngine.apply { requestLastLocation() }
-
-    GlobalScope.launch(Dispatchers.Main) {
-      locationEngine.lastLocationFlow().collect {
-        lastLocationChannel.send(it)
-      }
+    GlobalScope.launch(Dispatchers.IO) {
+      lastLocationChannel.send(locationEngine.lastLocation())
     }
   }
-
-  suspend fun requestLastLocationa(locationEngine: LocationEngine) {
-    this.locationEngine = locationEngine.apply { requestLastLocation() }
-
-    GlobalScope.launch {
-      locationEngine.lastLocationFlow().collect {
-        lastLocationChannel.send(it)
-      }
-    }
-  }
-
 
   override fun removeLocationUpdate() {
     locationEngine?.removeLocationUpdates()

@@ -8,7 +8,6 @@ import com.apro.paraflight.ui.Screens
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.ui.mapbox.MapboxSettings
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 class MainScreenViewModel @Inject constructor(
@@ -29,7 +28,6 @@ class MainScreenViewModel @Inject constructor(
   }
 
   fun onLogbookClick() {
-    val file = File("vormsi_24-06-20.csv")
     appRouter.navigateTo(Screens.logbook())
   }
 

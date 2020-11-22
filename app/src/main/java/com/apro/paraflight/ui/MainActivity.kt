@@ -93,9 +93,8 @@ class MainActivity : AppCompatActivity() {
 
           it.addOnMapClickListener { l ->
 
-            viewModel.myCurrentPosition
 
-            DI.appComponent.mapboxInteractor().requestLastLocation(MapboxLocationEngine(context))
+          DI.appComponent.mapboxInteractor().requestLastLocation(MapboxLocationEngine(context))
             true
           }
 
@@ -121,9 +120,6 @@ class MainActivity : AppCompatActivity() {
     }
     // set map style
     viewModel.styleData.observe { mapboxMap?.setStyle(it) }
-
-    // my current position
-    viewModel.myCurrentPosition.observe { mapboxMap?.animateCamera(it.first, it.second) }
 
     // update location
     viewModel.locationData.observe {
