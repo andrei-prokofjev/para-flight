@@ -24,7 +24,7 @@ interface NetworkComponent {
 abstract class NetworkModule {
 
   companion object {
-    private const val BASE_URL = "http://10.0.2.2:8080"
+    private const val BASE_URL = "http://3.139.235.222/"
 
     @Provides
     @Singleton

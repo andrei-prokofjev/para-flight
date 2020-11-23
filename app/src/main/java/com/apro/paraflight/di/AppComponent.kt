@@ -6,6 +6,7 @@ import com.apro.core.navigation.di.NavigationModule
 import com.apro.core.util.event.EventBus
 import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.core.voiceguidance.impl.VoiceGuidanceImpl
+
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.ui.mapbox.MapboxInteractorImpl
 import com.apro.paraflight.util.AndroidResourceProvider

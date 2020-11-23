@@ -1,3 +1,5 @@
+@file:Suppress("EXPERIMENTAL_API_USAGE")
+
 package com.apro.paraflight.ui.flight
 
 import android.graphics.PointF
@@ -36,7 +38,7 @@ class FlightInteractorImpl @Inject constructor(
   private val mapboxInteractor: MapboxInteractor,
   private val settingsPreferences: SettingsPreferences,
   private val voiceGuidanceInteractor: VoiceGuidanceInteractor,
-  private val mapboxSettings: MapboxSettings
+  mapboxSettings: MapboxSettings
 ) : FlightInteractor {
 
   private var scope: CoroutineScope? = null
@@ -110,10 +112,12 @@ class FlightInteractorImpl @Inject constructor(
             totalDistance += getDistance(it)
             duration = it.time - takeOffTime
 
-            val windVector = if (settingsPreferences.windDetector && flightData.size >= 30) {
+            val windVector = if (settingsPreferences.windDetector && flightData.size > 3) {
               val a = flightData.takeLast(settingsPreferences.windDetectionPoints * SettingsPreferences.WIND_DIRECTION_POINTS_STEP)
               val array = a.map {
-                PointF(sin(Math.toDegrees(it.bearing.toDouble()).toFloat()) * it.groundSpeed, cos(Math.toDegrees(it.bearing.toDouble()).toFloat()) * it.groundSpeed)
+                val angle = Math.toRadians(it.bearing.toDouble()).toFloat()
+                println(">>> azim: $ " + it.bearing)
+                PointF(sin(angle) * it.groundSpeed, cos(angle) * it.groundSpeed)
               }.toTypedArray()
               FitCircle.taubinNewton(array)
             } else WindVector()
@@ -121,7 +125,7 @@ class FlightInteractorImpl @Inject constructor(
             val windSpeed = windVector.let { sqrt((it.x.pow(2) + it.y.pow(2)).toDouble()).toFloat() }
             var winDirection = windVector.let { Math.toDegrees(asin(it.x.toDouble() / windSpeed)) }.toFloat()
 
-            println(">>> speed: $windSpeed")
+            //  println(">>> speed: $windSpeed")
 
             if (windVector.y < 0) winDirection = 180 - windSpeed
             if (windVector.y > 0 && windVector.x < 0) winDirection += 360
@@ -129,10 +133,6 @@ class FlightInteractorImpl @Inject constructor(
             if (windSpeed == 0f) {
               winDirection = 0f
             }
-
-            println(">>> $winDirection")
-
-            debugChannel.send(">>> wind deg: " + (settingsPreferences.windDetectionPoints * SettingsPreferences.WIND_DIRECTION_POINTS_STEP))
 
 
             val fd = flightModel.copy(

@@ -3,8 +3,10 @@ package com.apro.core.preferenes.di
 import android.app.Application
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.preferenes.api.SettingsPreferences
+import com.apro.core.preferenes.api.UserProfilePreferences
 import com.apro.core.preferenes.impl.MapboxPreferencesImpl
 import com.apro.core.preferenes.impl.SettingsPreferencesImpl
+import com.apro.core.preferenes.impl.UserProfilePreferencesImpl
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -49,4 +51,8 @@ abstract class PreferencesModule {
   @Binds
   @Singleton
   internal abstract fun bindsSettingsPrefs(settingsPreferences: SettingsPreferencesImpl): SettingsPreferences
+
+  @Binds
+  @Singleton
+  internal abstract fun bindsUserProfilePrefs(userProfilePreferences: UserProfilePreferencesImpl): UserProfilePreferences
 }

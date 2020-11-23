@@ -28,6 +28,9 @@ class MapboxViewModel @Inject constructor(
   private val _mapboxSettingsData = MutableLiveData<MapboxSettings>()
   val mapboxSettingsData: LiveData<MapboxSettings> = _mapboxSettingsData
 
+  private val _toastData = MutableLiveData<Pair<String, Boolean>>()
+  val toastData: LiveData<Pair<String, Boolean>> = _toastData
+
 
   init {
     viewModelScope.launch {

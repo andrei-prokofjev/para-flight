@@ -13,9 +13,7 @@ class SettingsPreferencesImpl @Inject constructor(
   private val prefs by lazy { app.getSharedPreferences(PREFS, Context.MODE_PRIVATE) }
 
   override var takeOffSpeed: Int
-    get() {
-      return prefs.getInt(TAKE_OFF_SPEED, DEFAULT_TAKE_OFF_SPEED)
-    }
+    get() = prefs.getInt(TAKE_OFF_SPEED, DEFAULT_TAKE_OFF_SPEED)
     set(value) {
       prefs.edit().putInt(TAKE_OFF_SPEED, value).apply()
     }
@@ -27,9 +25,7 @@ class SettingsPreferencesImpl @Inject constructor(
     }
 
   override var minFlightSpeed: Int
-    get() {
-      return prefs.getInt(MIN_FLIGHT_SPEED, DEFAULT_MIN_FLIGHT_SPEED)
-    }
+    get() = prefs.getInt(MIN_FLIGHT_SPEED, DEFAULT_MIN_FLIGHT_SPEED)
     set(value) {
       prefs.edit().putInt(MIN_FLIGHT_SPEED, value).apply()
     }
@@ -59,9 +55,7 @@ class SettingsPreferencesImpl @Inject constructor(
     }
 
   override var windDetectionPoints: Int
-    get() {
-      return prefs.getInt(WIND_DETECTION_POINTS, DEFAULT_WIND_DETECTION_POINTS)
-    }
+    get() = prefs.getInt(WIND_DETECTION_POINTS, DEFAULT_WIND_DETECTION_POINTS)
     set(value) {
       prefs.edit().putInt(WIND_DETECTION_POINTS, value).apply()
     }

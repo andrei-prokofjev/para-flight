@@ -6,12 +6,16 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import com.apro.core.location.engine.impl.MapboxLocationEngine
 import com.apro.core.navigation.AppNavigator
+import com.apro.core.network.Utils
+import com.apro.core.network.dto.LoginRequestDto
+import com.apro.core.network.dto.RegisterRequestDto
 import com.apro.core.ui.toast
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
@@ -40,7 +44,12 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import permissions.dispatcher.*
+import java.util.*
 
 @RuntimePermissions
 class MainActivity : AppCompatActivity() {
@@ -135,7 +144,32 @@ class MainActivity : AppCompatActivity() {
     // ui settings
     viewModel.mapboxSettingsData.observe { updateSettings(it) }
 
+    viewModel.toastData.observe { toast(it.first, it.second, Gravity.CENTER) }
+
     DI.appComponent.appRouter().newRootScreen(Screens.main(MapboxLocationEngine(this)))
+
+    login()
+  }
+
+  private fun login() {
+    GlobalScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, e ->
+      e.message?.let { toast(it, true) }
+    }) {
+      DI.preferencesApi.userProfile().uuid?.let {
+        val request = LoginRequestDto(it)
+        val response = DI.networkComponent.ppgApi().login(request)
+        toast(response.message, false, Gravity.TOP)
+      } ?: run {
+        val uuid = UUID.randomUUID().toString()
+        val ipAddress = Utils.getIPAddress(true)
+        println(">>> ip: $ipAddress")
+        val request = RegisterRequestDto(uuid, "90.191.178.61")// todo
+        val response = DI.networkComponent.ppgApi().register(request)
+
+        DI.preferencesApi.userProfile().uuid = uuid
+        toast(response.message, true)
+      }
+    }
   }
 
   @SuppressLint("MissingPermission")
