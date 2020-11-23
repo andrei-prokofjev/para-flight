@@ -168,6 +168,7 @@ class MainActivity : AppCompatActivity() {
 
         DI.preferencesApi.userProfile().uuid = uuid
         toast(response.message, true)
+        Analytics.trackEvent("successfully register")
       }
     }
   }
