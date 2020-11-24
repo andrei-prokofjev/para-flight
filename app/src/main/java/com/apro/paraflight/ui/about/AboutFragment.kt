@@ -15,9 +15,11 @@ import com.apro.core.ui.toast
 import com.apro.paraflight.BuildConfig
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
+
 import com.apro.paraflight.databinding.FragmentAboutBinding
 import com.apro.paraflight.ui.common.viewBinding
 import kotlinx.coroutines.*
+import kotlin.math.ln
 
 
 class AboutFragment : BaseFragment(R.layout.fragment_about) {
@@ -29,8 +31,46 @@ class AboutFragment : BaseFragment(R.layout.fragment_about) {
   var sensorManager: SensorManager? = null
   var pressureSensor: Sensor? = null
 
+  var count = 0
+  var sum = 0f
+
+  val max = 30
+
+  val Rr = 8.31446261815324
+  val M = 0.02898
+  val g = 9.81
+
+  var T = 2.52f
+
+  var p0 = 1000f
+
   private val sensorEventListener = object : SensorEventListener {
     override fun onSensorChanged(sensorEvent: SensorEvent) {
+
+      val p = sensorEvent.values[0]
+
+      if (count % max == 0) {
+        val pp = sum / max
+        val alt = SensorManager.getAltitude(p0, pp)
+        println(">>> alt: $alt")
+
+        binding.alt1TextView.text = String.format("alt1: %.2f", alt)
+
+        count = 0
+        sum = 0f
+
+
+        val h = (Rr * (T + 273.15f)) / (M * g) * ln(p0.toDouble() / pp)
+
+        println(">>> h: $h")
+
+        binding.alt2TextView.text = String.format("alt2: %.2f", h)
+
+      }
+
+      sum += p
+      count++
+
       binding.pressureSensorTextView.text = getString(R.string.pressure_sensor_s, String.format("%.2f", sensorEvent.values[0]))
     }
 
@@ -55,6 +95,10 @@ class AboutFragment : BaseFragment(R.layout.fragment_about) {
           lat = currentLocation.latitude,
           lon = currentLocation.longitude
         ).apply {
+
+          T = main.temp
+          p0 = main.pressure
+
           withContext(Dispatchers.Main) {
             locationNameTextView.text = resources.getString(R.string.location_name_s, this@apply.name)
             visibilityTextView.text = resources.getString(R.string.visibility_s, this@apply.visibility)
@@ -70,6 +114,8 @@ class AboutFragment : BaseFragment(R.layout.fragment_about) {
       sensorManager = getSystemService(requireContext(), SensorManager::class.java)
       pressureSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_PRESSURE)
 
+
+
       if (pressureSensor == null) {
         binding.pressureSensorTextView.text = getString(R.string.pressure_sensor_s, "unavailable :(")
       }
@@ -80,7 +126,7 @@ class AboutFragment : BaseFragment(R.layout.fragment_about) {
     super.onResume()
 
     pressureSensor?.let {
-      sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL)
+      sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_GAME)
     }
 
   }
