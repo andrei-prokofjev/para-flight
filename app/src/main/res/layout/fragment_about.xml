@@ -93,6 +93,13 @@
         android:layout_height="wrap_content"
         tools:text="@string/pressure_sensor_s" />
 
+    <TextView
+        android:id="@+id/alt3TextView"
+        style="@style/TextAppearance.About.Info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/pressure_sensor_s" />
+
   </LinearLayout>
 
 

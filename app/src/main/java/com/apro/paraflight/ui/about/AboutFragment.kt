@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
+import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.location.engine.impl.MapboxLocationEngine
 import com.apro.core.ui.BaseFragment
 import com.apro.core.ui.onClick
@@ -18,6 +19,7 @@ import com.apro.paraflight.R
 
 import com.apro.paraflight.databinding.FragmentAboutBinding
 import com.apro.paraflight.ui.common.viewBinding
+
 import kotlinx.coroutines.*
 import kotlin.math.ln
 
@@ -44,6 +46,8 @@ class AboutFragment : BaseFragment(R.layout.fragment_about) {
 
   var p0 = 1000f
 
+  var engine: LocationEngine? = null
+
   private val sensorEventListener = object : SensorEventListener {
     override fun onSensorChanged(sensorEvent: SensorEvent) {
 
@@ -65,6 +69,13 @@ class AboutFragment : BaseFragment(R.layout.fragment_about) {
         println(">>> h: $h")
 
         binding.alt2TextView.text = String.format("alt2: %.2f", h)
+
+        GlobalScope.launch {
+          val a = engine?.lastLocation()?.altitude
+          withContext(Dispatchers.Main) {
+            binding.alt3TextView.text = String.format("alt3: %.2f", a)
+          }
+        }
 
       }
 
@@ -114,7 +125,7 @@ class AboutFragment : BaseFragment(R.layout.fragment_about) {
       sensorManager = getSystemService(requireContext(), SensorManager::class.java)
       pressureSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_PRESSURE)
 
-
+      engine = MapboxLocationEngine(requireContext())
 
       if (pressureSensor == null) {
         binding.pressureSensorTextView.text = getString(R.string.pressure_sensor_s, "unavailable :(")
