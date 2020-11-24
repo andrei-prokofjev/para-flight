@@ -7,6 +7,7 @@ import com.apro.core.ui.BaseViewModel
 import com.apro.paraflight.ui.Screens
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.ui.mapbox.MapboxSettings
+import com.apro.paraflight.util.ResourceProvider
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,9 +15,10 @@ class MainScreenViewModel @Inject constructor(
   val appRouter: AppRouter,
   private val mapboxInteractor: MapboxInteractor,
   private val locationEngine: LocationEngine,
+  val resourceProvider: ResourceProvider
 
 
-  ) : BaseViewModel() {
+) : BaseViewModel() {
 
 
   fun setSettings(settings: MapboxSettings) {

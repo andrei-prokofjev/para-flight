@@ -1,4 +1,4 @@
-package com.apro.core.network.dto
+package com.apro.core.network.dto.auth
 
 import com.google.gson.annotations.SerializedName
 

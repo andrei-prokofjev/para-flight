@@ -9,6 +9,7 @@ import com.apro.paraflight.DI
 import com.apro.paraflight.di.ViewModelFactory
 import com.apro.paraflight.di.ViewModelKey
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
+import com.apro.paraflight.util.ResourceProvider
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -37,6 +38,9 @@ interface MainScreenComponent {
     @BindsInstance
     fun locationEngine(engine: LocationEngine): Builder
 
+    @BindsInstance
+    fun resourceProvider(resourceProvider: ResourceProvider): Builder
+
     fun build(): MainScreenComponent
   }
 
@@ -48,6 +52,7 @@ interface MainScreenComponent {
         .mapboxPreferences(DI.preferencesApi.mapbox())
         .mapboxInteractor(mapboxInteractor())
         .locationEngine(engine)
+        .resourceProvider(resources())
         .build()
     }
   }

@@ -14,8 +14,8 @@ import androidx.lifecycle.LiveData
 import com.apro.core.location.engine.impl.MapboxLocationEngine
 import com.apro.core.navigation.AppNavigator
 import com.apro.core.network.Utils
-import com.apro.core.network.dto.LoginRequestDto
-import com.apro.core.network.dto.RegisterRequestDto
+import com.apro.core.network.dto.auth.LoginRequestDto
+import com.apro.core.network.dto.auth.RegisterRequestDto
 import com.apro.core.ui.toast
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
