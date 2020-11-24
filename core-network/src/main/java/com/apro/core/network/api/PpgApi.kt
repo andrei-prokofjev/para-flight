@@ -15,5 +15,4 @@ interface PpgApi {
   @POST("/api/auth/client/login")
   suspend fun login(@Body requestDto: LoginRequestDto): LoginResponseDto
 
-
 }

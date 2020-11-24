@@ -48,4 +48,17 @@
     <item name="android:textColor">@color/black</item>
   </style>
 
+  <!--  About-->
+  <style name="TextAppearance.About" parent="android:TextAppearance">
+    <item name="android:textColor">@color/black</item>
+  </style>
+
+  <style name="TextAppearance.About.Info" parent="TextAppearance.About">
+    <item name="android:textSize">20sp</item>
+    <item name="fontFamily">@font/roboto_regular</item>
+    <item name="android:paddingTop">4dp</item>
+    <item name="android:paddingBottom">4dp</item>
+    <item name="android:textColor">@color/black</item>
+  </style>
+
 </resources>

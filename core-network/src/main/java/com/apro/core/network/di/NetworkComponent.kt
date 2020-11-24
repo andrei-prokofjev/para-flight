@@ -31,6 +31,7 @@ abstract class NetworkModule {
     private const val WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/"
     private const val WEATHER_API_KEY = "e8d866e50e173a70c47d194be00f2ad6"
 
+
     @Provides
     @Singleton
     fun providePpgApi(): PpgApi = Retrofit.Builder()
@@ -38,6 +39,11 @@ abstract class NetworkModule {
       .addConverterFactory(GsonConverterFactory.create())
       .client(
         OkHttpClient.Builder()
+          .addInterceptor { chain ->
+            val builder = chain.request().newBuilder()
+              .addHeader("ppg-internal-api-token", "1PPG9bvazA5dy2CDSPQgJkXK0ESXN4rlLkC0ImUx5v2rCZltP7iVLMR7mOGPf")
+            chain.proceed(builder.build())
+          }
           .addInterceptor(HttpLoggingInterceptor().apply {
             level =
               if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY

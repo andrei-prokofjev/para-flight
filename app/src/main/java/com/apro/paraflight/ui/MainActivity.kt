@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import com.apro.core.location.engine.impl.MapboxLocationEngine
 import com.apro.core.navigation.AppNavigator
-import com.apro.core.network.Utils
 import com.apro.core.network.dto.auth.LoginRequestDto
 import com.apro.core.network.dto.auth.RegisterRequestDto
 import com.apro.core.ui.toast
@@ -161,12 +160,11 @@ class MainActivity : AppCompatActivity() {
         toast(response.message, false, Gravity.TOP)
       } ?: run {
         val uuid = UUID.randomUUID().toString()
-        val ipAddress = Utils.getIPAddress(true)
-        println(">>> ip: $ipAddress")
-        val request = RegisterRequestDto(uuid, "90.191.178.61")// todo
+        val request = RegisterRequestDto(uuid)
         val response = DI.networkComponent.ppgApi().register(request)
 
         DI.preferencesApi.userProfile().uuid = uuid
+        DI.preferencesApi.userProfile().nickname = response.nickname
         toast(response.message, true)
         Analytics.trackEvent("successfully register")
       }

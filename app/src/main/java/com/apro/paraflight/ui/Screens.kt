@@ -2,6 +2,7 @@ package com.apro.paraflight.ui
 
 import com.apro.core.location.engine.api.LocationEngine
 import com.apro.paraflight.ui.about.AboutFragment
+import com.apro.paraflight.ui.about.AboutScreenComponent
 import com.apro.paraflight.ui.flight.FlightFragment
 import com.apro.paraflight.ui.flight.FlightScreenComponent
 import com.apro.paraflight.ui.logbook.LogbookFragment
@@ -23,7 +24,7 @@ object Screens {
 
   fun settings() = FragmentScreen(SettingsFragment::javaClass.name) { SettingsFragment.create() }
 
-  fun about() = FragmentScreen(AboutFragment::javaClass.name) { AboutFragment.create() }
+  fun about() = FragmentScreen(AboutFragment::javaClass.name) { AboutFragment.create(AboutScreenComponent.create()) }
 
   fun preflight() = FragmentScreen(PreflightFragment::javaClass.name) { PreflightFragment.create() }
 

@@ -21,29 +21,64 @@
       tools:ignore="ContentDescription" />
 
 
-  <TextView
-      android:id="@+id/titleTextView"
+  <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="ABOUT"
-      android:textAllCaps="true"
-      android:textColor="@color/black"
-      android:textSize="40sp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
+      android:layout_marginStart="@dimen/activity_horizontal_margin"
+      android:layout_marginTop="120dp"
+      android:orientation="vertical"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="parent">
 
-  <TextView
-      android:id="@+id/versionTextView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="20dp"
-      android:text="1.0.1"
-      android:textColor="@color/black"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+    <TextView
+        android:id="@+id/clientVersionTextView"
+        style="@style/TextAppearance.About.Info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/client_version_s" />
+
+    <TextView
+        android:id="@+id/clientNameTextView"
+        style="@style/TextAppearance.About.Info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/user_name_s" />
+
+    <TextView
+        android:id="@+id/temperatureTextView"
+        style="@style/TextAppearance.About.Info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/temperature_s" />
+
+    <TextView
+        android:id="@+id/locationNameTextView"
+        style="@style/TextAppearance.About.Info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/location_name_s" />
+
+    <TextView
+        android:id="@+id/visibilityTextView"
+        style="@style/TextAppearance.About.Info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/visibility_s" />
+
+    <TextView
+        android:id="@+id/pressureTextView"
+        style="@style/TextAppearance.About.Info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/pressure_s" />
+
+    <TextView
+        android:id="@+id/pressureSensorTextView"
+        style="@style/TextAppearance.About.Info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/pressure_sensor_s" />
+  </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

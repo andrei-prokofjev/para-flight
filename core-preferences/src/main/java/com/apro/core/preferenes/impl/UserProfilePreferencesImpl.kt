@@ -17,10 +17,16 @@ class UserProfilePreferencesImpl @Inject constructor(
     set(value) {
       prefs.edit().putString(UUID, value).apply()
     }
+  override var nickname: String?
+    get() = prefs.getString(NICKNAME, null)
+    set(value) {
+      prefs.edit().putString(NICKNAME, value).apply()
+    }
 
   private companion object {
     const val PREFS = "user_profile_preferences"
 
     const val UUID = "uuid"
+    const val NICKNAME = "nickname"
   }
 }

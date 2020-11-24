@@ -49,4 +49,9 @@ class MainScreenViewModel @Inject constructor(
     mapboxInteractor.removeLocationUpdate()
   }
 
+  fun onAboutClick() {
+    appRouter.navigateTo(Screens.about())
+  }
+
+
 }
