@@ -1,7 +1,7 @@
 package com.apro.paraflight.ui.logbook
 
 import android.location.Location
-import com.apro.core.model.Logbook
+import com.apro.core.model.LogbookModel
 import com.apro.paraflight.DI
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class LogbookRepositoryImpl @Inject constructor() : LogbookRepository {
 
-  private val logbooksChannel = ConflatedBroadcastChannel<List<Logbook>>()
+  private val logbooksChannel = ConflatedBroadcastChannel<List<LogbookModel>>()
 
   private var scope: CoroutineScope? = null
 
@@ -26,7 +26,7 @@ class LogbookRepositoryImpl @Inject constructor() : LogbookRepository {
     DI.appComponent.resources().getAssetManager().apply {
       list("")?.filter { it.endsWith(".csv") }?.let {
 
-        val logbooks = mutableListOf<Logbook>()
+        val logbooks = mutableListOf<LogbookModel>()
 
         it.forEach {
           try {
@@ -49,7 +49,7 @@ class LogbookRepositoryImpl @Inject constructor() : LogbookRepository {
 
             val start = lines[1][2].toLong()
             val end = lines.last()[2].toLong()
-            logbooks.add(Logbook(
+            logbooks.add(LogbookModel(
               name = it,
               duration = end - start,
               flightPoints = flightPoints
@@ -68,7 +68,7 @@ class LogbookRepositoryImpl @Inject constructor() : LogbookRepository {
   }
 
 
-  override suspend fun logbooksFlow(): Flow<List<Logbook>> = logbooksChannel.asFlow()
+  override suspend fun logbooksFlow(): Flow<List<LogbookModel>> = logbooksChannel.asFlow()
 
   override fun clear() {
     scope?.launch { cancel() }

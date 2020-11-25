@@ -13,10 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import com.apro.core.location.engine.impl.MapboxLocationEngine
 import com.apro.core.navigation.AppNavigator
-import com.apro.core.network.dto.auth.LoginRequestDto
-import com.apro.core.network.dto.auth.RegisterRequestDto
 import com.apro.core.ui.toast
 import com.apro.paraflight.DI
+import com.apro.paraflight.DI.appComponent
+import com.apro.paraflight.DI.preferencesApi
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.ActivityMainBinding
 import com.apro.paraflight.ui.common.BackButtonListener
@@ -145,28 +145,23 @@ class MainActivity : AppCompatActivity() {
 
     viewModel.toastData.observe { toast(it.first, it.second, Gravity.CENTER) }
 
-    DI.appComponent.appRouter().newRootScreen(Screens.main(MapboxLocationEngine(this)))
+    appComponent.appRouter().newRootScreen(Screens.main(MapboxLocationEngine(this)))
 
     login()
   }
 
   private fun login() {
-    GlobalScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, e ->
-      e.message?.let { toast(it, true) }
-    }) {
-      DI.preferencesApi.userProfile().uuid?.let {
-        val request = LoginRequestDto(it)
-        val response = DI.networkComponent.ppgApi().login(request)
-        toast(response.message, false, Gravity.TOP)
+    GlobalScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, e -> e.message?.let { toast(it, true) } }) {
+      preferencesApi.userProfile().uuid?.let {
+        val ppgLoginModel = appComponent.ppgApi().login(it)
+        preferencesApi.userProfile().nickname = ppgLoginModel.nickname
+        toast(ppgLoginModel.message)
       } ?: run {
         val uuid = UUID.randomUUID().toString()
-        val request = RegisterRequestDto(uuid)
-        val response = DI.networkComponent.ppgApi().register(request)
-
-        DI.preferencesApi.userProfile().uuid = uuid
-        DI.preferencesApi.userProfile().nickname = response.nickname
-        toast(response.message, true)
-        Analytics.trackEvent("successfully register")
+        val registrationModel = appComponent.ppgApi().register(uuid)
+        preferencesApi.userProfile().uuid = uuid
+        preferencesApi.userProfile().nickname = registrationModel.nickname
+        toast(registrationModel.message)
       }
     }
   }

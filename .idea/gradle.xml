@@ -13,12 +13,12 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/core-api" />
+            <option value="$PROJECT_DIR$/core-controller" />
             <option value="$PROJECT_DIR$/core-db" />
             <option value="$PROJECT_DIR$/core-location-engine" />
-            <option value="$PROJECT_DIR$/core-location-engine-mock" />
             <option value="$PROJECT_DIR$/core-model" />
             <option value="$PROJECT_DIR$/core-navigation" />
-            <option value="$PROJECT_DIR$/core-network" />
             <option value="$PROJECT_DIR$/core-preferences" />
             <option value="$PROJECT_DIR$/core-ui" />
             <option value="$PROJECT_DIR$/core-util" />

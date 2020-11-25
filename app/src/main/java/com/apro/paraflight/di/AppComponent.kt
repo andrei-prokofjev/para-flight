@@ -1,12 +1,14 @@
 package com.apro.paraflight.di
 
 import android.app.Application
+import com.apro.core.api.di.ApiComponent
+import com.apro.core.api.di.ApiModule
+import com.apro.core.api.di.NetworkModule
 import com.apro.core.navigation.AppRouter
 import com.apro.core.navigation.di.NavigationModule
 import com.apro.core.util.event.EventBus
 import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.core.voiceguidance.impl.VoiceGuidanceImpl
-
 import com.apro.paraflight.ui.mapbox.MapboxInteractor
 import com.apro.paraflight.ui.mapbox.MapboxInteractorImpl
 import com.apro.paraflight.util.AndroidResourceProvider
@@ -17,9 +19,15 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-@Component(modules = [AppModule::class, NavigationModule::class])
+@Component(modules = [
+  AppModule::class,
+  NavigationModule::class,
+  NetworkModule::class,
+  ApiModule::class
+
+])
 @Singleton
-interface AppComponent {
+interface AppComponent : ApiComponent {
 
   fun mapboxInteractor(): MapboxInteractor
 
@@ -59,6 +67,7 @@ class AppModule(private val app: Application) {
   @Provides
   @Singleton
   fun provideVoiceGuidance(): VoiceGuidance = VoiceGuidanceImpl(app)
+
 }
 
 
