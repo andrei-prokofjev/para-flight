@@ -8,6 +8,7 @@ import android.location.Location
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.apro.core.location.engine.api.LocationEngine
+import com.barbeaudev.geotools.referencing.operation.transform.EarthGravitationalModel
 import com.mapbox.android.core.location.LocationEngineCallback
 import com.mapbox.android.core.location.LocationEngineProvider
 import com.mapbox.android.core.location.LocationEngineRequest
@@ -29,6 +30,8 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
   var scope: CoroutineScope? = null
 
+  val earthGravitationalModel = EarthGravitationalModel()
+
   init {
     clear()
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
@@ -39,8 +42,10 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
       Timber.d("location update: %s", result.lastLocation)
       result.lastLocation?.let {
 
-        it.altitude = 10.0
-        scope?.launch { updateLocationChannel.send(it) }
+        scope?.launch {
+          it.altitude += earthGravitationalModel.heightOffset(it.altitude, it.longitude, it.altitude)
+          updateLocationChannel.send(it)
+        }
       }
     }
 

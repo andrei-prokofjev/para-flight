@@ -80,7 +80,7 @@ dependencies {
   implementation(project(":core-db"))
   implementation(project(":core-navigation"))
   implementation(project(":core-voice-guidance"))
-  implementation(project(":core-location-engine"))
+  implementation(project(":core-engine"))
   implementation(project(":core-api"))
 
   implementation(Libs.kotlin)

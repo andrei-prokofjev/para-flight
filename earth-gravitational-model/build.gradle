@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('earth-gravitational-model-1.0.0.jar'))

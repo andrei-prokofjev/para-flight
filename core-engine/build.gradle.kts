@@ -30,6 +30,7 @@ android {
 dependencies {
   implementation(project(":core-model"))
   implementation(project(":core-util"))
+  implementation(project(":earth-gravitational-model"))
 
   implementation(Libs.kotlin)
   implementation(Libs.ktx)
@@ -38,13 +39,10 @@ dependencies {
   implementation(Libs.mapbox)
   implementation(Libs.mapboxSurf)
 
-
   implementation(Libs.coroutines)
   implementation(Libs.timber)
-
 
   testImplementation(TestLibs.junit)
   androidTestImplementation(TestLibs.testJunit)
   androidTestImplementation(TestLibs.espresso)
-
 }
