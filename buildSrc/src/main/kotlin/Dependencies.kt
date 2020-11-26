@@ -19,6 +19,8 @@ object Versions {
   const val dagger = "2.27"
 
   const val room = "2.2.5"
+
+  const val glide = "4.11.0"
 }
 
 object Libs {
@@ -80,6 +82,11 @@ object Libs {
   const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
 
   const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.5"
+
+  //Glide
+  const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
+  const val glideCompiler = "com.github.bumptech.glide:compiler:${Versions.glide}"
+  const val glideTransformations = "jp.wasabeef:glide-transformations:4.1.0"
 
 }
 

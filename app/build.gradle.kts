@@ -126,5 +126,9 @@ dependencies {
 
   debugImplementation(Libs.leakCanary)
 
+  implementation(Libs.glide)
+  kapt(Libs.glideCompiler)
+  implementation(Libs.glideTransformations)
+
 
 }

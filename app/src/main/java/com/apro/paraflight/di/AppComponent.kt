@@ -6,6 +6,8 @@ import com.apro.core.api.di.ApiModule
 import com.apro.core.api.di.NetworkModule
 import com.apro.core.navigation.AppRouter
 import com.apro.core.navigation.di.NavigationModule
+import com.apro.core.preferenes.di.PreferencesApi
+import com.apro.core.preferenes.di.PreferencesModule
 import com.apro.core.util.event.EventBus
 import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.core.voiceguidance.impl.VoiceGuidanceImpl
@@ -23,11 +25,11 @@ import javax.inject.Singleton
   AppModule::class,
   NavigationModule::class,
   NetworkModule::class,
-  ApiModule::class
-
+  ApiModule::class,
+  PreferencesModule::class
 ])
 @Singleton
-interface AppComponent : ApiComponent {
+interface AppComponent : ApiComponent, PreferencesApi {
 
   fun mapboxInteractor(): MapboxInteractor
 
@@ -45,6 +47,7 @@ interface AppComponent : ApiComponent {
     fun create(app: Application): AppComponent =
       DaggerAppComponent.builder()
         .appModule(AppModule(app))
+        .preferencesModule(PreferencesModule(app))
         .build()
   }
 }

@@ -1,7 +1,6 @@
 package com.apro.core.voiceguidance.di
 
 import android.app.Application
-import com.apro.core.preferenes.di.PreferencesModule
 import com.apro.core.voiceguidance.api.VoiceGuidance
 import com.apro.core.voiceguidance.impl.VoiceGuidanceImpl
 import dagger.Binds
@@ -10,7 +9,7 @@ import dagger.Component
 import dagger.Module
 import javax.inject.Singleton
 
-@Component(modules = [VoiceGuidanceModule::class, PreferencesModule::class])
+@Component(modules = [VoiceGuidanceModule::class])
 @Singleton
 interface VoiceGuidanceComponent {
 

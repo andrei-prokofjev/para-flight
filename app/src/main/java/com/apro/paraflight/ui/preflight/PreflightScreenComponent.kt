@@ -38,7 +38,7 @@ interface PreflightScreenComponent {
       DaggerPreflightScreenComponent.builder()
         .appRouter(appRouter())
         .eventBus(eventBus())
-        .mapboxPreferences(DI.preferencesApi.mapbox())
+        .mapboxPreferences(mapboxPreferences())
         .build()
     }
   }

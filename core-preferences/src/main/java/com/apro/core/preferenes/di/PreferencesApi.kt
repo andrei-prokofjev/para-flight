@@ -7,10 +7,10 @@ import com.apro.core.preferenes.api.UserProfilePreferences
 
 interface PreferencesApi {
 
-  fun mapbox(): MapboxPreferences
+  fun mapboxPreferences(): MapboxPreferences
 
-  fun settings(): SettingsPreferences
+  fun settingsPreferences(): SettingsPreferences
 
-  fun userProfile(): UserProfilePreferences
+  fun userProfilePreferences(): UserProfilePreferences
 
 }

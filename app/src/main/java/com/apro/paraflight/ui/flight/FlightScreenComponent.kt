@@ -65,12 +65,12 @@ interface FlightScreenComponent {
         .locationEngine(engine)
         .mapboxSettings(settings)
         .resources(resources())
-        .mapboxPreferences(DI.preferencesApi.mapbox())
+        .mapboxPreferences(mapboxPreferences())
         .appRouter(appRouter())
         .eventBus(eventBus())
         .mapboxInteractor(mapboxInteractor())
         .voiceGuidance(voiceGuidance())
-        .settingsPreferences(DI.preferencesApi.settings())
+        .settingsPreferences(settingsPreferences())
         .build()
     }
   }

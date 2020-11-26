@@ -3,7 +3,9 @@ package com.apro.core.api
 import com.apro.controller.dto.auth.LoginResponseDto
 import com.apro.controller.dto.auth.RegisterResponseDto
 import com.apro.controller.dto.weather.*
-import com.apro.core.model.*
+import com.apro.core.model.PpgLoginModel
+import com.apro.core.model.PpgRegisterModel
+import com.apro.core.model.weather.*
 
 
 fun RegisterResponseDto.model() = PpgRegisterModel(
@@ -30,7 +32,7 @@ fun WeatherResponseDto.model() = WeatherDataModel(
   snow = snow?.model()
 )
 
-fun CoordDto.model() = LatLngModel(
+fun CoordDto.model() = CoordModel(
   latitude = lat.toDouble(),
   longitude = lon.toDouble()
 )

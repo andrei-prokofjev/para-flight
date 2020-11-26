@@ -1,7 +1,6 @@
 package com.apro.paraflight.ui.mapbox
 
 import androidx.lifecycle.ViewModel
-import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.core.preferenes.api.SettingsPreferences
@@ -56,14 +55,14 @@ interface MapboxScreenComponent {
   }
 
   companion object {
-    fun create(locationEngine: LocationEngine) = with(DI.appComponent) {
+    fun create() = with(DI.appComponent) {
       DaggerMapboxScreenComponent.builder()
         .appRouter(appRouter())
         .resources(resources())
-        .mapboxPreferences(DI.preferencesApi.mapbox())
+        .mapboxPreferences(mapboxPreferences())
         .eventBus(eventBus())
         .mapboxInteractor(mapboxInteractor())
-        .settingsPreferences(DI.preferencesApi.settings())
+        .settingsPreferences(settingsPreferences())
         .voiceGuidance(voiceGuidance())
         .build()
     }

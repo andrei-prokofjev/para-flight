@@ -1,6 +1,7 @@
 package com.apro.core.api.di
 
 import com.apro.core.api.*
+import com.apro.core.preferenes.api.SettingsPreferences
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -30,7 +31,7 @@ class NetworkModule {
 //      deviceInfo: DeviceInfo,
 //      eventBus: EventBus,
     // preferencesApi: PreferencesApi,
-//    settingsPreferences: SettingsPreferences, // todo:
+
     gson: Gson
   ): OkHttpClient {
 
@@ -53,15 +54,14 @@ class NetworkModule {
   @Singleton
   @WeatherHttpClient
   fun provideWhetherOkHttpClient(
-//    units: String,
-//    appId: String,
+    settingsPreferences: SettingsPreferences,
     gson: Gson
   ): OkHttpClient {
 
     return OkHttpClient.Builder()
       .addInterceptor { chain ->
         val url = chain.request().url.newBuilder()
-          .addQueryParameter("units", "metric") // todo:
+          .addQueryParameter("units", settingsPreferences.units.name)
           .addQueryParameter("appId", WEATHER_API_KEY) // todo:
           .build()
 

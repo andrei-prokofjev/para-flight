@@ -54,7 +54,7 @@ class MapboxInteractorImpl @Inject constructor() : MapboxInteractor {
   }
 
   override fun changeMapStyle() {
-    val mapboxPreferences = DI.preferencesApi.mapbox()
+    val mapboxPreferences = DI.appComponent.mapboxPreferences()
     val nextStyle = (mapboxPreferences.mapStyle.ordinal + 1) % MapboxPreferences.MapStyle.values().size
     val mapStyle = MapboxPreferences.MapStyle.values()[nextStyle]
     mapboxPreferences.mapStyle = mapStyle

@@ -14,9 +14,7 @@ import androidx.lifecycle.LiveData
 import com.apro.core.location.engine.impl.MapboxLocationEngine
 import com.apro.core.navigation.AppNavigator
 import com.apro.core.ui.toast
-import com.apro.paraflight.DI
 import com.apro.paraflight.DI.appComponent
-import com.apro.paraflight.DI.preferencesApi
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.ActivityMainBinding
 import com.apro.paraflight.ui.common.BackButtonListener
@@ -56,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
   private val navigator = AppNavigator(this, R.id.mainContainerView, supportFragmentManager, supportFragmentManager.fragmentFactory)
 
-  private val component by lazy { MapboxScreenComponent.create(MapboxLocationEngine(this)) }
+  private val component by lazy { MapboxScreenComponent.create() }
 
   lateinit var binding: ActivityMainBinding
 
@@ -102,7 +100,7 @@ class MainActivity : AppCompatActivity() {
           it.addOnMapClickListener { l ->
 
 
-            DI.appComponent.mapboxInteractor().requestLastLocation(MapboxLocationEngine(context))
+            appComponent.mapboxInteractor().requestLastLocation(MapboxLocationEngine(context))
             true
           }
 
@@ -114,7 +112,7 @@ class MainActivity : AppCompatActivity() {
             isCompassEnabled = false
           }
 
-          it.setStyle(DI.preferencesApi.mapbox().mapStyle.style) { style ->
+          it.setStyle(appComponent.mapboxPreferences().mapStyle.style) { style ->
             enableLocationComponentWithPermissionCheck(style)
 
             style.addSource(GeoJsonSource(ROUTE_SOURCE_ID))
@@ -152,15 +150,15 @@ class MainActivity : AppCompatActivity() {
 
   private fun login() {
     GlobalScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, e -> e.message?.let { toast(it, true) } }) {
-      preferencesApi.userProfile().uuid?.let {
+      appComponent.userProfilePreferences().uuid?.let {
         val ppgLoginModel = appComponent.ppgApi().login(it)
-        preferencesApi.userProfile().nickname = ppgLoginModel.nickname
+        appComponent.userProfilePreferences().nickname = ppgLoginModel.nickname
         toast(ppgLoginModel.message)
       } ?: run {
         val uuid = UUID.randomUUID().toString()
         val registrationModel = appComponent.ppgApi().register(uuid)
-        preferencesApi.userProfile().uuid = uuid
-        preferencesApi.userProfile().nickname = registrationModel.nickname
+        appComponent.userProfilePreferences().uuid = uuid
+        appComponent.userProfilePreferences().nickname = registrationModel.nickname
         toast(registrationModel.message)
       }
     }
@@ -232,12 +230,12 @@ class MainActivity : AppCompatActivity() {
 
   override fun onResume() {
     super.onResume()
-    DI.appComponent.navigatorHolder().setNavigator(navigator)
+    appComponent.navigatorHolder().setNavigator(navigator)
     mapView.onResume()
   }
 
   override fun onPause() {
-    DI.appComponent.navigatorHolder().removeNavigator()
+    appComponent.navigatorHolder().removeNavigator()
     mapView.onPause()
     super.onPause()
   }

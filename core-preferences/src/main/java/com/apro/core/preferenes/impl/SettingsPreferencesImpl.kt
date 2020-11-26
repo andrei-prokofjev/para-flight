@@ -10,6 +10,11 @@ class SettingsPreferencesImpl @Inject constructor(
   app: Application
 ) : SettingsPreferences {
 
+
+  init {
+    println(">>> INIT $ " + hashCode())
+  }
+
   private val prefs by lazy { app.getSharedPreferences(PREFS, Context.MODE_PRIVATE) }
 
   override var takeOffSpeed: Int

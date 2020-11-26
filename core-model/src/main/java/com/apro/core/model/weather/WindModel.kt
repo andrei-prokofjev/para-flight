@@ -1,4 +1,4 @@
-package com.apro.core.model
+package com.apro.core.model.weather
 
 data class WindModel(
   val speed: Float,

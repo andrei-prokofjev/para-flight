@@ -49,7 +49,7 @@ interface MainScreenComponent {
       DaggerMainScreenComponent.builder()
         .appRouter(appRouter())
         .eventBus(eventBus())
-        .mapboxPreferences(DI.preferencesApi.mapbox())
+        .mapboxPreferences(mapboxPreferences())
         .mapboxInteractor(mapboxInteractor())
         .locationEngine(engine)
         .resourceProvider(resources())

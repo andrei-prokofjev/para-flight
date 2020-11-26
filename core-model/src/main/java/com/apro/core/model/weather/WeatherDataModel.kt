@@ -1,10 +1,10 @@
-package com.apro.core.model
+package com.apro.core.model.weather
 
 data class WeatherDataModel(
   val id: Long,
   val name: String,
   val time: Long,
-  val location: LatLngModel,
+  val location: CoordModel,
   val weather: List<WeatherModel>,
   val main: MainModel,
   val visibility: Int,

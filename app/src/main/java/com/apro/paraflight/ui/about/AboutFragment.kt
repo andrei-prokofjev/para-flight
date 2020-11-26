@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.location.engine.impl.MapboxLocationEngine
-import com.apro.core.model.LatLngModel
+import com.apro.core.model.weather.CoordModel
 import com.apro.core.ui.BaseFragment
 import com.apro.core.ui.onClick
 import com.apro.paraflight.BuildConfig
@@ -50,14 +50,16 @@ class AboutFragment : BaseFragment(R.layout.fragment_about) {
 
     with(binding) {
       clientVersionTextView.text = resources.getString(R.string.client_version_s, BuildConfig.VERSION_NAME)
-      clientNameTextView.text = resources.getString(R.string.user_name_s, DI.preferencesApi.userProfile().nickname ?: "-")
+      clientNameTextView.text = resources.getString(R.string.user_name_s, DI.appComponent.userProfilePreferences().nickname ?: "-")
 
       GlobalScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, e -> e.message?.let { e.printStackTrace() } }) {
 
         val engine = MapboxLocationEngine(this@AboutFragment.requireContext())
         val currentLocation = engine.lastLocation()
 
-        val weather = DI.appComponent.weatherApi().getWeatherByLocation(LatLngModel(currentLocation.latitude, currentLocation.longitude))
+        val weather = DI.appComponent.weatherApi().getWeatherByLocation(CoordModel(currentLocation.latitude, currentLocation.longitude))
+
+        println(">>> weather: $weather")
 
         withContext(Dispatchers.Main) {
           locationNameTextView.text = resources.getString(R.string.location_name_s, weather.name)

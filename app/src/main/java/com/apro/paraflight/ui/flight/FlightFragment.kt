@@ -29,7 +29,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
     with(binding) {
       viewModel.flightData.observe {
 
-        when (DI.preferencesApi.settings().units) {
+        when (DI.appComponent.settingsPreferences().units) {
           SettingsPreferences.Units.METRIC -> {
             speedMeterView.amount = it.groundSpeed.metersPerSecond.convertTo(Speed.KilometerPerHour).amount.roundToInt().toString()
             speedMeterView.unit = getString(R.string.km_h)
@@ -50,12 +50,12 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
         timeMeterView.amount = it.duration?.toTimeFormat() ?: "-:-"
 
         windSpeedTextView.text = it.windSpeed?.roundTo(1)?.toString() ?: "-"
-        windSpeedTextView.isVisible = DI.preferencesApi.settings().windDetector
+        windSpeedTextView.isVisible = DI.appComponent.settingsPreferences().windDetector
 
         it.winDirection?.let {
           windDirectionView.rotation = it
         }
-        windDirectionView.isVisible = it.winDirection != null && DI.preferencesApi.settings().windDetector
+        windDirectionView.isVisible = it.winDirection != null && DI.appComponent.settingsPreferences().windDetector
       }
 
       layerImageButton.onClick { viewModel.onLayerClick() }

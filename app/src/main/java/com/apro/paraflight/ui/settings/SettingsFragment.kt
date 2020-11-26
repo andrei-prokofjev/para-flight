@@ -32,7 +32,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
         takeOffSpeedPicker.maxValue = SettingsPreferences.MAX_TAKE_OFF_SPEED
         takeOffSpeedPicker.wrapSelectorWheel = false
         takeOffSpeedPicker.setOnValueChangedListener { _, _, new -> viewModel.saveTakeOffSpeed(new) }
-        takeOffSpeedPicker.value = DI.preferencesApi.settings().takeOffSpeed
+        takeOffSpeedPicker.value = DI.appComponent.settingsPreferences().takeOffSpeed
 
         takeOffAltDiffPicker.minValue = SettingsPreferences.MIN_TAKE_OFF_ALT_DIFF
         takeOffAltDiffPicker.maxValue = SettingsPreferences.MAX_TAKE_OFF_ALT_DIFF
@@ -46,24 +46,24 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
         } catch (e: Exception) {
           // ignore
         }
-        takeOffAltDiffPicker.value = DI.preferencesApi.settings().takeOffAltDiff
+        takeOffAltDiffPicker.value = DI.appComponent.settingsPreferences().takeOffAltDiff
         takeOffAltDiffPicker.setOnValueChangedListener { _, _, new -> viewModel.saveTakeOffAlt(new) }
 
         minFlightSpeedPicker.minValue = SettingsPreferences.MIN_MIN_FLIGHT_SPEED
         minFlightSpeedPicker.maxValue = SettingsPreferences.MAX_MIN_FLIGHT_SPEED
         minFlightSpeedPicker.wrapSelectorWheel = false
         minFlightSpeedPicker.setOnValueChangedListener { _, _, new -> viewModel.saveMinFlightSpeed(new) }
-        minFlightSpeedPicker.value = DI.preferencesApi.settings().minFlightSpeed
+        minFlightSpeedPicker.value = DI.appComponent.settingsPreferences().minFlightSpeed
       }
 
       with(voiceGuidanceLayout) {
         voiceGuidanceSwitch.setOnCheckedChangeListener { _, on -> viewModel.saveVoiceGuidance(on) }
-        voiceGuidanceSwitch.isChecked = DI.preferencesApi.settings().voiceGuidance
+        voiceGuidanceSwitch.isChecked = DI.appComponent.settingsPreferences().voiceGuidance
       }
 
       with(windDetectorLayout) {
         windDetectorSwitch.setOnCheckedChangeListener { _, on -> viewModel.saveWindDetector(on) }
-        windDetectorSwitch.isChecked = DI.preferencesApi.settings().windDetector
+        windDetectorSwitch.isChecked = DI.appComponent.settingsPreferences().windDetector
 
         pointsNumberPicker.minValue = SettingsPreferences.MIN_WIND_DETECTION_POINTS
         pointsNumberPicker.maxValue = SettingsPreferences.MAX_WIND_DETECTION_POINTS
@@ -81,11 +81,11 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
           // ignore
         }
 
-        pointsNumberPicker.value = DI.preferencesApi.settings().windDetectionPoints
+        pointsNumberPicker.value = DI.appComponent.settingsPreferences().windDetectionPoints
       }
 
       with(unitsLayout) {
-        when (DI.preferencesApi.settings().units) {
+        when (DI.appComponent.settingsPreferences().units) {
           SettingsPreferences.Units.METRIC -> unitsRadioGroup.check(R.id.metricRadioButton)
           SettingsPreferences.Units.IMPERIAL -> unitsRadioGroup.check(R.id.imperialRadioButton)
         }
