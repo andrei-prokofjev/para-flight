@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class MapboxInteractorImpl @Inject constructor() : MapboxInteractor {
 
   private var locationEngine: LocationEngine? = null
