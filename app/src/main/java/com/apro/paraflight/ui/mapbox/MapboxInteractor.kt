@@ -2,6 +2,7 @@ package com.apro.paraflight.ui.mapbox
 
 import android.location.Location
 import com.apro.core.location.engine.api.LocationEngine
+import com.apro.core.location.engine.model.DilutionOfPrecision
 import kotlinx.coroutines.flow.Flow
 
 interface MapboxInteractor {
@@ -16,4 +17,5 @@ interface MapboxInteractor {
 
   fun mapboxSettingsFlow(): Flow<MapboxSettings>
   var mapboxSettings: MapboxSettings
+  fun dopFlow(): Flow<DilutionOfPrecision?>
 }

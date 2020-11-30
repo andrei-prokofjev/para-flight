@@ -18,6 +18,8 @@ package com.apro.core.location.engine.utils;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.apro.core.location.engine.model.DilutionOfPrecision;
 
 
@@ -88,6 +90,7 @@ public class NmeaUtils {
      * @param nmeaSentence a $GNGSA or $GPGSA NMEA sentence
      * @return the dilution of precision, or null if dilution of precision can't be parsed
      */
+    @Nullable
     public static DilutionOfPrecision getDop(String nmeaSentence) {
         final int PDOP_INDEX = 15;
         final int HDOP_INDEX = 16;

@@ -1,6 +1,7 @@
 package com.apro.core.location.engine.api
 
 import android.location.Location
+import com.apro.core.location.engine.model.DilutionOfPrecision
 import kotlinx.coroutines.flow.Flow
 
 interface LocationEngine {
@@ -10,5 +11,6 @@ interface LocationEngine {
 
   suspend fun lastLocation(): Location
 
+  fun dopFlow(): Flow<DilutionOfPrecision?>
   fun clear()
 }

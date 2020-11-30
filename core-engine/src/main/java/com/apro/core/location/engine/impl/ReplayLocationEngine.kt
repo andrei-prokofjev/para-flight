@@ -3,8 +3,10 @@ package com.apro.core.location.engine.impl
 import android.annotation.SuppressLint
 import android.location.Location
 import com.apro.core.location.engine.api.LocationEngine
+import com.apro.core.location.engine.model.DilutionOfPrecision
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import timber.log.Timber
 
@@ -47,6 +49,10 @@ class ReplayLocationEngine(
   }
 
   override suspend fun lastLocation() = Location("replay")
+
+  override fun dopFlow(): Flow<DilutionOfPrecision?> {
+    TODO("Not yet implemented")
+  }
 
 
   override fun clear() {

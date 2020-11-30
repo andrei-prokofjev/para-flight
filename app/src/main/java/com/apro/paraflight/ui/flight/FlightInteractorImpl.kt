@@ -82,7 +82,13 @@ class FlightInteractorImpl @Inject constructor(
     scope?.launch {
       mapboxInteractor.locationUpdatesFlow().collect {
 
-        val flightModel = FlightModel(lng = it.longitude, lat = it.latitude, alt = it.altitude, groundSpeed = it.speed, bearing = it.bearing)
+        val flightModel = FlightModel(
+          lng = it.longitude,
+          lat = it.latitude,
+          alt = it.altitude + settingsPreferences.altitudeOffset - 20,
+          groundSpeed = it.speed,
+          bearing = it.bearing
+        )
 
 
         when (flightState) {
@@ -221,7 +227,7 @@ class FlightInteractorImpl @Inject constructor(
     flightData.forEach { sum += it.groundSpeed }
     val averageSpeed = sum / flightData.size
 
-    appRouter.openModalBottomSheet(FlightSummaryBottomSheetDialogFragment.create(
+    appRouter.openModalDialogFragment(FlightSummaryBottomSheetDialogFragment.create(
       totalDistance.toInt(),
       duration,
       averageSpeed.roundTo(1)))

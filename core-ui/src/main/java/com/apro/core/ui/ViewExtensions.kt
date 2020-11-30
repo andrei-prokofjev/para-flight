@@ -18,9 +18,9 @@ import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 const val DEFAULT_THROTTLE_DURATION = 300L
 
@@ -149,7 +149,7 @@ fun Activity.statusBarHeightFromResources(): Int {
   return 0
 }
 
-fun FragmentActivity.modal(fragment: BottomSheetDialogFragment) {
+fun FragmentActivity.modal(fragment: DialogFragment) {
   fragment.show(supportFragmentManager, fragment.javaClass.simpleName)
 }
 

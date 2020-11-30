@@ -2,6 +2,7 @@ package com.apro.paraflight.ui.mapbox
 
 import android.location.Location
 import com.apro.core.location.engine.api.LocationEngine
+import com.apro.core.location.engine.model.DilutionOfPrecision
 import com.apro.core.preferenes.api.MapboxPreferences
 import com.apro.paraflight.DI
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +29,9 @@ class MapboxInteractorImpl @Inject constructor() : MapboxInteractor {
   private val mapboxSettingsChannel = ConflatedBroadcastChannel<MapboxSettings>()
   override fun mapboxSettingsFlow() = mapboxSettingsChannel.asFlow()
 
+  private val dopChannel = ConflatedBroadcastChannel<DilutionOfPrecision?>()
+  override fun dopFlow() = dopChannel.asFlow()
+
   override var mapboxSettings: MapboxSettings
     get() = mapboxSettingsChannel.value
     set(value) {
@@ -36,6 +40,12 @@ class MapboxInteractorImpl @Inject constructor() : MapboxInteractor {
 
   override fun requestLocationUpdates(locationEngine: LocationEngine) {
     this.locationEngine = locationEngine.apply { requestLocationUpdates() }
+
+    GlobalScope.launch {
+      locationEngine.dopFlow().collect {
+        dopChannel.send(it)
+      }
+    }
 
     GlobalScope.launch {
       locationEngine.updateLocationFlow().collect {

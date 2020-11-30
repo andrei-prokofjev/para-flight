@@ -19,19 +19,6 @@ class AppNavigator constructor(
 
     when (command) {
       is ModalDialog -> fragmentActivity.modal(command.fragment)
-      is PersistentDialog -> persistent(command)
     }
-  }
-
-  private fun persistent(command: PersistentDialog) {
-//    when (val screen = command.screen as AppScreen) {
-//      is ActivityScreen -> {
-//        //checkAndStartActivity(screen)
-//      }
-//      is FragmentScreen -> {
-////        val type = if (command.clearContainer) TransactionInfo.Type.REPLACE else TransactionInfo.Type.ADD
-////        commitNewFragmentScreen(screen, type, true)
-//      }
-//    }
   }
 }

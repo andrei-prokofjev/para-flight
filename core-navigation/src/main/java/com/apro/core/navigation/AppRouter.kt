@@ -1,22 +1,16 @@
 package com.apro.core.navigation
 
+import androidx.fragment.app.DialogFragment
 import com.github.terrakok.cicerone.Command
 import com.github.terrakok.cicerone.Router
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
 class AppRouter : Router() {
 
-  fun openModalBottomSheet(fragment: BottomSheetDialogFragment) {
+  fun openModalDialogFragment(fragment: DialogFragment) {
     executeCommands(ModalDialog(fragment))
-  }
-
-  fun openPersistentBottomSheet() {
-    executeCommands(PersistentDialog())
   }
 
 }
 
-data class ModalDialog(val fragment: BottomSheetDialogFragment) : Command
-
-class PersistentDialog : Command
+data class ModalDialog(val fragment: DialogFragment) : Command

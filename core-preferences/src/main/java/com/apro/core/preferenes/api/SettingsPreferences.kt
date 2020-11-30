@@ -22,6 +22,8 @@ interface SettingsPreferences {
 
   var windDetectionPoints: Int
 
+  var altitudeOffset: Int
+
   companion object {
     const val MIN_TAKE_OFF_SPEED = 5
     const val MAX_TAKE_OFF_SPEED = 25

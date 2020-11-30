@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import com.apro.core.location.engine.api.LocationEngine
+import com.apro.core.location.engine.model.DilutionOfPrecision
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import timber.log.Timber
 import java.io.File
@@ -51,6 +53,9 @@ class FileLocationEngine(val context: Context, private val file: File) : Locatio
   }
 
   override suspend fun lastLocation() = Location(file.name)
+  override fun dopFlow(): Flow<DilutionOfPrecision?> {
+    TODO("Not yet implemented")
+  }
 
 
   override fun clear() {

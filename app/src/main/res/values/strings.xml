@@ -40,6 +40,9 @@
   <string name="points">points</string>
   <string name="location_name_s">Location name: %s</string>
   <string name="visibility_s">Visibility: %d m</string>
+  <string name="reset">reset</string>
+  <string name="apply">apply</string>
+  <string name="auto">auto</string>
 
 
 </resources>

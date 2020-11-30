@@ -48,6 +48,17 @@
       app:mv_name="@string/asl"
       app:mv_unit="@string/m" />
 
+  <View
+      android:id="@+id/dopView"
+      android:layout_width="10dp"
+      android:layout_height="10dp"
+      android:layout_marginStart="4dp"
+      android:layout_marginBottom="4dp"
+      android:background="@drawable/bg_circle"
+      android:backgroundTint="@android:color/holo_red_light"
+      app:layout_constraintBottom_toBottomOf="@id/altitudeMeterView"
+      app:layout_constraintStart_toStartOf="@id/altitudeMeterView" />
+
   <ImageButton
       android:id="@+id/layerImageButton"
       style="@style/Paraflight.Button.Default"

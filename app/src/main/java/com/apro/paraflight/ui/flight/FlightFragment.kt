@@ -3,17 +3,20 @@ package com.apro.paraflight.ui.flight
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.ui.BaseFragment
 import com.apro.core.ui.onClick
+import com.apro.core.ui.onLongClick
 import com.apro.core.util.*
 import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.databinding.FragmentFlightBinding
 import com.apro.paraflight.ui.common.BackButtonListener
 import com.apro.paraflight.ui.common.viewBinding
+import com.mapbox.mapboxsdk.Mapbox.getApplicationContext
 import kotlin.math.roundToInt
 
 
@@ -62,6 +65,22 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
 
       viewModel.testData.observe {
         stateTextView.text = it
+      }
+
+      altitudeMeterView.onLongClick {
+        DI.appComponent.appRouter().openModalDialogFragment(AltitudeCalibrationDialog())
+      }
+
+
+      viewModel.dopData.observe {
+
+        val color = when (it?.verticalDop?.roundToInt()) {
+          0, 1, 2 -> android.R.color.holo_green_dark
+          3, 4, 5 -> android.R.color.holo_orange_dark
+          else -> android.R.color.holo_red_dark
+        }
+
+        dopView.backgroundTintList = ContextCompat.getColorStateList(getApplicationContext(), color)
       }
     }
   }

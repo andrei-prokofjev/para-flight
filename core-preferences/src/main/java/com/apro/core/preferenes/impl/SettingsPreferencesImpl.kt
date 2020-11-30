@@ -65,6 +65,12 @@ class SettingsPreferencesImpl @Inject constructor(
       prefs.edit().putInt(WIND_DETECTION_POINTS, value).apply()
     }
 
+  override var altitudeOffset: Int
+    get() = prefs.getInt(ALTITUDE_OFFSET, DEFAULT_ALTITUDE_OFFSET)
+    set(value) {
+      prefs.edit().putInt(ALTITUDE_OFFSET, value).apply()
+    }
+
   private companion object {
     const val PREFS = "settings_preferences"
 
@@ -91,6 +97,9 @@ class SettingsPreferencesImpl @Inject constructor(
 
     const val DEFAULT_WIND_DETECTION_POINTS = 4
     const val WIND_DETECTION_POINTS = "wind_detection_points"
+
+    const val DEFAULT_ALTITUDE_OFFSET = 20
+    const val ALTITUDE_OFFSET = "altitude_offset"
   }
 
 }
