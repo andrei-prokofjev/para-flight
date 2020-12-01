@@ -105,7 +105,6 @@ class FlightInteractorImpl @Inject constructor(
               mapboxInteractor.getEngine()?.setSeaLevelPressure(w.main.pressure)
               once = false
             }
-
           }
         }
 
