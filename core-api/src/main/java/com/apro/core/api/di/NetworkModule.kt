@@ -23,6 +23,10 @@ class NetworkModule {
   @WeatherHttpHost
   fun provideWeatherHttpHost(): String = "http://api.openweathermap.org/data/2.5/"
 
+  @Provides
+  @MapboxHttpHost
+  fun provideMapboxHttpHost(): String = "https://api.mapbox.com/v4/"
+
 
   @Provides
   @Singleton
@@ -54,8 +58,7 @@ class NetworkModule {
   @Singleton
   @WeatherHttpClient
   fun provideWhetherOkHttpClient(
-    settingsPreferences: SettingsPreferences,
-    gson: Gson
+    settingsPreferences: SettingsPreferences
   ): OkHttpClient {
 
     return OkHttpClient.Builder()
@@ -63,6 +66,28 @@ class NetworkModule {
         val url = chain.request().url.newBuilder()
           .addQueryParameter("units", settingsPreferences.units.name)
           .addQueryParameter("appId", WEATHER_API_KEY) // todo:
+          .build()
+
+        chain.proceed(chain.request().newBuilder().url(url).build())
+      }
+      .addInterceptor(HttpLoggingInterceptor().apply {
+        level =
+          if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+          else HttpLoggingInterceptor.Level.NONE
+      })
+      .build()
+  }
+
+  @Provides
+  @Singleton
+  @MapboxHttpClient
+  fun provideMapboxOkHttpClient(): OkHttpClient {
+
+    return OkHttpClient.Builder()
+
+      .addInterceptor { chain ->
+        val url = chain.request().url.newBuilder()
+          .addQueryParameter("access_token", MAPBOX_ACCESS_TOKEN)
           .build()
 
         chain.proceed(chain.request().newBuilder().url(url).build())
@@ -93,6 +118,7 @@ class NetworkModule {
 
   companion object {
     private const val WEATHER_API_KEY = "e8d866e50e173a70c47d194be00f2ad6"
+    private const val MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJja2Z5Y3hxcjMxdDJxMnd0OHFtbGFsbG1kIn0.QlXEa2eS89Z3FpwDG7EPWA"
   }
 }
 

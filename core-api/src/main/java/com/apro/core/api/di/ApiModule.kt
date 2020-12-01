@@ -23,6 +23,11 @@ class ApiModule {
   fun provideWeatherApi(@WeatherHttpClient client: OkHttpClient, gson: Gson, @WeatherHttpHost host: String): WeatherApi =
     WeatherApi(createApi(client, gson, host))
 
+  @Provides
+  @Singleton
+  fun provideMapboxApi(@MapboxHttpClient client: OkHttpClient, gson: Gson, @MapboxHttpHost host: String): MapboxApi =
+    MapboxApi(createApi(client, gson, host))
+
 
   private inline fun <reified T> createApi(client: OkHttpClient, gson: Gson, baseUrl: String): T =
     Retrofit.Builder()

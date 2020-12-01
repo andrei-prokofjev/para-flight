@@ -234,8 +234,8 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
     const val DEFAULT_INTERVAL_IN_MILLISECONDS = 2000L
     const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
 
-    const val ALTITUDE_PRECISION = 30
-    const val PRESSURE_PRECISION = 30
+    const val ALTITUDE_PRECISION = 4
+    const val PRESSURE_PRECISION = 4
     const val MIN_GPS_QUALITY_LEVEL = 3
   }
 
