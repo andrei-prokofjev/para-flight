@@ -32,6 +32,7 @@ import kotlin.coroutines.suspendCoroutine
 
 class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
+
   private var locationEngine = LocationEngineProvider.getBestLocationEngine(context)
 
   private val updateLocationChannel = ConflatedBroadcastChannel<Location>()
@@ -66,6 +67,8 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
     if (message.startsWith("\$GPGGA") || message.startsWith("\$GNGNS") || message.startsWith("\$GNGGA")) {
       val amsl = NmeaUtils.getAltitudeMeanSeaLevel(message)
 
+      println(">>> msl alt: $amsl")
+
       scope?.launch(Dispatchers.Default) {
         altitudeMslChannel.send(amsl)
       }
@@ -73,26 +76,24 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
     if (message.startsWith("\$GNGSA") || message.startsWith("\$GPGSA")) {
       val dop = NmeaUtils.getDop(message)
+
+
       dop?.let {
-        if (it.verticalDop < MIN_GPS_QUALITY_LEVEL) {
+        if (it.verticalDop < MIN_GPS_QUALITY_LEVEL && refAltitude == 0.0) {
+
           altitudeMslChannel.valueOrNull?.let {
             if (refAltitudes.size < ALTITUDE_PRECISION) {
-              refAltitudes.add(it)
-              if (refAltitudes.size == ALTITUDE_PRECISION) {
-                var sum = 0.0
-                refAltitudes.forEach { sum += it }
-                refAltitude = sum / ALTITUDE_PRECISION
-              }
+              refAltitude = it
+
             }
           }
-        } else {
-          refAltitudes.clear()
         }
       }
 
       scope?.launch(Dispatchers.Default) {
         if (refPressure > 0.0) {
           dopChannel.send(dop?.copy(baseAlt = refAltitude))
+
         } else dopChannel.send(dop)
       }
     }
@@ -113,6 +114,8 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
         }
       }
 
+      println(">>> current pressure: $ " + sensorEvent.values[0])
+
       scope?.launch(Dispatchers.IO) { pressureChannel.send(sensorEvent.values[0]) }
     }
 
@@ -127,22 +130,40 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
 //        println(">>> baseAltitude: $refAltitude")
 //        println(">>> base pressure: $refPressure")
 
+
         scope?.launch {
-          loc.altitude = pressureChannel.valueOrNull?.let {
-            if (refAltitude > 0.0 && refPressure > 0f) {
-              refAltitude + SensorManager.getAltitude(refPressure, it)
-            } else altitudeMslChannel.valueOrNull ?: 0.0
-          } ?: altitudeMslChannel.valueOrNull ?: 0.0
+
+          println(">>> --  $seaPressure + $refPressure + $refAltitude")
+
+          if (seaPressure > 0 && refPressure > 0 && refAltitude > 0) {
+            pressureChannel.valueOrNull?.let { p ->
+              println(">>> ref alt: $refAltitude")
+              val altOffset = SensorManager.getAltitude(seaPressure, refPressure) - refAltitude
+              val alt = SensorManager.getAltitude(seaPressure, p) - altOffset
+
+              loc.altitude = alt
+
+              //loc.altitude = SensorManager.getAltitude(seaPressure, it) - altitudeMslChannel.value!!
+            }
+
+          }
+//          loc.altitude = pressureChannel.valueOrNull?.let {
+//            if (refAltitude > 0.0 && refPressure > 0f) {
+//              refAltitude + SensorManager.getAltitude(refPressure, it)
+//            } else altitudeMslChannel.valueOrNull ?: 0.0
+//          } ?: altitudeMslChannel.valueOrNull ?: 0.0
 
           updateLocationChannel.send(loc)
         }
       }
     }
 
+
     override fun onFailure(exception: Exception) {
       Timber.e(">>> !!! location update error: $exception")
     }
   }
+
 
   init {
     clear()
@@ -161,6 +182,13 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
     refPressures.clear()
     refAltitudes.clear()
   }
+
+  var seaPressure = 0f
+  override fun setSeaLevelPressure(p: Float) {
+    println(">>> sea level pressue: $p")
+    seaPressure = p
+  }
+
 
   @SuppressLint("MissingPermission")
   override fun requestLocationUpdates() {
@@ -234,8 +262,8 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
     const val DEFAULT_INTERVAL_IN_MILLISECONDS = 2000L
     const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
 
-    const val ALTITUDE_PRECISION = 4
-    const val PRESSURE_PRECISION = 4
+    const val ALTITUDE_PRECISION = 20
+    const val PRESSURE_PRECISION = 20
     const val MIN_GPS_QUALITY_LEVEL = 3
   }
 

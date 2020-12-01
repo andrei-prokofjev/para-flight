@@ -39,7 +39,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
             distMeterView.amount = it.dist?.meters?.convertTo(Distance.Kilometer)?.amount?.roundTo(1)?.toString() ?: "-.-"
             distMeterView.unit = getString(R.string.km)
             altitudeMeterView.unit = getString(R.string.m)
-            altitudeMeterView.amount = if (it.alt == 0.0) "--" else it.alt.roundToInt().toString()
+            altitudeMeterView.amount = if (it.alt == 0.0) "--" else it.alt.roundTo(1).toString()
           }
           SettingsPreferences.Units.IMPERIAL -> {
             speedMeterView.amount = it.groundSpeed.metersPerSecond.convertTo(Speed.MilePerHour).amount.roundToInt().toString()

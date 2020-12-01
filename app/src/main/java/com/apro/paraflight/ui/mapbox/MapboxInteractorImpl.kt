@@ -75,5 +75,9 @@ class MapboxInteractorImpl @Inject constructor() : MapboxInteractor {
     mapboxPreferences.mapStyle = mapStyle
   }
 
+  override fun getEngine(): LocationEngine? {
+    return locationEngine
+  }
+
 
 }

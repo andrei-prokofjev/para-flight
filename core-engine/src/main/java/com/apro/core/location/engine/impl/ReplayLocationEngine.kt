@@ -62,4 +62,8 @@ class ReplayLocationEngine(
   override fun calibrate() {
 
   }
+
+  override fun setSeaLevelPressure(p: Float) {
+    TODO("Not yet implemented")
+  }
 }

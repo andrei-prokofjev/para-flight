@@ -67,6 +67,10 @@ class FileLocationEngine(val context: Context, private val file: File) : Locatio
 
   }
 
+  override fun setSeaLevelPressure(p: Float) {
+    TODO("Not yet implemented")
+  }
+
   private fun readCsv(path: String): List<Location> {
     val assets = context.assets
     val flight = mutableListOf<Location>()

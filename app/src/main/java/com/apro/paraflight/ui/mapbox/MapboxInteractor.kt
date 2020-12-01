@@ -21,4 +21,5 @@ interface MapboxInteractor {
   fun calibrate()
 
 
+  fun getEngine(): LocationEngine?
 }

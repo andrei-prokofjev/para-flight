@@ -6,11 +6,13 @@ import android.graphics.PointF
 import android.location.Location
 import android.text.format.DateUtils
 import com.apro.core.model.FlightModel
+import com.apro.core.model.weather.CoordModel
 import com.apro.core.navigation.AppRouter
 import com.apro.core.preferenes.api.SettingsPreferences
 import com.apro.core.util.Speed
 import com.apro.core.util.metersPerSecond
 import com.apro.core.util.roundTo
+import com.apro.paraflight.DI
 import com.apro.paraflight.R
 import com.apro.paraflight.core.FitCircle
 import com.apro.paraflight.core.WindVector
@@ -72,15 +74,40 @@ class FlightInteractorImpl @Inject constructor(
     clear()
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
 
+
+    scope?.launch(Dispatchers.IO) {
+
+
+    }
+
     var takeOffTime = 0L
     var duration = 0L
     var totalDistance = 0.0
     var baseAltitude = 0f
 
+    var once = true
+
     flightState = FlightInteractor.FlightState.PREPARING
 
     scope?.launch {
       mapboxInteractor.locationUpdatesFlow().collect {
+
+
+        if (once) {
+          val l = mapboxInteractor.getEngine()?.lastLocation()
+          println(">>> l: $l")
+          l?.let {
+
+
+            if (mapboxInteractor.getEngine() != null) {
+              val w = DI.appComponent.weatherApi().getWeatherByLocation(CoordModel(l.altitude, l.longitude))
+              println(">>> w " + w)
+              mapboxInteractor.getEngine()?.setSeaLevelPressure(w.main.pressure)
+              once = false
+            }
+
+          }
+        }
 
         val flightModel = FlightModel(
           lng = it.longitude,
