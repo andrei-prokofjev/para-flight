@@ -85,7 +85,7 @@ class FlightInteractorImpl @Inject constructor(
         val flightModel = FlightModel(
           lng = it.longitude,
           lat = it.latitude,
-          alt = it.altitude + settingsPreferences.altitudeOffset - 20,
+          alt = if (it.altitude == 0.0) 0.0 else it.altitude + settingsPreferences.altitudeOffset - 20,
           groundSpeed = it.speed,
           bearing = it.bearing
         )

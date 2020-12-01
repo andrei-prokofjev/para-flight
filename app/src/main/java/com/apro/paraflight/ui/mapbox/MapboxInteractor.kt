@@ -18,4 +18,7 @@ interface MapboxInteractor {
   fun mapboxSettingsFlow(): Flow<MapboxSettings>
   var mapboxSettings: MapboxSettings
   fun dopFlow(): Flow<DilutionOfPrecision?>
+  fun calibrate()
+
+
 }

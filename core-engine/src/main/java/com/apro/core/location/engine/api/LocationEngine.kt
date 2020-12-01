@@ -13,4 +13,5 @@ interface LocationEngine {
 
   fun dopFlow(): Flow<DilutionOfPrecision?>
   fun clear()
+  fun calibrate()
 }

@@ -17,6 +17,8 @@ import com.apro.paraflight.R
 class AltitudeCalibrationDialog : DialogFragment(), DialogInterface.OnClickListener {
 
 
+  private lateinit var calibrate: () -> Unit
+
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
     val v = inflater.inflate(R.layout.layout_dialog_altidude_calibration, null)
@@ -40,25 +42,20 @@ class AltitudeCalibrationDialog : DialogFragment(), DialogInterface.OnClickListe
       // ignore
     }
 
-    v.findViewById<Button>(R.id.cancelButton).onClick {
-      dismissAllowingStateLoss()
-    }
-
-    v.findViewById<Button>(R.id.applyButton).onClick {
-
-    }
-
     v.findViewById<Button>(R.id.autoButton).onClick {
 
+      calibrate.invoke()
+      dismissAllowingStateLoss()
     }
-
 
     return v
   }
 
+
   override fun onClick(dialog: DialogInterface, which: Int) {
 
   }
+
 
   override fun onDismiss(dialog: DialogInterface) {
     super.onDismiss(dialog)
@@ -68,5 +65,9 @@ class AltitudeCalibrationDialog : DialogFragment(), DialogInterface.OnClickListe
   override fun onCancel(dialog: DialogInterface) {
     super.onCancel(dialog)
     println(">>> cancel$")
+  }
+
+  fun setCalibrateClick(onCalibrate: () -> Unit) {
+    this.calibrate = onCalibrate
   }
 }

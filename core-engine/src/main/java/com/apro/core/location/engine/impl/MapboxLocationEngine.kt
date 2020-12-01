@@ -3,14 +3,18 @@ package com.apro.core.location.engine.impl
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationManager
 import android.location.LocationProvider
 import android.location.OnNmeaMessageListener
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.apro.core.location.engine.api.LocationEngine
 import com.apro.core.location.engine.model.DilutionOfPrecision
 import com.apro.core.location.engine.utils.NmeaUtils
@@ -36,8 +40,13 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
   private val altitudeMslChannel = ConflatedBroadcastChannel<Double?>()
 
   private val dopChannel = ConflatedBroadcastChannel<DilutionOfPrecision?>()
+  private val pressureChannel = ConflatedBroadcastChannel<Float?>()
+
 
   override fun dopFlow() = dopChannel.asFlow()
+
+  private var sensorManager: SensorManager? = null
+  private var pressureSensor: Sensor? = null
 
 
   var scope: CoroutineScope? = null
@@ -46,39 +55,86 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
   private var gpsProvider: LocationProvider?
 
+  private val refAltitudes = mutableListOf<Double>() // calculate average base altitudes
+  var refAltitude = 0.0
+
+  private val refPressures = mutableListOf<Float>() // calculate average base pressures
+  private var refPressure = 0f
+
 
   private val nmeaListener = OnNmeaMessageListener { message, _ ->
     if (message.startsWith("\$GPGGA") || message.startsWith("\$GNGNS") || message.startsWith("\$GNGGA")) {
+      val amsl = NmeaUtils.getAltitudeMeanSeaLevel(message)
+
       scope?.launch(Dispatchers.Default) {
-        altitudeMslChannel.send(NmeaUtils.getAltitudeMeanSeaLevel(message))
+        altitudeMslChannel.send(amsl)
       }
     }
 
     if (message.startsWith("\$GNGSA") || message.startsWith("\$GPGSA")) {
+      val dop = NmeaUtils.getDop(message)
+      dop?.let {
+        if (it.verticalDop < MIN_GPS_QUALITY_LEVEL) {
+          altitudeMslChannel.valueOrNull?.let {
+            if (refAltitudes.size < ALTITUDE_PRECISION) {
+              refAltitudes.add(it)
+              if (refAltitudes.size == ALTITUDE_PRECISION) {
+                var sum = 0.0
+                refAltitudes.forEach { sum += it }
+                refAltitude = sum / ALTITUDE_PRECISION
+              }
+            }
+          }
+        } else {
+          refAltitudes.clear()
+        }
+      }
+
       scope?.launch(Dispatchers.Default) {
-        dopChannel.send(NmeaUtils.getDop(message))
+        if (refPressure > 0.0) {
+          dopChannel.send(dop?.copy(baseAlt = refAltitude))
+        } else dopChannel.send(dop)
       }
     }
   }
 
-  init {
-    clear()
-    scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
+  private val sensorEventListener = object : SensorEventListener {
+    override fun onSensorChanged(sensorEvent: SensorEvent) {
+      dopChannel.valueOrNull?.let {
+        if (it.verticalDop < MIN_GPS_QUALITY_LEVEL) {
+          if (refPressures.size < PRESSURE_PRECISION) {
+            refPressures.add(sensorEvent.values[0])
+            if (refPressures.size == PRESSURE_PRECISION) {
+              var sum = 0f
+              refPressures.forEach { sum += it }
+              refPressure = sum / PRESSURE_PRECISION
+            }
+          }
+        }
+      }
 
-    locationManager = context.getSystemService(LOCATION_SERVICE) as? LocationManager
+      scope?.launch(Dispatchers.IO) { pressureChannel.send(sensorEvent.values[0]) }
+    }
 
-    gpsProvider = locationManager?.getProvider(LocationManager.GPS_PROVIDER)
-
+    override fun onAccuracyChanged(sensor: Sensor, i: Int) {}
   }
 
   private val locationUpdateCallback = object : LocationEngineCallback<LocationEngineResult> {
     override fun onSuccess(result: LocationEngineResult) {
       Timber.d("location update: %s", result.lastLocation)
-      result.lastLocation?.let {
+      result.lastLocation?.let { loc ->
+
+//        println(">>> baseAltitude: $refAltitude")
+//        println(">>> base pressure: $refPressure")
 
         scope?.launch {
-          it.altitude = altitudeMslChannel.valueOrNull ?: 0.0
-          updateLocationChannel.send(it)
+          loc.altitude = pressureChannel.valueOrNull?.let {
+            if (refAltitude > 0.0 && refPressure > 0f) {
+              refAltitude + SensorManager.getAltitude(refPressure, it)
+            } else altitudeMslChannel.valueOrNull ?: 0.0
+          } ?: altitudeMslChannel.valueOrNull ?: 0.0
+
+          updateLocationChannel.send(loc)
         }
       }
     }
@@ -88,12 +144,33 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
     }
   }
 
+  init {
+    clear()
+    scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
+
+    locationManager = ContextCompat.getSystemService(context, LocationManager::class.java)
+    sensorManager = ContextCompat.getSystemService(context, SensorManager::class.java)
+    pressureSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_PRESSURE)
+
+    gpsProvider = locationManager?.getProvider(LocationManager.GPS_PROVIDER)
+  }
+
+  override fun calibrate() {
+    refPressure = 0f
+    refAltitude = 0.0
+    refPressures.clear()
+    refAltitudes.clear()
+  }
 
   @SuppressLint("MissingPermission")
   override fun requestLocationUpdates() {
     if (isLocationPermissionsDenied()) return
 
     Timber.d(">>> requestLocationUpdates")
+
+    pressureSensor?.let {
+      sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL)
+    }
     locationManager?.addNmeaListener(nmeaListener)
 
     val request = LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
@@ -106,6 +183,8 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
 
   override fun removeLocationUpdates() {
     Timber.d(">>> removeLocationUpdates")
+
+    sensorManager?.unregisterListener(sensorEventListener)
     locationManager?.removeNmeaListener(nmeaListener)
     locationEngine.removeLocationUpdates(locationUpdateCallback)
   }
@@ -154,6 +233,10 @@ class MapboxLocationEngine(private val context: Context) : LocationEngine {
   companion object {
     const val DEFAULT_INTERVAL_IN_MILLISECONDS = 2000L
     const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
+
+    const val ALTITUDE_PRECISION = 30
+    const val PRESSURE_PRECISION = 30
+    const val MIN_GPS_QUALITY_LEVEL = 3
   }
 
 }

@@ -117,7 +117,7 @@ public class NmeaUtils {
                 DilutionOfPrecision dop = null;
                 try {
                     dop = new DilutionOfPrecision(Double.valueOf(pdop), Double.valueOf(hdop),
-                            Double.valueOf(vdop));
+                            Double.valueOf(vdop), 0.0);
                 } catch (NumberFormatException e) {
                     // See https://github.com/barbeau/gpstest/issues/71#issuecomment-263169174
                     Log.e(TAG, "Invalid DOP values in NMEA: " + nmeaSentence);

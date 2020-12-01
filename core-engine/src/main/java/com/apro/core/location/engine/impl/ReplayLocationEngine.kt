@@ -24,7 +24,6 @@ class ReplayLocationEngine(
     scope = CoroutineScope(CoroutineExceptionHandler { _, e -> Timber.e(e) })
   }
 
-
   @SuppressLint("MissingPermission")
   override fun requestLocationUpdates() {
     Timber.d(">>> requestLocationUpdates")
@@ -58,5 +57,9 @@ class ReplayLocationEngine(
   override fun clear() {
     scope?.coroutineContext?.cancelChildren()
     scope?.launch { cancel() }
+  }
+
+  override fun calibrate() {
+
   }
 }

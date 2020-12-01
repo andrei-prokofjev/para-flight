@@ -43,6 +43,7 @@
   <string name="reset">reset</string>
   <string name="apply">apply</string>
   <string name="auto">auto</string>
+  <string name="calibrate">calibrate</string>
 
 
 </resources>

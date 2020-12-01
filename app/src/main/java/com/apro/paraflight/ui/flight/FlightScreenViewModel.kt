@@ -59,4 +59,8 @@ class FlightScreenViewModel @Inject constructor(
     flightInteractor.clear()
     mapboxInteractor.removeLocationUpdate()
   }
+
+  fun calibrate() {
+    mapboxInteractor.calibrate()
+  }
 }

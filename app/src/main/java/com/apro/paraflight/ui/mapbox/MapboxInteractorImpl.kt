@@ -31,6 +31,9 @@ class MapboxInteractorImpl @Inject constructor() : MapboxInteractor {
 
   private val dopChannel = ConflatedBroadcastChannel<DilutionOfPrecision?>()
   override fun dopFlow() = dopChannel.asFlow()
+  override fun calibrate() {
+    locationEngine?.calibrate()
+  }
 
   override var mapboxSettings: MapboxSettings
     get() = mapboxSettingsChannel.value

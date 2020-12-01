@@ -39,7 +39,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
             distMeterView.amount = it.dist?.meters?.convertTo(Distance.Kilometer)?.amount?.roundTo(1)?.toString() ?: "-.-"
             distMeterView.unit = getString(R.string.km)
             altitudeMeterView.unit = getString(R.string.m)
-            altitudeMeterView.amount = it.alt.roundToInt().toString()
+            altitudeMeterView.amount = if (it.alt == 0.0) "--" else it.alt.roundToInt().toString()
           }
           SettingsPreferences.Units.IMPERIAL -> {
             speedMeterView.amount = it.groundSpeed.metersPerSecond.convertTo(Speed.MilePerHour).amount.roundToInt().toString()
@@ -47,7 +47,7 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
             distMeterView.amount = it.dist?.meters?.convertTo(Distance.Mile)?.amount?.roundTo(1)?.toString() ?: "-.-"
             distMeterView.unit = getString(R.string.ml)
             altitudeMeterView.unit = getString(R.string.ft)
-            altitudeMeterView.amount = it.alt.meters.convertTo(Distance.Feet).amount.roundToInt().toString()
+            altitudeMeterView.amount = if (it.alt == 0.0) "--" else it.alt.meters.convertTo(Distance.Feet).amount.roundToInt().toString()
           }
         }
         timeMeterView.amount = it.duration?.toTimeFormat() ?: "-:-"
@@ -68,17 +68,24 @@ class FlightFragment : BaseFragment(R.layout.fragment_flight), BackButtonListene
       }
 
       altitudeMeterView.onLongClick {
-        DI.appComponent.appRouter().openModalDialogFragment(AltitudeCalibrationDialog())
+        DI.appComponent.appRouter().openModalDialogFragment(AltitudeCalibrationDialog().apply {
+          setCalibrateClick {
+            DI.appComponent.settingsPreferences().altitudeOffset = 20
+            viewModel.calibrate()
+          }
+        })
       }
 
 
       viewModel.dopData.observe {
 
-        val color = when (it?.verticalDop?.roundToInt()) {
-          0, 1, 2 -> android.R.color.holo_green_dark
-          3, 4, 5 -> android.R.color.holo_orange_dark
-          else -> android.R.color.holo_red_dark
-        }
+        val color = if (it?.baseAlt == 0.0) {
+          when (it.verticalDop.roundToInt()) {
+            0, 1, 2 -> android.R.color.holo_green_dark
+            3, 4, 5 -> android.R.color.holo_orange_dark
+            else -> android.R.color.holo_red_dark
+          }
+        } else android.R.color.holo_blue_dark
 
         dopView.backgroundTintList = ContextCompat.getColorStateList(getApplicationContext(), color)
       }

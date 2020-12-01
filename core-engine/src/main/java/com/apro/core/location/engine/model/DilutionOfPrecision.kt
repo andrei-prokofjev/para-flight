@@ -18,4 +18,4 @@ package com.apro.core.location.engine.model
 /**
  * Container class for DOP values
  */
-data class DilutionOfPrecision(var positionDop: Double, var horizontalDop: Double, var verticalDop: Double)
+data class DilutionOfPrecision(var positionDop: Double, var horizontalDop: Double, var verticalDop: Double, var baseAlt: Double = 0.0)
