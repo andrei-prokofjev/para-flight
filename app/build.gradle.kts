@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.com.jcraft.jsch.ConfigRepository.defaultConfig
+
 plugins {
   id("com.android.application")
   id("kotlin-android")
@@ -22,17 +24,16 @@ android {
     }
   }
 
-  compileSdkVersion(Versions.compileSdk)
-  buildToolsVersion(Versions.buildTools)
-//  ndkVersion = "21.0.6113669"
+  compileSdkVersion(AppConfig.COMPILE_SDK)
+  buildToolsVersion(AppConfig.BUILD_TOOLS)
 
 
   defaultConfig {
     applicationId = "com.apro.paraflight"
-    minSdkVersion(Versions.minSdk)
-    targetSdkVersion(Versions.targetSdk)
-    versionCode = VERSION_CODE
-    versionName = VERSION_NAME
+    minSdkVersion(AppConfig.MIN_SDK)
+    targetSdkVersion(AppConfig.TARGET_SDK)
+    versionCode = 33
+    versionName = "VERSION_NAME"
     project.ext.set("archivesBaseName", "para-flight-" + defaultConfig.versionName)
     vectorDrawables.useSupportLibrary = true
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -40,13 +41,9 @@ android {
 
   buildTypes {
     getByName("release") {
-      isMinifyEnabled = false
+      isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-      isDebuggable = false
-      isJniDebuggable = false
       signingConfig = signingConfigs.getByName("prod")
-      isRenderscriptDebuggable = false
-      isZipAlignEnabled = true
     }
   }
 
@@ -73,15 +70,7 @@ android {
 }
 
 dependencies {
-  implementation(project(":core-ui"))
-  implementation(project(":core-model"))
-  implementation(project(":core-util"))
-  implementation(project(":core-preferences"))
-  implementation(project(":core-db"))
-  implementation(project(":core-navigation"))
-  implementation(project(":core-voice-guidance"))
-  implementation(project(":core-engine"))
-  implementation(project(":core-api"))
+
 
   implementation(Libs.kotlin)
   implementation(Libs.ktx)
@@ -129,6 +118,5 @@ dependencies {
   implementation(Libs.glide)
   kapt(Libs.glideCompiler)
   implementation(Libs.glideTransformations)
-
 
 }

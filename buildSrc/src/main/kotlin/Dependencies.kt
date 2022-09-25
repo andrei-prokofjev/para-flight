@@ -1,8 +1,4 @@
 object Versions {
-  const val buildTools = "30.0.2"
-  const val compileSdk = 29
-  const val targetSdk = 29
-  const val minSdk = 24
 
   const val kotlin = "1.4.10"
 
