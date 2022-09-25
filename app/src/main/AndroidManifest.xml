@@ -15,12 +15,11 @@
   <application
       android:name=".App"
       android:allowBackup="true"
-      android:fullBackupContent="@xml/appcenter_backup_rule"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
       android:launchMode="singleTask"
       android:roundIcon="@mipmap/ic_launcher_round"
-      android:theme="@style/AppTheme"
+
       android:usesCleartextTraffic="true"
       android:windowSoftInputMode="adjustNothing">
     <activity
@@ -28,7 +27,7 @@
         android:exported="true"
         android:launchMode="singleTask"
         android:screenOrientation="portrait"
-        android:theme="@style/TranslucentAllTheme"
+
         android:windowSoftInputMode="adjustNothing">
 
       <intent-filter>

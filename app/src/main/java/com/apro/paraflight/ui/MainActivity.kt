@@ -1,12 +1,11 @@
 package com.apro.paraflight.ui
 
 
+import android.app.Activity
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import permissions.dispatcher.RuntimePermissions
 
-@RuntimePermissions
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : Activity() {
 
 
   override fun onCreate(savedInstanceState: Bundle?) {

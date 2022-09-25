@@ -1,8 +1,0 @@
-<resources>
-  <declare-styleable name="MeterView">
-    <attr name="mv_name" format="string" />
-    <attr name="mv_unit" format="string" />
-    <attr name="mv_title" format="string" />
-    <attr name="mv_info" format="string" />
-  </declare-styleable>
-</resources>
