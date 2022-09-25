@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
             DashboardScreen(navController = navController)
           }
           composable(NavRoute.Help.pattern) {
-            HelpScreen(navController = navController)
+            HelpScreen()
           }
         }
       }
