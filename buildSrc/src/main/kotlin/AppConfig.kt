@@ -15,7 +15,7 @@ sealed class AppConfig {
 
   object ParaFlight : AppConfig() {
     override val appId = "com.apro.paraflight"
-    override val majorVersion = System.getenv("MAJOR")?.toInt() ?: 5
+    override val majorVersion = System.getenv("MAJOR")?.toInt() ?: 6
   }
 
 
