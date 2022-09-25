@@ -13,16 +13,11 @@ sealed class AppConfig {
   // Read more: https://semver.org/
   val versionName get() = "${majorVersion}.${minorVersion}.${patchNumber}+${buildNumber}"
 
-  object Security : AppConfig() {
-    override val appId = "org.malwarebytes.antimalware"
+  object ParaFlight : AppConfig() {
+    override val appId = "com.apro.paraflight"
     override val majorVersion = System.getenv("MAJOR")?.toInt() ?: 5
   }
 
-  object Endpoint : AppConfig() {
-    override val appId = "com.malwarebytes.android.ep"
-    override val majorVersion = System.getenv("MAJOR")
-      ?.toInt() ?: 1
-  }
 
   companion object {
     const val BUILD_TOOLS = "33.0.0"

@@ -1,122 +1,124 @@
-import org.gradle.internal.impldep.com.jcraft.jsch.ConfigRepository.defaultConfig
-
 plugins {
   id("com.android.application")
-  id("kotlin-android")
-  id("kotlin-android-extensions")
-  id("kotlin-kapt")
+  kotlin("android")
+  kotlin("kapt")
+//  id("dagger.hilt.android.plugin")
+  kotlin("plugin.serialization") version "1.7.10"
 }
 
 android {
 
-  signingConfigs {
-    create("prod") {
-      keyAlias = "key"
-      keyPassword = if (project.hasProperty("APRO_KEY_PASSWORD"))
-        project.property("APRO_KEY_PASSWORD") as String
-      else System.getenv()["APRO_KEY_PASSWORD"]
-
-      storeFile = file("../apro.jks")
-      storePassword = if (project.hasProperty("APRO_STORE_PASSWORD"))
-        project.property("APRO_STORE_PASSWORD") as String
-      else System.getenv()["APRO_STORE_PASSWORD"]
-
-    }
-  }
-
-  compileSdkVersion(AppConfig.COMPILE_SDK)
-  buildToolsVersion(AppConfig.BUILD_TOOLS)
-
+  compileSdk = AppConfig.COMPILE_SDK
+  buildToolsVersion = AppConfig.BUILD_TOOLS
 
   defaultConfig {
-    applicationId = "com.apro.paraflight"
-    minSdkVersion(AppConfig.MIN_SDK)
-    targetSdkVersion(AppConfig.TARGET_SDK)
-    versionCode = 33
-    versionName = "VERSION_NAME"
-    project.ext.set("archivesBaseName", "para-flight-" + defaultConfig.versionName)
-    vectorDrawables.useSupportLibrary = true
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-  }
-
-  buildTypes {
-    getByName("release") {
-      isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-      signingConfig = signingConfigs.getByName("prod")
-    }
+    applicationId = AppConfig.ParaFlight.appId
+    minSdk = AppConfig.MIN_SDK
+    targetSdk = AppConfig.TARGET_SDK
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
-
-  kotlinOptions {
-    jvmTarget = JavaVersion.VERSION_1_8.toString()
-  }
-
-  buildFeatures {
-    dataBinding = true
-    viewBinding = true
-  }
-  flavorDimensions("default")
-
-  testOptions {
-    unitTests.isReturnDefaultValues = true
-  }
-
 
 }
 
-dependencies {
-
-
-  implementation(Libs.kotlin)
-  implementation(Libs.ktx)
-  implementation(Libs.appCompat)
-  implementation(Libs.constraintLayout)
-
-  implementation(Libs.delegates)
-
-  implementation(Libs.playServicesAuth)
-
-  implementation(Libs.mapbox)
-  implementation(Libs.mapboxSurf)
-
-  implementation(Libs.navigationFragment)
-  implementation(Libs.navigationUi)
-
-  implementation(Libs.lifecycleExtensions)
-  kapt(Libs.lifecycleCompiler)
-  implementation(Libs.lifecycleViewModelKtx)
-  implementation(Libs.lifecycleRuntimeKtx)
-  implementation(Libs.lifecycleLiveData)
-
-  implementation(Libs.permissionsDispatcher)
-  kapt(Libs.permissionsDispatcherCompiler)
-
-  implementation(Libs.appcenterAnalytics)
-  implementation(Libs.appcenterCrashes)
-
-  implementation(Libs.timber)
-
-  implementation(Libs.dagger)
-  kapt(Libs.daggerCompiler)
-
-  implementation(Libs.roomRuntime)
-  implementation(Libs.roomKtx)
-
-  testImplementation(TestLibs.navigationTesting)
-
-  testImplementation(TestLibs.junit)
-  androidTestImplementation(TestLibs.testJunit)
-  androidTestImplementation(TestLibs.espresso)
-
-  debugImplementation(Libs.leakCanary)
-
-  implementation(Libs.glide)
-  kapt(Libs.glideCompiler)
-  implementation(Libs.glideTransformations)
-
-}
+//android {
+//  compileSdk = AppConfig.COMPILE_SDK
+//  buildToolsVersion = AppConfig.BUILD_TOOLS
+//
+//  defaultConfig {
+//    applicationId = AppConfig.Endpoint.appId
+//    minSdk = AppConfig.MIN_SDK
+//    targetSdk = AppConfig.TARGET_SDK
+//    versionCode = AppConfig.Endpoint.versionCode
+//    setProperty("archivesBaseName", "${project.name}_v-${defaultConfig.versionName}")
+//
+//    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//    testInstrumentationRunnerArguments += mapOf(
+//      "clearPackageData" to "true",
+//      "disableAnalytics" to "true",
+//      "useTestStorageService" to "true"
+//    )
+//  }
+//
+//  val environmentDimension = "environment"
+//  flavorDimensions += environmentDimension
+//  productFlavors {
+//    // Flavor for release builds. Default Nebula environment is PROD.
+//    create("prod") {
+//      dimension = environmentDimension
+//      buildConfigField("String", "NEBULA_URL", "\"https://cloud.malwarebytes.com/\"")
+//      manifestPlaceholders["appLink"] = "cloud.malwarebytes.com"
+//    }
+//    // Flavor to test builds by QA team. Default Nebula environment is STAGING.
+//    create("qa") {
+//      dimension = environmentDimension
+//      applicationIdSuffix = ".qa"
+//      buildConfigField("String", "NEBULA_URL", "\"https://nebula-staging.cloud.malwarebytes.com/\"")
+//      manifestPlaceholders["appLink"] = "nebula-staging.cloud.malwarebytes.com"
+//    }
+//    // Flavor to launch builds with mock server. Default Nebula URL points to the local machine where an emulator has been launched.
+//    create("localTest") {
+//      dimension = environmentDimension
+//      applicationIdSuffix = ".localTest"
+//      buildConfigField("String", "NEBULA_URL", "\"http://10.0.2.2:3001/\"")
+//      manifestPlaceholders["appLink"] = "10.0.2.2:3001"
+//    }
+//    // Flavor to launch builds from Android Studio during development process. Default Nebula environment is QA.
+//    create("dev") {
+//      dimension = environmentDimension
+//      applicationIdSuffix = ".dev"
+//      isDefault = true
+//      buildConfigField("String", "NEBULA_URL", "\"https://nebula-retina-mb-qa.eng-dev.mb-internal.com/\"")
+//      manifestPlaceholders["appLink"] = "nebula-retina-mb-qa.eng-dev.mb-internal.com"
+//    }
+//  }
+//
+//  testOptions {
+//    execution = "ANDROIDX_TEST_ORCHESTRATOR"
+//    animationsDisabled = true
+//  }
+//
+//  buildFeatures {
+//    compose = true
+//    viewBinding = true  // we need it as long as we use MB4 design in the "feature-scan" module
+//    dataBinding = true // we need it as long as we use MB4 design in the "feature-scan" module
+//  }
+//
+//  composeOptions {
+//    kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER
+//  }
+//
+//  kapt {
+//    correctErrorTypes = true
+//  }
+//}
+//
+//dependencies {
+//
+//
+//  with(Dependencies) {
+//    implementation(CORE_KTX)
+//    implementation(COMPOSE_ACTIVITY)
+//    implementation(LIFECYCLE_VIEWMODEL_COMPOSE)
+//    implementation(HILT_NAVIGATION_COMPOSE)
+//    implementation(HILT)
+//    kapt(HILT_COMPILER)
+//    implementation(SPLASHSCREEN)
+//    implementation(DATASTORE_PREFERENCES)
+//    implementation(WORKS_RUNTIME)
+//    implementation(KOTLINX_DATETIME)
+//
+//    implementation(platform(FIREBASE_BOM))
+//    implementation(FIREBASE_CRASHLYTICS)
+//    implementation(FIREBASE_ANALYTICS)
+//    implementation(FIREBASE_MESSAGING)
+//    implementation(KOTLINX_DATETIME)
+//  }
+//
+//  testImplementationsPack()
+//  testUtilImplementationsPack()
+//  androidTestImplementationsPack()
+//}
