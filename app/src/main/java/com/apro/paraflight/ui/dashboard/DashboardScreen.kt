@@ -123,7 +123,8 @@ private fun MapboxComponent(
     modifier = Modifier.fillMaxSize(),
     factory = {
       MapView(it).apply {
-        //location.setLocationProvider()
+
+      //location.setLocationProvider()
       }
     },
     update = {
