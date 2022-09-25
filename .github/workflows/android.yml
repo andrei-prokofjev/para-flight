@@ -32,7 +32,7 @@ jobs:
         run: ./gradlew assembledebug
 
       - name: Unit tests
-        run: ./gradlew testLocalTestDebugUnitTest --continue
+        run: ./gradlew testdebug --continue
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
