@@ -18,17 +18,17 @@ allprojects {
   repositories {
 
 
-    maven(url = "https://api.mapbox.com/downloads/v2/releases/maven").apply {
-      authentication {
-        create<BasicAuthentication>("basic")
-      }
-      credentials {
-        username = "mapbox"
-        password = "pk.eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJja2Z5Y3hxcjMxdDJxMnd0OHFtbGFsbG1kIn0.QlXEa2eS89Z3FpwDG7EPWA"
-      }
-    }
-
-    jcenter()
+//    maven(url = "https://api.mapbox.com/downloads/v2/releases/maven").apply {
+//      authentication {
+//        create<BasicAuthentication>("basic")
+//      }
+//      credentials {
+//        username = "mapbox"
+//        password = "pk.eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJja2Z5Y3hxcjMxdDJxMnd0OHFtbGFsbG1kIn0.QlXEa2eS89Z3FpwDG7EPWA"
+//      }
+//    }
+//
+//    jcenter()
     google()
   }
 }
