@@ -45,11 +45,18 @@ dependencies {
     implementation(HILT_NAVIGATION_COMPOSE)
     implementation(HILT)
     kapt(HILT_COMPILER)
-    implementation(SPLASHSCREEN)
     implementation(DATASTORE_PREFERENCES)
     implementation(WORKS_RUNTIME)
     implementation(KOTLINX_DATETIME)
+    implementation(COMPOSE_MATERIAL_3)
+    implementation(COMPOSE_PREVIEW)
 
+    implementation(COMPOSE_MATERIAL_3_WINDOW)
+    implementation(SPLASHSCREEN)
+    implementation(COMPOSE_MATERIAL)
+    implementation(COMPOSE_RUNTIME)
+
+    debugApi(COMPOSE_TOOLING)
   }
 
   testImplementationsPack()
