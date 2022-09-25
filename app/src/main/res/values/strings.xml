@@ -1,6 +1,6 @@
 <resources>
   <string name="app_name">Para Flight</string>
-  <string name="mapbox_access_token" translatable="false">pk.eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJja2Z5Y3hxcjMxdDJxMnd0OHFtbGFsbG1kIn0.QlXEa2eS89Z3FpwDG7EPWA</string>
+  <string name="mapbox_access_token" translatable="false">pk.eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJjbDhoNXR4N2MwNjFxM25sYzVlY3l6eTVyIn0.rKUAfBHejruszbIMLA4Qtg</string>
   <string name="app_center_access_token" translatable="false">4c85d11d-d8ff-46c7-a985-0b638b806bab</string>
   <string name="client_version_s">Client version: %s</string>
   <string name="user_name_s">User name: %s</string>

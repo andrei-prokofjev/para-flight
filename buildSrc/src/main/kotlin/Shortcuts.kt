@@ -1,6 +1,5 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.artifacts.dsl.RepositoryHandler
-import org.gradle.kotlin.dsl.maven
 
 fun DependencyHandler.testImplementationsPack() {
   listOf(
@@ -59,33 +58,10 @@ fun DependencyHandler.androidTestImplementationsPack() {
   }
 }
 
-fun DependencyHandler.flipperPack() {
-  listOf(
-    Dependencies.FLIPPER_CORE,
-    Dependencies.FLIPPER_NETWORK_PLUGIN,
-    Dependencies.FLIPPER_LEAK_CANARY_PLUGIN,
-    Dependencies.LEAK_CANARY_ANDROID,
-    Dependencies.SO_LOADER,
-    Dependencies.LOGBACK_CLASSIC
-  ).forEach {
-    add("debugApi", it)
-  }
-}
-
 fun RepositoryHandler.addArtifactRepositories() {
   google()
   mavenLocal()
   mavenCentral()
-  maven(url = "https://artifactory.corp.mb-internal.com/artifactory/bta-android-builds") {
-    credentials {
-      username = "njusufi"
-      password = "AP5HewDsWj4iuv6xm6ych7rxwHRtQbcwdw77hv"
-    }
-  }
-  maven(url = "https://dl.bintray.com/qameta/maven")
-  maven(url = "https://dl.bintray.com/populov/maven")
-  maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
-  maven(url = "https://jitpack.io")
 }
 
 

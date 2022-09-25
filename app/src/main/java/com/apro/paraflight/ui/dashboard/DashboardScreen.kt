@@ -41,6 +41,19 @@ fun DashboardScreen(navController: NavController) {
           contentDescription = null
         )
       }
+
+
+//      AndroidView(
+//        modifier = Modifier.fillMaxSize(),
+//        factory = {context ->
+//
+//          Mapb
+////          Mapbox.getInstance(
+////            context,
+////            public_api_key
+////          )
+//        }
+//      )
     }
   }
 }
