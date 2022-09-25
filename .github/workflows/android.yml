@@ -27,6 +27,7 @@ jobs:
       - name: Setup release Gradle properties
         run: |
           echo \n >> gradle.properties
+          echo \n >> ${{ secrets.MAPBOX_DOWNLOADS_TOKEN }}
           echo "MAPBOX_DOWNLOADS_TOKEN=${{ secrets.MAPBOX_DOWNLOADS_TOKEN }}" >> gradle.properties
        
 
