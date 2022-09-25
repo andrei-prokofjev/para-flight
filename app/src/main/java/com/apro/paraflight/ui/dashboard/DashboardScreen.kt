@@ -47,7 +47,8 @@ fun DashboardScreen(navController: NavController) {
 //        modifier = Modifier.fillMaxSize(),
 //        factory = {context ->
 //
-//          Mapb
+//
+//
 ////          Mapbox.getInstance(
 ////            context,
 ////            public_api_key

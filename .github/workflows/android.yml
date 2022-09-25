@@ -24,6 +24,12 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Setup release Gradle properties
+        run: |
+          echo \n >> gradle.properties
+          echo "MAPBOX_DOWNLOADS_TOKEN=${{ secrets.MAPBOX_DOWNLOADS_TOKEN }}" >> gradle.properties
+       
+
       - name: Build with Gradle
         run: ./gradlew assembledebug
 
