@@ -30,7 +30,7 @@ allprojects {
       }
       credentials {
         username = "mapbox"
-        password = "sk.eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJjbDhoNjQ2NGQwM3Z3M29veThnczR5ZTF5In0.NhukJLxRKDHUA2xLjUApcA"
+        password = properties["MAPBOX_DOWNLOADS_TOKEN"].toString()
       }
     }
   }
