@@ -34,5 +34,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
-          name: parafilight-${{ env.TYPE }}
-          path: app/build/outputs/apk/${{ env.TYPE }}/*
+          name: parafilight-${{ inputs.buildType }}
+          path: app/build/outputs/apk/${{ inputs.buildType }}/*
