@@ -24,7 +24,6 @@ class MainActivity : ComponentActivity() {
     setContent {
       MaterialTheme {
 
-
         splashScreen.setKeepOnScreenCondition { false }
         val navController = rememberNavController()
 

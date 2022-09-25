@@ -49,8 +49,10 @@ dependencies {
     implementation(WORKS_RUNTIME)
     implementation(KOTLINX_DATETIME)
     implementation(COMPOSE_MATERIAL_3)
+    implementation(COMPOSE_MATERIAL)
     implementation(COMPOSE_PREVIEW)
 
+    implementation(MATERIAL)
     implementation(COMPOSE_MATERIAL_3_WINDOW)
     implementation(SPLASHSCREEN)
     implementation(COMPOSE_MATERIAL)

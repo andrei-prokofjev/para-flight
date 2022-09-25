@@ -33,6 +33,8 @@ object Dependencies {
 
   const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3"
 
+  const val MATERIAL = "com.google.android.material:material:1.5.0"
+
   const val KOTLINX_DATETIME = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
 
   const val COMPOSE_ACTIVITY = "androidx.activity:activity-compose:1.4.0"
