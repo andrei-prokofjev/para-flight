@@ -62,6 +62,8 @@ dependencies {
   }
 
   implementation("com.mapbox.maps:android:10.8.0")
+  implementation("com.google.accompanist:accompanist-permissions:0.26.4-beta")
+  implementation("com.mapbox.navigation:android:2.7.0")
 
   testImplementationsPack()
   testUtilImplementationsPack()
