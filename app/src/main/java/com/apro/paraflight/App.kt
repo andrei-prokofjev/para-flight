@@ -1,8 +1,9 @@
 package com.apro.paraflight
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-@Suppress("unused")
+@HiltAndroidApp
 class App : Application() {
 
   override fun onCreate() {

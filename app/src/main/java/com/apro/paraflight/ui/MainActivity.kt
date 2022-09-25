@@ -1,11 +1,11 @@
 package com.apro.paraflight.ui
 
 
-import android.app.Activity
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 
 
-class MainActivity : Activity() {
+class MainActivity : ComponentActivity() {
 
 
   override fun onCreate(savedInstanceState: Bundle?) {

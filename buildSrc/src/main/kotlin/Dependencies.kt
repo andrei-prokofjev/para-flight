@@ -160,8 +160,6 @@ object BuildPlugins {
   const val GRADLE = "com.android.tools.build:gradle:${Versions.GRADLE}"
   const val NAVIGATION_SAFE_ARGS = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.NAVIGATION_SAFE_ARGS}"
   const val GOOGLE_SERVICES = "com.google.gms:google-services:4.3.10"
-  const val FIREBASE = "com.google.firebase:perf-plugin:1.4.1"
-  const val CRASHLYTICS = "com.google.firebase:firebase-crashlytics-gradle:2.9.1"
   const val HILT = "com.google.dagger:hilt-android-gradle-plugin:${Versions.HILT}"
   const val ARTIFACTORY = "org.jfrog.buildinfo:build-info-extractor-gradle:4.28.2"
 }

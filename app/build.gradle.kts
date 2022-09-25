@@ -2,7 +2,7 @@ plugins {
   id("com.android.application")
   kotlin("android")
   kotlin("kapt")
-//  id("dagger.hilt.android.plugin")
+  id("dagger.hilt.android.plugin")
   kotlin("plugin.serialization") version "1.7.10"
 }
 
@@ -22,6 +22,39 @@ android {
     targetCompatibility = JavaVersion.VERSION_11
   }
 
+  buildFeatures {
+    compose = true
+  }
+
+  composeOptions {
+    kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER
+  }
+
+  kapt {
+    correctErrorTypes = true
+  }
+
+}
+
+dependencies {
+
+  with(Dependencies) {
+    implementation(CORE_KTX)
+    implementation(COMPOSE_ACTIVITY)
+    implementation(LIFECYCLE_VIEWMODEL_COMPOSE)
+    implementation(HILT_NAVIGATION_COMPOSE)
+    implementation(HILT)
+    kapt(HILT_COMPILER)
+    implementation(SPLASHSCREEN)
+    implementation(DATASTORE_PREFERENCES)
+    implementation(WORKS_RUNTIME)
+    implementation(KOTLINX_DATETIME)
+
+  }
+
+  testImplementationsPack()
+  testUtilImplementationsPack()
+  androidTestImplementationsPack()
 }
 
 //android {
