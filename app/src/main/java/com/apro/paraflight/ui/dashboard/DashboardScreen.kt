@@ -26,6 +26,8 @@ import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
 import com.mapbox.maps.dsl.cameraOptions
 import com.mapbox.maps.plugin.animation.flyTo
+import com.mapbox.maps.plugin.attribution.attribution
+import com.mapbox.maps.plugin.logo.logo
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -39,10 +41,7 @@ fun DashboardScreen(navController: NavController) {
     )
 
     if (locationPermissionsState.allPermissionsGranted) {
-
-
       val style = remember { mutableStateOf(MapViewStyle.STREET) }
-
       val camera = remember {
         mutableStateOf(cameraOptions {
           center(Point.fromLngLat(24.753574, 59.436962))
@@ -124,12 +123,15 @@ private fun MapboxComponent(
     factory = {
       MapView(it).apply {
 
-      //location.setLocationProvider()
+        //location.setLocationProvider()
       }
     },
     update = {
+      it.logo.updateSettings { enabled = false }
+      it.attribution.updateSettings { enabled = false }
       it.getMapboxMap().apply {
         loadStyleUri(mapBoxStyle)
+
         flyTo(cameraOptions)
       }
     }
