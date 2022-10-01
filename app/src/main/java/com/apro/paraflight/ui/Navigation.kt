@@ -9,6 +9,10 @@ sealed class NavRoute(
   val deepLinks: List<NavDeepLink> = emptyList()
 ) {
 
+  object Register : NavRoute("register")
+
+  object Login : NavRoute("login")
+
   object Dashboard : NavRoute("dashboard")
 
   object Help : NavRoute("help")

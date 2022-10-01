@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+  <domain-config cleartextTrafficPermitted="true">
+    <!-- this ip address is a bridge address that connects emulator to your computers local host! -->
+    <domain includeSubdomains="true">10.0.2.2</domain>
+    <!-- your IP address -->
+    <domain includeSubdomains="true">10.153.0.141</domain>
+  </domain-config>
+</network-security-config>

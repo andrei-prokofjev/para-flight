@@ -65,6 +65,7 @@ class ParaglideImpl(
     }
 
     api = ParaglideApiImpl(
+      client = client,
       baseUrl = baseUrl,
       logLevel = logLevel,
       sessionDataStorage = sessionDataStorage
