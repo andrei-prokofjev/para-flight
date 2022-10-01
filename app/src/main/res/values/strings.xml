@@ -1,49 +1,8 @@
 <resources>
   <string name="app_name">Para Flight</string>
   <string name="mapbox_access_token" translatable="false">pk.eyJ1IjoiYW5kcmVpLXByb2tvZmpldiIsImEiOiJjbDhoNXR4N2MwNjFxM25sYzVlY3l6eTVyIn0.rKUAfBHejruszbIMLA4Qtg</string>
-  <string name="app_center_access_token" translatable="false">4c85d11d-d8ff-46c7-a985-0b638b806bab</string>
-  <string name="client_version_s">Client version: %s</string>
+  <string name="version_s">Version: %s</string>
   <string name="user_name_s">User name: %s</string>
-
-  <string name="gs">GS</string>
-  <string name="km_h">km/h</string>
-  <string name="mph">mph</string>
-  <string name="asl">ASL</string>
-  <string name="m">m</string>
-  <string name="km">km</string>
-  <string name="ft">ft</string>
-  <string name="ml">ml</string>
-  <string name="landed">Landed</string>
-  <string name="cancel">Cancel</string>
-  <string name="save">Save</string>
-  <string name="speed">Speed</string>
-  <string name="alt">Alt</string>
-  <string name="alt_diff">Alt Diff</string>
-  <string name="take_off_detection">Take Off Detection</string>
-  <string name="voice_guidance">Voice Guidance</string>
-  <string name="flight_time">Flight Time</string>
-  <string name="temperature_s">Temperature: %s °C</string>
-  <string name="pressure_s">Pressure: %s</string>
-  <string name="pressure_sensor_s">Pressure sensor: %s</string>
-
-  <string name="tts_you_are_off_the_ground_and_on_your_own_at_this_point">You are off the ground, and on your own at this point</string>
-  <string name="tts_climbing_through_x_meters_at_x_kilometers_per_hour">Climbing through %d meters at %d kilometers per hour</string>
-  <string name="tts_you_have_successfully_reached_the_ground">You have successfully reached the ground</string>
-  <string name="tts_we_certainly_enjoyed_serving_you_in_flight_today">We certainly enjoyed serving you in-flight today</string>
-  <string name="tts_hope_to_serve_you_soon_again">Hope to serve you soon again</string>
-  <string name="tts_flight_time_x_minutes">Flight time %d minutes</string>
-  <string name="tts_flight_time_x_hours_x_minutes">Flight time %d hours %d minutes</string>
-  <string name="min_speed">Min Speed</string>
-  <string name="metric">Metric</string>
-  <string name="imperial">Imperial</string>
-  <string name="wind_detector">Wind Detector</string>
-  <string name="points">points</string>
-  <string name="location_name_s">Location name: %s</string>
-  <string name="visibility_s">Visibility: %d m</string>
-  <string name="reset">reset</string>
-  <string name="apply">apply</string>
-  <string name="auto">auto</string>
-  <string name="calibrate">calibrate</string>
 
 
 </resources>

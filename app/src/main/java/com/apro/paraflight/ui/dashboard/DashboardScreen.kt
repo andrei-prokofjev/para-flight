@@ -85,10 +85,10 @@ private fun DashboardScreen(
     modifier = Modifier.fillMaxSize(),
     contentAlignment = Alignment.TopEnd
   ) {
-    MapboxComponent(
-      mapBoxStyle = mapBoxStyle,
-      cameraOptions = camera
-    )
+//    MapboxComponent(
+//      mapBoxStyle = mapBoxStyle,
+//      cameraOptions = camera
+//    )
 
     Column {
       IconButton(

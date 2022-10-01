@@ -38,6 +38,8 @@ android {
 
 dependencies {
 
+  implementation(project(":shared-paraglide"))
+
   with(Dependencies) {
     implementation(CORE_KTX)
     implementation(COMPOSE_ACTIVITY)
