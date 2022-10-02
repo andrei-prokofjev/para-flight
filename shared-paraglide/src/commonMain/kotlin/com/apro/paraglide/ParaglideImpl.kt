@@ -1,5 +1,6 @@
 package com.apro.paraglide
 
+import com.apro.paraglide.model.ErrorMessage
 import com.apro.paraglide.model.Tokens
 import com.apro.paraglide.storage.SessionDataStorage
 import com.malwarebytes.antimalware.cloud.nebula.storage.DefaultSessionDataStorage
@@ -11,8 +12,10 @@ import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 class ParaglideImpl(
@@ -33,7 +36,6 @@ class ParaglideImpl(
           override fun log(message: String) {
             println(">>> $message")
           }
-
         }
         level = logLevel
       }
@@ -43,6 +45,18 @@ class ParaglideImpl(
       install(UserAgent) {
         agent = "Apro${Platform.name}ParaglideAgent/${Platform.version}"
       }
+
+      HttpResponseValidator {
+        handleResponseExceptionWithRequest { exception, _ ->
+          when (exception) {
+            is ClientRequestException -> {
+              val error = json.decodeFromString<ErrorMessage>(exception.response.bodyAsText())
+              throw Exception(error.message)
+            }
+          }
+        }
+      }
+
       install(Auth) {
         bearer {
           loadTokens {

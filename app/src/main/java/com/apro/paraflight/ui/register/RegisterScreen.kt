@@ -1,5 +1,6 @@
 package com.apro.paraflight.ui.register
 
+import android.widget.Toast
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -20,6 +22,13 @@ fun RegisterScreen(
   navController: NavHostController,
   viewModel: RegisterViewModel,
 ) {
+  val context = LocalContext.current
+  LaunchedEffect(Unit) {
+    viewModel.errorEvent.collect {
+      Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+    }
+  }
+
   Surface(modifier = Modifier.fillMaxSize()) {
     RegisterScreen { viewModel.registerClicked(it) }
   }
@@ -37,7 +46,6 @@ private fun RegisterScreen(
     var enteredText by remember { mutableStateOf("") }
 
     val interactionSource = remember { MutableInteractionSource() }
-//    val isFocused by interactionSource.collectIsFocusedAsState()
 
     OutlinedTextField(
       modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),

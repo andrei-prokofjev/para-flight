@@ -24,7 +24,7 @@ class ParaglideApiImpl(
     }
       .body<RegisterResponse>()
       .also { response ->
-        println(">>> response: " + response)
+        sessionDataStorage.userId = response.userId
       }
 
   override suspend fun login() {
