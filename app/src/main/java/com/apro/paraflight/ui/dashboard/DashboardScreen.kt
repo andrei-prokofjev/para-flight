@@ -31,7 +31,7 @@ import com.mapbox.maps.plugin.logo.logo
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun DashboardScreen(navController: NavController) {
+fun DashboardScreen(navController: NavController, viewModel: DashboardViewModel) {
   Surface(modifier = Modifier.fillMaxSize()) {
     val locationPermissionsState = rememberMultiplePermissionsState(
       listOf(

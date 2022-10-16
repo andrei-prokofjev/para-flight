@@ -1,20 +1,20 @@
 package com.apro.paraflight.ui.base
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 
 abstract class BaseViewModel : ViewModel() {
-
-  private val _errorEvent = MutableSharedFlow<Throwable>()
-  val errorEvent = _errorEvent.asSharedFlow()
+  var navigationState: String? by mutableStateOf(null)
+    internal set
+  var errorState by mutableStateOf<String?>(null)
+    internal set
 
   protected open val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
     Log.e(javaClass.simpleName, throwable.message.orEmpty())
-    viewModelScope.launch { _errorEvent.emit(throwable) }
+    errorState = throwable.message
   }
 }

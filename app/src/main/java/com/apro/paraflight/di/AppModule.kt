@@ -39,7 +39,7 @@ abstract class AppModule {
       Settings.Secure.getString(appContext.contentResolver, Settings.Secure.ANDROID_ID)
 
     @Provides
-    fun providesNebulaApi(): Paraglide = ParaglideImpl.Builder()
+    fun provideParaglideApi(): Paraglide = ParaglideImpl.Builder()
       .baseUrl("http://10.0.2.2:3001/")
       .logLevel(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE)
       .build()

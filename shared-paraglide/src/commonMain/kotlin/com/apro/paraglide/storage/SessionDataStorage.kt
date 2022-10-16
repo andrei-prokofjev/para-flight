@@ -6,7 +6,7 @@ interface SessionDataStorage {
 
   var userId: String?
 
-  var authToken: JwtToken?
+  var authToken: String?
 
   var refreshToken: JwtToken?
 

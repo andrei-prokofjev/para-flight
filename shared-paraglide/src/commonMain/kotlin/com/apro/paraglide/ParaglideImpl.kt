@@ -1,19 +1,13 @@
 package com.apro.paraglide
 
 import com.apro.paraglide.model.ErrorMessage
-import com.apro.paraglide.model.Tokens
 import com.apro.paraglide.storage.SessionDataStorage
 import com.malwarebytes.antimalware.cloud.nebula.storage.DefaultSessionDataStorage
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.plugins.*
-import io.ktor.client.plugins.auth.*
-import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
-import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -26,12 +20,13 @@ class ParaglideImpl(
   ) : Paraglide {
 
   override val api: ParaglideApi
+  override val isSessionValid: Boolean
+    get() = sessionDataStorage.authToken != null
 
   init {
     val client = HttpClient {
       expectSuccess = true
       install(Logging) {
-
         logger = object : Logger {
           override fun log(message: String) {
             println(">>> $message")
@@ -45,7 +40,6 @@ class ParaglideImpl(
       install(UserAgent) {
         agent = "Apro${Platform.name}ParaglideAgent/${Platform.version}"
       }
-
       HttpResponseValidator {
         handleResponseExceptionWithRequest { exception, _ ->
           when (exception) {
@@ -53,26 +47,6 @@ class ParaglideImpl(
               val error = json.decodeFromString<ErrorMessage>(exception.response.bodyAsText())
               throw Exception(error.message)
             }
-          }
-        }
-      }
-
-      install(Auth) {
-        bearer {
-          loadTokens {
-            val authToken = sessionDataStorage.authToken ?: return@loadTokens null
-            val refreshToken = sessionDataStorage.refreshToken ?: return@loadTokens null
-            BearerTokens(authToken.token, refreshToken.token)
-          }
-          refreshTokens {
-            val tokens = client.get("${baseUrl}api/v1/auth/refresh") {
-              headers {
-                append(HttpHeaders.Authorization, "Bearer ${sessionDataStorage.refreshToken?.token}")
-              }
-            }.body<Tokens>()
-            sessionDataStorage.authToken = tokens.authToken
-            sessionDataStorage.refreshToken = tokens.refreshToken
-            BearerTokens(tokens.authToken.token, tokens.refreshToken.token)
           }
         }
       }

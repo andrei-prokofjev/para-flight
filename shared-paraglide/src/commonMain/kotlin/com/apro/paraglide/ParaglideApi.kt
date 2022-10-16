@@ -1,11 +1,5 @@
 package com.apro.paraglide
 
-import com.apro.paraglide.model.RegisterResponse
-
 interface ParaglideApi {
-
-  suspend fun register(userName: String): RegisterResponse
-
-  suspend fun login()
-
+  suspend fun register(userName: String, password: String)
 }

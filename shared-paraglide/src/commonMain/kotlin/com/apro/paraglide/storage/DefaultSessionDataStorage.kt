@@ -22,19 +22,10 @@ internal class DefaultSessionDataStorage(
       settings[KEY_USER_ID] = value
     }
 
-  override var authToken: JwtToken?
-    get() {
-      return JwtToken(
-        token = settings.getStringOrNull(KEY_AUTH_TOKEN) ?: return null,
-        expiration = settings.getStringOrNull(KEY_AUTH_TOKEN_EXPIRATION)
-          ?.ifBlank { null }
-          ?.toInstant()
-          ?: return null
-      )
-    }
+  override var authToken: String?
+    get() = settings.getStringOrNull(KEY_AUTH_TOKEN)
     set(value) {
-      settings[KEY_AUTH_TOKEN] = value?.token
-      settings[KEY_AUTH_TOKEN_EXPIRATION] = value?.expiration.toString()
+      settings[KEY_AUTH_TOKEN] = value
     }
 
   override var refreshToken: JwtToken?
