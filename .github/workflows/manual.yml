@@ -36,7 +36,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Update DB
+      - name: Fetch latest DB
         run: |
           MALWARE_DATABASE_VERSION=$(curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/version.chk)
           echo "Latest malware db version: $MALWARE_DATABASE_VERSION"
@@ -45,16 +45,16 @@ jobs:
           curl --output signatures.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/data/android.${MALWARE_DATABASE_VERSION}.ref
           curl --output domain.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v1/database/domains-phishing/data/domains-phishing.${PHISHING_DATABASE_VERSION}.ref
 
-      - name: Check for modified files
+      - name: Check for modified DB
         id: git-check
         run: |
           echo "modified=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
 
-      - name: Update changes in GitHub repository
+      - name: Push DB changes
         if: steps.git-check.outputs.modified == 'true'
         run: |
-          git config --global user.name 'andrei'
-          git config --global user.email 'adf@ad.com'
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "<>"
           git add -A
           git commit -m '[automated commit] add configs generated using jsonnet & GitHub workflow'
           git push
