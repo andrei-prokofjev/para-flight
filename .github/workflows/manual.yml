@@ -54,7 +54,6 @@ jobs:
         if: steps.git-check.outputs.modified == 'true'
         run: |
           git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "<>"
           git add -A
           git commit -m 'Update db'
           git push
