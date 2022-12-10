@@ -38,5 +38,5 @@ jobs:
 
       - name: Db version
         run: |
-          MALWARE_DATABASE_VERSION = sh(script: "curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/version.chk", returnStdout: true)
+          sh(script: "curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/version.chk", returnStdout: true)
           
