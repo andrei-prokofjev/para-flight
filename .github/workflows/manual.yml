@@ -54,7 +54,7 @@ jobs:
         if: steps.git-check.outputs.modified == 'true'
         run: |
           git config --global user.name 'andrei'
-          git config --global user.email 'and@asdf.co'
+          git config --global user.email <>
           git add -A
           git commit -m '[automated commit] add configs generated using jsonnet & GitHub workflow'
 #          git push
