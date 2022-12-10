@@ -52,7 +52,7 @@ jobs:
       - name: Commit DB
 #        if: $GITHUB_OUTPUT == 'true'
         run: |
-          echo $GITHUB_OUTPUT
+          echo "$GITHUB_OUTPUT"
 #          git config --global user.name 'andrei'
 #          git config --global user.email 'aprokofjev@malwarebytes.com'
 #          git add -A
