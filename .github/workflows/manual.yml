@@ -51,7 +51,7 @@ jobs:
           echo "{$GITHUB_OUTPUT}"
 
       - name: Commit DB
-        if: { $GITHUB_OUTPUT } == 'true'
+#        if: { $GITHUB_OUTPUT } == 'true'
         run: |
           echo "$GITHUB_OUTPUT"
 
