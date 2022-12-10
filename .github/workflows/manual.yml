@@ -48,12 +48,19 @@ jobs:
       - name: Check for db up to dated
         id: git-check
         run: |
+          echo ${{ secrets.GHP_USER }}"
           echo "{modified}={$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)}" >> $GITHUB_OUTPUT
+          echo ${{ $GITHUB_OUTPUT }}"
 
       - name: Commit DB
         if: steps.git-check.outputs.modified == 'true'
         run: |
-          echo "$GITHUB_OUTPUT"
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          git add -A
+          git commit -m 'Update db'
+          git push
+
 
            
           
