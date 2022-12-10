@@ -46,7 +46,8 @@ jobs:
           curl --output domain.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v1/database/domains-phishing/data/domains-phishing.${PHISHING_DATABASE_VERSION}.ref
 
       - name: Check for db up to dated
-        run: echo "{modified}={$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)}" >> $GITHUB_OUTPUT
+        run: echo "{modified}={$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)}"
+#        >> $GITHUB_OUTPUT
 #        run: echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
 
       - name: Commit DB
