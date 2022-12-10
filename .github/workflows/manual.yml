@@ -3,8 +3,8 @@ name: Manual
 on:
   workflow_dispatch:
     inputs:
-      downloadBd:
-        description: "Download bd"
+      downloadDb:
+        description: "Download DB"
         required: true
         default: false
         type: boolean
@@ -35,3 +35,7 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Db version
+        run: |
+          echo curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/version.chk
