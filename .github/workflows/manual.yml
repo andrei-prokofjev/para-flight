@@ -45,19 +45,18 @@ jobs:
           curl --output signatures.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/data/{$MALWARE_DATABASE_VERSION}.ref
           curl --output domain.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v1/database/domains-phishing/data/domains-phishing.${PHISHING_DATABASE_VERSION}.ref
 
-      - name: Check for modified files
-        id: git-check
+      - name: Check for db up to dated
         run: echo "{modified}={$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)}" >> $GITHUB_OUTPUT
 #        run: echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
 
       - name: Commit DB
-        if: steps.git-check.outputs.modified == 'true'
         run: |
-          git config --global user.name 'andrei'
-          git config --global user.email 'aprokofjev@malwarebytes.com'
-          git add -A
-          git status
-          git commit -am "Update db"
-          git push
+          ehco $GITHUB_OUTPUT
+#          git config --global user.name 'andrei'
+#          git config --global user.email 'aprokofjev@malwarebytes.com'
+#          git add -A
+#          git status
+#          git commit -am "Update db"
+#          git push
            
           
