@@ -50,8 +50,9 @@ jobs:
           git config --global user.name 'andrei'
           git config --global user.email 'aprokofjev@malwarebytes.com'
           git status
-#          git add -A
-#          git commit -am "Automated report"
-#          git push
+          git add -A
+          git status
+          git commit -am "Update db"
+          git push
            
           
