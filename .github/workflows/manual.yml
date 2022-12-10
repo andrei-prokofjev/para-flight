@@ -37,6 +37,6 @@ jobs:
         run: chmod +x gradlew
 
       - name: Db version
-        run: |          
-          curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/version.chk
-          curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v1/database/domains-phishing/version.chk
+        run: |
+          MALWARE_DATABASE_VERSION = sh(script: "curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/version.chk", returnStdout: true)
+          echo $MALWARE_DATABASE_VERSION
