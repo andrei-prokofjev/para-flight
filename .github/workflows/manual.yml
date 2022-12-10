@@ -47,11 +47,10 @@ jobs:
 
       - name: Check for modified files
         id: git-check
-#        run: echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
+        #        run: echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
         run: |
-          echo "{modified}={$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)}" >> $GITHUB_OUTPUT
-          echo "{$GITHUB_OUTPUT}"
-          echo "{$modified}"
+          echo "modified=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
+        
 
       - name: Update changes in GitHub repository
         if: steps.git-check.outputs.modified == 'true'
