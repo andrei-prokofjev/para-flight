@@ -52,7 +52,7 @@ jobs:
 #        run: echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
 
       - name: Commit DB
-       if: {$GITHUB_OUTPUT} == 'true'
+        if: {$GITHUB_OUTPUT} == 'true'
         run: |
           echo "$GITHUB_OUTPUT"
 #          git config --global user.name 'andrei'
