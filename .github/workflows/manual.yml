@@ -45,19 +45,17 @@ jobs:
           curl --output signatures.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/data/{$MALWARE_DATABASE_VERSION}.ref
           curl --output domain.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v1/database/domains-phishing/data/domains-phishing.${PHISHING_DATABASE_VERSION}.ref
 
-      - name: Check for db up to dated
+      - name: Check for modified files
         id: git-check
-        run: |
-          echo "{modified}={$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)}" >> $GITHUB_OUTPUT
-          echo ${{ $GITHUB_OUTPUT }}"
+        run: echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
 
-      - name: Commit DB
+      - name: Update changes in GitHub repository
         if: steps.git-check.outputs.modified == 'true'
         run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
+          git config --global user.name 'Your Name' 
+          git config --global user.email 'Your Email for GitHub'
           git add -A
-          git commit -m 'Update db'
+          git commit -m '[automated commit] add configs generated using jsonnet & GitHub workflow'
           git push
 
 
