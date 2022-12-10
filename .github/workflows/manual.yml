@@ -44,5 +44,6 @@ jobs:
           echo "Latest phishing db version: $PHISHING_DATABASE_VERSION"
           curl --output signatures.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/data/{$MALWARE_DATABASE_VERSION}.ref
           curl --output domain.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v1/database/domains-phishing/data/domains-phishing.${PHISHING_DATABASE_VERSION}.ref
+          ls
            
           
