@@ -53,7 +53,7 @@ jobs:
         if: steps.git-check.outputs.modified == 'true'
         run: |
           git config --global user.name "${{ secrets.GHP_USER }}"
-#          git config --global user.email 'Your Email for GitHub'
+          git config --global user.email 'Your Email for GitHub'
           git add -A
           git commit -m '[automated commit] add configs generated using jsonnet & GitHub workflow'
           git push
