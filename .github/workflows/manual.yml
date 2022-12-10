@@ -37,5 +37,6 @@ jobs:
         run: chmod +x gradlew
 
       - name: Db version
-        run: |
+        run: |          
           curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/version.chk
+          curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v1/database/domains-phishing/version.chk
