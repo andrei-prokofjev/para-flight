@@ -48,7 +48,6 @@ jobs:
       - name: Check for db up to dated
         id: git-check
         run: |
-          echo ${{ secrets.GHP_USER }}"
           echo "{modified}={$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)}" >> $GITHUB_OUTPUT
           echo ${{ $GITHUB_OUTPUT }}"
 
