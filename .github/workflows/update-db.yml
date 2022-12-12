@@ -46,7 +46,7 @@ jobs:
           git config --global user.email "<>"
           git remote set-url origin https://x-access-token:${{ secrets.GHP_TOKEN }}@github.com/$GITHUB_REPOSITORY
           git checkout -b ${BRANCH_NAME}
-          git commit --no-verify -a -m 'Update db' ${ASSETS_PATH}domain.ref ${ASSETS_PATH}signatures.ref
+          git commit --no-verify -m 'Update db' ${ASSETS_PATH}domain.ref ${ASSETS_PATH}signatures.ref
           git push --no-verify --force --set-upstream origin ${BRANCH_NAME}
 
       - name: Create pull request
