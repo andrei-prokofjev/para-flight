@@ -38,6 +38,15 @@ jobs:
         run: |
           echo "modified=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
 
+      - name: Push DB changes
+        if: steps.check-db.outputs.modified == 'true'
+        run: |
+          git config --global user.name "Github actions bot"
+          git config --global user.email "<>"
+          git remote set-url origin https://x-access-token:${{ secrets.GHP_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git commit --no-verify -a -m 'Update db' ${ASSETS_PATH}domain.ref ${ASSETS_PATH}signatures.ref
+          git push --no-verify --force origin branch_to_merge
+
       - name: Create pull request
         if: steps.check-db.outputs.modified == 'true'
         run: gh pr create -B master -H branch_to_merge --title 'Merge branch_to_merge into base_branch' --body 'Created by Github action'
