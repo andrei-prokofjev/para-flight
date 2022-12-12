@@ -1,13 +1,7 @@
 name: Update DB
 
-on:
-  workflow_dispatch:
-    inputs:
-      publish:
-        description: "Publish packages"
-        required: true
-        type: boolean
-        default: false
+push:
+  branches: [ "master" ]
 #on:
 #  schedule:
 #    - cron: "0 0 * * 1"
