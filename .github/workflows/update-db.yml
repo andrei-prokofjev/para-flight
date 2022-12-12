@@ -45,8 +45,8 @@ jobs:
           git config --global user.email "<>"
           git remote set-url origin https://x-access-token:${{ secrets.GHP_TOKEN }}@github.com/$GITHUB_REPOSITORY
           git checkout -b branch_to_merge
-          git commit -m 'Update db' ${ASSETS_PATH}domain.ref ${ASSETS_PATH}signatures.ref
-          git push --set-upstream origin branch_to_merge
+          git commit --no-verify -m 'Update db' ${ASSETS_PATH}domain.ref ${ASSETS_PATH}signatures.ref
+          git push --no-verify --force --set-upstream origin branch_to_merge
 
       - name: Create pull request
         if: steps.check-db.outputs.modified == 'true'
