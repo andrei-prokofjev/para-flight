@@ -38,9 +38,11 @@ jobs:
         run: |
           echo "modified=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
 
-      - name: Push DB changes
+      - name: Create pull request
         if: steps.check-db.outputs.modified == 'true'
-        run: echo " create pull request"
+        run: gh pr create -B branch_to_merge -H master --title 'Merge branch_to_merge into base_branch' --body 'Created by Github action'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
 
