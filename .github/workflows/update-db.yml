@@ -33,14 +33,16 @@ jobs:
           curl --output ${ASSETS_PATH}signatures.ref --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v3/database/android/data/android.$MALWARE_DATABASE_VERSION.ref
           curl --output ${ASSETS_PATH}domain.ref --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v1/database/domains-phishing/data/domains-phishing.$PHISHING_DATABASE_VERSION.ref
 
-      - name: Check for modified DB
+      - name: Check for modified DBdd
         id: check-db
         run: |
           echo "modified=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
 
-      - name: Push DB changes
+      - name: Create pull request
         if: steps.check-db.outputs.modified == 'true'
-        run: echo " create pull request"
+        run: gh pr create -B master -H branch_to_merge --title 'Merge branch_to_merge into base_branch' --body 'Created by Github action'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
 
