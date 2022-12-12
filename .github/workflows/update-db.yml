@@ -1,7 +1,7 @@
 name: Update DB
-
-push:
-  branches: [ "master" ]
+on:
+  push:
+    branches: [ "master" ]
 #on:
 #  schedule:
 #    - cron: "0 0 * * 1"
