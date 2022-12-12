@@ -40,8 +40,7 @@ jobs:
 
       - name: Push DB changes
         if: steps.check-db.outputs.modified == 'true'
-        run: |
-          BRANCH_NAME="Update DB"
+        run: |         
           git config --global user.name "Github actions bot"
           git config --global user.email "<>"
           git remote set-url origin https://x-access-token:${{ secrets.GHP_TOKEN }}@github.com/$GITHUB_REPOSITORY
