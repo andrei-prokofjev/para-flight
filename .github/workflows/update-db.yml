@@ -44,8 +44,9 @@ jobs:
           git config --global user.name "Github actions bot"
           git config --global user.email "<>"
           git remote set-url origin https://x-access-token:${{ secrets.GHP_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git checkout -b branch_to_merge
           git commit --no-verify -m 'Update db' ${ASSETS_PATH}domain.ref ${ASSETS_PATH}signatures.ref
-          git push --no-verify --force origin branch_to_merge
+          git push --no-verify --force
 
       - name: Create pull request
         if: steps.check-db.outputs.modified == 'true'
