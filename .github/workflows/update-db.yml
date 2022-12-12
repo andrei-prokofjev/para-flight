@@ -21,7 +21,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      ASSETS_PATH: "core-protection/src/main/assets/"
+      ASSETS_PATH: "app/"
       DB_UPDATE_BASE_URL: "https://data-cdn.mbamupdates.com/"
 
     steps:
