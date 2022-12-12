@@ -48,7 +48,7 @@ jobs:
           git commit --no-verify -m 'Update db' ${ASSETS_PATH}domain.ref ${ASSETS_PATH}signatures.ref
           git push --no-verify --force --set-upstream origin ${BRANCH_NAME}
         env:
-          BRANCH_NAME: "Update DB"
+          BRANCH_NAME: "scheduled_autoupdate_db"
 
       - name: Create pull request
         if: steps.check-db.outputs.modified == 'true'
