@@ -41,16 +41,19 @@ jobs:
       - name: Push DB changes
         if: steps.check-db.outputs.modified == 'true'
         run: |
+          BRANCH_NAME="Update DB"
           git config --global user.name "Github actions bot"
           git config --global user.email "<>"
           git remote set-url origin https://x-access-token:${{ secrets.GHP_TOKEN }}@github.com/$GITHUB_REPOSITORY
-          git checkout -b branch_to_merge
+          git checkout -b ${BRANCH_NAME}
           git commit --no-verify -m 'Update db' ${ASSETS_PATH}domain.ref ${ASSETS_PATH}signatures.ref
-          git push --no-verify --force --set-upstream origin branch_to_merge
+          git push --no-verify --force --set-upstream origin ${BRANCH_NAME}
+        env:
+          BRANCH_NAME="Update DB"
 
       - name: Create pull request
         if: steps.check-db.outputs.modified == 'true'
-        run: gh pr create -B master -H branch_to_merge --title 'Merge branch_to_merge into base_branch' --body 'Created by Github action'
+        run: gh pr create -B master -H BRANCH_NAME --title "Update DB. Malware DB ${MALWARE_DATABASE_VERSION} Phishing DB ${PHISHING_DATABASE_VERSION}" --body 'Created by Github action'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
