@@ -52,7 +52,7 @@ jobs:
 
       - name: Create pull request
         if: steps.check-db.outputs.modified == 'true'
-        run: gh pr create -B master -H ${BRANCH_NAME} --title 'Update DB. Malware DB ${MALWARE_DATABASE_VERSION} Phishing DB ${PHISHING_DATABASE_VERSION}' --body 'Created by Github action'
+        run: gh pr create -B master -H ${BRANCH_NAME} --title 'Update DB. Malware DB ${MALWARE_DATABASE_VERSION}. Phishing DB ${PHISHING_DATABASE_VERSION}' --body 'Created by Github action'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
