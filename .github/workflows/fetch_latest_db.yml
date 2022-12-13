@@ -1,5 +1,7 @@
 name: Fetch latest DB
 
+on:
+
 jobs:
   fetch_latest_db:
     runs-on: ubuntu-latest
