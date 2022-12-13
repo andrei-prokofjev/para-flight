@@ -1,6 +1,13 @@
 name: Fetch latest DB
 
 on:
+  workflow_dispatch:
+    inputs:
+      uploadArtifacts:
+        description: "Upload artifacts"
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   fetch_latest_db:
