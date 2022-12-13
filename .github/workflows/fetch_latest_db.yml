@@ -1,0 +1,28 @@
+name: Fetch latest DB
+
+jobs:
+  fetch_latest_db:
+    runs-on: ubuntu-latest
+    env:
+      ASSETS_PATH: "app/"
+      DB_UPDATE_BASE_URL: "https://data-cdn.mbamupdates.com/"
+      BRANCH_NAME: "scheduled_autoupdate_db"
+
+    steps:
+      - name: Setup env
+        run: |
+          echo "MALWARE_DATABASE_VERSION=$(curl -s --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v3/database/android/version.chk)" >> $GITHUB_ENV
+          echo "PHISHING_DATABASE_VERSION=$(curl -s --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v1/database/domains-phishing/version.chk)" >> $GITHUB_ENV
+
+      - name: Fetch latest DB
+        run: |
+          echo "Latest malware db version: ${MALWARE_DATABASE_VERSION}"          
+          echo "Latest phishing db version: ${PHISHING_DATABASE_VERSION}"
+          curl --output ${ASSETS_PATH}signatures.ref --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v3/database/android/data/android.$MALWARE_DATABASE_VERSION.ref
+          curl --output ${ASSETS_PATH}domain.ref --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v1/database/domains-phishing/data/domains-phishing.$PHISHING_DATABASE_VERSION.ref
+      
+
+
+
+
+

@@ -12,8 +12,8 @@ on:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: set up JDK 11
@@ -35,30 +35,33 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+  fetch_latest_db:
+    name: Fetch latest DB
+      needs: build
 
-      - name: Fetch latest DB
-        run: |
-          MALWARE_DATABASE_VERSION=$(curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/version.chk)
-          echo "Latest malware db version: $MALWARE_DATABASE_VERSION"
-          PHISHING_DATABASE_VERSION=$(curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v1/database/domains-phishing/version.chk)
-          echo "Latest phishing db version: $PHISHING_DATABASE_VERSION"
-        
-          curl --output app/signatures.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/data/android.${MALWARE_DATABASE_VERSION}.ref
-          curl --output app/domain.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v1/database/domains-phishing/data/domains-phishing.${PHISHING_DATABASE_VERSION}.ref
-
-      - name: Check for modified DB
-        id: git-check
-        run: |
-          echo "modified=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
-
-      - name: Push DB changes
-        if: steps.git-check.outputs.modified == 'true'
-        run: |
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "<>"
-          git add -A
-          git commit -m 'Update db'
-          git push
+  #      - name: Fetch latest DB
+  #        run: |
+  #          MALWARE_DATABASE_VERSION=$(curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/version.chk)
+  #          echo "Latest malware db version: $MALWARE_DATABASE_VERSION"
+  #          PHISHING_DATABASE_VERSION=$(curl -s --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v1/database/domains-phishing/version.chk)
+  #          echo "Latest phishing db version: $PHISHING_DATABASE_VERSION"
+  #
+  #          curl --output app/signatures.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v3/database/android/data/android.${MALWARE_DATABASE_VERSION}.ref
+  #          curl --output app/domain.ref --connect-timeout 30 --retry 5 --retry-delay 1 https://data-cdn.mbamupdates.com/v1/database/domains-phishing/data/domains-phishing.${PHISHING_DATABASE_VERSION}.ref
+  #
+  #      - name: Check for modified DB
+  #        id: git-check
+  #        run: |
+  #          echo "modified=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
+  #
+  #      - name: Push DB changes
+  #        if: steps.git-check.outputs.modified == 'true'
+  #        run: |
+  #          git config --global user.name "GitHub Actions Bot"
+  #          git config --global user.email "<>"
+  #          git add -A
+  #          git commit -m 'Update db'
+  #          git push
 
 
            
