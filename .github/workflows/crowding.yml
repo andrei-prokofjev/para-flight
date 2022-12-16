@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - '**/strings.xml'
+    branches:
+      - master
 
   workflow_dispatch:
     inputs:
