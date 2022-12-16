@@ -30,7 +30,7 @@ jobs:
           curl --output ${ASSETS_PATH}signatures.ref --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v3/database/android/data/android.$MALWARE_DATABASE_VERSION.ref
           curl --output ${ASSETS_PATH}domain.ref --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v1/database/domains-phishing/data/domains-phishing.$PHISHING_DATABASE_VERSION.ref
 
-      - name: Check for modified DB
+      - name: Check if PR requered
         id: check-db
         run: |
           echo "modified=$(if [ -n "$(git status --porcelain)" ] && [ ${{ inputs.createPR }} ]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
