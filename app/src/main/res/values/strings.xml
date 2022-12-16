@@ -4,7 +4,6 @@
   <string name="app_center_access_token" translatable="false">4c85d11d-d8ff-46c7-a985-0b638b806bab</string>
   <string name="client_version_s">Client version: %s</string>
   <string name="user_name_s">User name: %s</string>
-  <string name="user_name_s2">User name: %s</string>
 
   <string name="gs">GS</string>
   <string name="km_h">km/h</string>
