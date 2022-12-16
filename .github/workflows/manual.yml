@@ -9,7 +9,7 @@ jobs:
     name: Update DB
     uses: ./.github/workflows/update-db.yml
     with:
-      createPR: true
+      createPR: false
 
   build:
     name: Build

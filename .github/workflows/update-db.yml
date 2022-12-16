@@ -33,7 +33,7 @@ jobs:
       - name: Check for modified DB
         id: check-db
         run: |
-          echo "modified=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
+          echo "modified=$(if [ -n "$(git status --porcelain)" && ${{ createPR }}]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
 
       - name: Push DB changes
         if: steps.check-db.outputs.modified == 'true'
