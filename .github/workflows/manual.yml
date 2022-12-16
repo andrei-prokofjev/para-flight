@@ -14,8 +14,8 @@ jobs:
   upadate-db:
     name: Update DB
     uses: ./.github/workflows/update-db.yml
-#    with:
-#      createPR: ${{ inputs.createPR }}
+    with:
+      createPR: ${{ inputs.createPR }}
 
   build:
     name: Build
