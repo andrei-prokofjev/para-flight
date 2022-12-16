@@ -2,12 +2,6 @@ name: Manual
 
 on:
   workflow_dispatch:
-    inputs:
-      createPR:
-        description: "Create PR"
-        required: true
-        default: false
-        type: boolean
 
 
 jobs:
