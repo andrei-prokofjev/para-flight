@@ -5,6 +5,7 @@
   <string name="client_version_s">Client version: %s</string>
   <string name="user_name_s">User name: %s</string>
   <string name="user_name_s2">User name: %s</string>
+  <string name="user_name_s2">User name: %s</string>
 
   <string name="gs">GS</string>
   <string name="km_h">km/h</string>
