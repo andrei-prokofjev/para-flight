@@ -43,4 +43,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test
-        with: echo "hello"
+        run: echo "hello"
