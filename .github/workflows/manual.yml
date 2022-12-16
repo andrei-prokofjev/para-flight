@@ -18,8 +18,8 @@ jobs:
       createPR: ${{ inputs.createPR }}
 
   build:
-    needs: upadate-db
     name: Build
+    needs: upadate-db
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
