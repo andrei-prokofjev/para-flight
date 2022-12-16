@@ -3,6 +3,9 @@ name: Update DB
 on:
   workflow_call:
     inputs:
+      createPR:
+        required: true
+        type: boolean
 
 jobs:
   stale:
