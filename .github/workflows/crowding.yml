@@ -4,7 +4,7 @@ on:
   push:
     path:
       - 'src/main/res/values/strings.xml'
-    braches: [ "master" ]
+
   workflow_dispatch:
     inputs:
       downloadTranslations:
