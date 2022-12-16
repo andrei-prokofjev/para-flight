@@ -3,7 +3,7 @@ name: Crowdin
 on:
   push:
     paths:
-      - '**.js'
+      - '**/strings.xml'
 
   workflow_dispatch:
     inputs:
