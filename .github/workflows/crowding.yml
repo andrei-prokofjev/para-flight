@@ -14,7 +14,7 @@ on:
         type: boolean
 
 jobs:
-  synchronize-with-crowdin2:
+  synchronize-with-crowdin1:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,3 +38,9 @@ jobs:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #          EP_CROWDIN_PROJECT_ID: ${{ secrets.EP_CROWDIN_PROJECT_ID }}
 #          EP_CROWDIN_API_TOKEN: ${{ secrets.EP_CROWDIN_API_TOKEN }}
+
+  synchronize-with-crowdin2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        with: echo "hello"
