@@ -3,15 +3,22 @@ name: Manual
 on:
   workflow_dispatch:
     inputs:
-      downloadDb:
-        description: "Download DB"
+      createPR:
+        description: "Create PR"
         required: true
         default: false
         type: boolean
 
 
 jobs:
+  upadate-db:
+
+    uses: ./.github/workflows/update-db.yml
+    with:
+      createPR: ${{ inputs.createPR }}
+
   build:
+    needs: upadate-db
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -35,6 +42,8 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+
 
 
 
