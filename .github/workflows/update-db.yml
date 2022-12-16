@@ -1,7 +1,12 @@
 name: Update DB
+
 on:
-  schedule:
-    - cron: "* * * * 2"
+  workflow_call:
+    inputs:
+      uploadDb:
+        required: true
+        default: false
+        type: boolean
 
 
 jobs:
@@ -13,40 +18,38 @@ jobs:
       BRANCH_NAME: "scheduled_autoupdate_db"
 
     steps:
-      - name: Setup env
-        run: |
-          echo "MALWARE_DATABASE_VERSION=$(curl -s --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v3/database/android/version.chk)" >> $GITHUB_ENV
-          echo "PHISHING_DATABASE_VERSION=$(curl -s --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v1/database/domains-phishing/version.chk)" >> $GITHUB_ENV
-
       - uses: actions/checkout@v3
 
-      - name: Fetch latest DB
-        run: |
-          echo "Latest malware db version: ${MALWARE_DATABASE_VERSION}"          
-          echo "Latest phishing db version: ${PHISHING_DATABASE_VERSION}"
-          curl --output ${ASSETS_PATH}signatures.ref --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v3/database/android/data/android.$MALWARE_DATABASE_VERSION.ref
-          curl --output ${ASSETS_PATH}domain.ref --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v1/database/domains-phishing/data/domains-phishing.$PHISHING_DATABASE_VERSION.ref
-
-      - name: Check for modified DB
-        id: check-db
-        run: |
-          echo "modified=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
-
-      - name: Push DB changes
-        if: steps.check-db.outputs.modified == 'true'
-        run: |
-          git config --global user.name "Github actions bot"
-          git config --global user.email "<>"
-          git remote set-url origin https://x-access-token:${{ secrets.GHP_TOKEN }}@github.com/$GITHUB_REPOSITORY
-          git checkout -b ${BRANCH_NAME}
-          git commit --no-verify -m 'Update db' ${ASSETS_PATH}domain.ref ${ASSETS_PATH}signatures.ref
-          git push --no-verify --force --set-upstream origin ${BRANCH_NAME}
-
-      - name: Create pull request
-        if: steps.check-db.outputs.modified == 'true'
-        run: gh pr create -B master -H ${BRANCH_NAME} --title "Update DB. Malware db ${MALWARE_DATABASE_VERSION}. Phishing db ${PHISHING_DATABASE_VERSION}" --body 'Created by Github action'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#  download:
+#    -
+#
+#      - name: Fetch latest DB
+#        run: |
+#          echo "Latest malware db version: ${MALWARE_DATABASE_VERSION}"
+#          echo "Latest phishing db version: ${PHISHING_DATABASE_VERSION}"
+#          curl --output ${ASSETS_PATH}signatures.ref --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v3/database/android/data/android.$MALWARE_DATABASE_VERSION.ref
+#          curl --output ${ASSETS_PATH}domain.ref --connect-timeout 30 --retry 5 --retry-delay 1 ${DB_UPDATE_BASE_URL}v1/database/domains-phishing/data/domains-phishing.$PHISHING_DATABASE_VERSION.ref
+#
+#      - name: Check for modified DB
+#        id: check-db
+#        run: |
+#          echo "modified=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
+#
+#      - name: Push DB changes
+#        if: steps.check-db.outputs.modified == 'true'
+#        run: |
+#          git config --global user.name "Github actions bot"
+#          git config --global user.email "<>"
+#          git remote set-url origin https://x-access-token:${{ secrets.GHP_TOKEN }}@github.com/$GITHUB_REPOSITORY
+#          git checkout -b ${BRANCH_NAME}
+#          git commit --no-verify -m 'Update db' ${ASSETS_PATH}domain.ref ${ASSETS_PATH}signatures.ref
+#          git push --no-verify --force --set-upstream origin ${BRANCH_NAME}
+#
+#      - name: Create pull request
+#        if: steps.check-db.outputs.modified == 'true'
+#        run: gh pr create -B master -H ${BRANCH_NAME} --title "Update DB. Malware db ${MALWARE_DATABASE_VERSION}. Phishing db ${PHISHING_DATABASE_VERSION}" --body 'Created by Github action'
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
 
