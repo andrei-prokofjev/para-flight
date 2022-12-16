@@ -1,6 +1,7 @@
 on:
   workflow_run:
     workflows: [Build]
+    branches: [master]
     types: [completed]
 
 jobs:
