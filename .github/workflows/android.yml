@@ -10,9 +10,7 @@ on:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: ARM64
     steps:
       - uses: actions/checkout@v3
       - name: set up JDK 11
