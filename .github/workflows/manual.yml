@@ -5,15 +5,15 @@ on:
 
 
 jobs:
-  upadate-db:
-    name: Update DB
-    uses: ./.github/workflows/update-db.yml
-    with:
-      createPR: false
+#  upadate-db:
+#    name: Update DB
+#    uses: ./.github/workflows/update-db.yml
+#    with:
+#      createPR: false
 
   build:
     name: Build
-    needs: upadate-db
+#    needs: upadate-db
     runs-on: ARM64
     steps:
       - uses: actions/checkout@v3
